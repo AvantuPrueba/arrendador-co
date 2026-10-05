@@ -12,6 +12,14 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // MSYS2 / Git Bash installation artifacts (accidentally copied):
+    "bin/**",
+    "cmd/**",
+    "dev/**",
+    "etc/**",
+    "tmp/**",
+    "ucrt64/**",
+    "usr/**",
   ]),
 ]);
 
