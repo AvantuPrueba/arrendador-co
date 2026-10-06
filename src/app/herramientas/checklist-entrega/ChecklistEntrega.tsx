@@ -43,7 +43,7 @@ function ahoraHora(): string {
 }
 
 export default function ChecklistEntrega() {
-  const [paso, setPaso] = useState<1 | 2 | 3 | 4>(1);
+  const [paso, setPaso] = useState<1 | 2 | 3 | 4 | 5 | 6 | 7>(1);
   const [tipoRegistro, setTipoRegistro] = useState<TipoRegistro>(null);
   const [datos, setDatos] = useState<DatosGenerales>({
     direccion: '',
@@ -60,6 +60,69 @@ export default function ChecklistEntrega() {
   );
   const [zonas, setZonas] = useState<Zona[]>([]);
   const [error, setError] = useState('');
+
+  // Medidores
+  const [aguaLectura, setAguaLectura] = useState('');
+  const [aguaFecha, setAguaFecha] = useState('');
+  const [energiaLectura, setEnergiaLectura] = useState('');
+  const [gasLectura, setGasLectura] = useState('');
+
+  // Llaves
+  const [llavesPuertaPrincipal, setLlavesPuertaPrincipal] = useState('0');
+  const [llavesHabitaciones, setLlavesHabitaciones] = useState('0');
+  const [llavesBuzon, setLlavesBuzon] = useState('0');
+  const [llavesParqueadero, setLlavesParqueadero] = useState('0');
+  const [controlesGaraje, setControlesGaraje] = useState('0');
+  const [otrosNombre, setOtrosNombre] = useState('');
+  const [otrosCantidad, setOtrosCantidad] = useState('0');
+
+  // Inventario
+  interface Elemento {
+    id: string;
+    nombre: string;
+    cantidad: string;
+    estado: 'bueno' | 'regular' | 'malo';
+    observacion: string;
+  }
+  const [elementos, setElementos] = useState<Elemento[]>([]);
+  const [nuevoNombre, setNuevoNombre] = useState('');
+  const [nuevoCantidad, setNuevoCantidad] = useState('1');
+  const [nuevoEstado, setNuevoEstado] = useState<'bueno' | 'regular' | 'malo'>('bueno');
+  const [nuevoObservacion, setNuevoObservacion] = useState('');
+
+  const totalLlaves =
+    (parseInt(llavesPuertaPrincipal, 10) || 0) +
+    (parseInt(llavesHabitaciones, 10) || 0) +
+    (parseInt(llavesBuzon, 10) || 0) +
+    (parseInt(llavesParqueadero, 10) || 0) +
+    (parseInt(controlesGaraje, 10) || 0) +
+    (parseInt(otrosCantidad, 10) || 0);
+
+  function agregarElemento() {
+    if (!nuevoNombre.trim()) {
+      setError('Escribe el nombre del elemento.');
+      return;
+    }
+    setElementos((prev) => [
+      ...prev,
+      {
+        id: `${Date.now()}`,
+        nombre: nuevoNombre.trim(),
+        cantidad: nuevoCantidad || '1',
+        estado: nuevoEstado,
+        observacion: nuevoObservacion,
+      },
+    ]);
+    setNuevoNombre('');
+    setNuevoCantidad('1');
+    setNuevoEstado('bueno');
+    setNuevoObservacion('');
+    setError('');
+  }
+
+  function eliminarElemento(id: string) {
+    setElementos((prev) => prev.filter((e) => e.id !== id));
+  }
 
   const inputClase =
     'w-full rounded-lg border border-navy-100 px-4 py-3 text-gray-900 focus:border-navy-400 focus:outline-none';
@@ -289,12 +352,150 @@ export default function ChecklistEntrega() {
         </section>
       )}
 
-      {/* PASO 4 (placeholder, se completará en la PARTE 2) */}
+      {/* PASO 4: Medidores y servicios */}
       {paso === 4 && (
         <section>
-          <h2 className="mb-4 text-xl font-semibold text-navy-900">Medidores, llaves e inventario</h2>
-          <p className="mb-6 text-gray-600">Esta sección se implementará en la siguiente parte.</p>
-          <button type="button" onClick={() => setPaso(3)} className={botonSecundario}>Volver</button>
+          <h2 className="mb-4 text-xl font-semibold text-navy-900">Lecturas de medidores</h2>
+          <p className="mb-6 text-gray-600">Todos los campos son opcionales. Si un servicio no aplica, déjalo vacío.</p>
+          <div className="mb-6 grid gap-4 sm:grid-cols-2">
+            <label className="block">
+              <span className="mb-1 block text-sm font-medium text-gray-700">Agua: lectura</span>
+              <input type="text" inputMode="numeric" value={aguaLectura} onChange={(e) => setAguaLectura(e.target.value)} className={inputClase} />
+            </label>
+            <label className="block">
+              <span className="mb-1 block text-sm font-medium text-gray-700">Fecha/hora de lectura del agua (opcional)</span>
+              <input type="datetime-local" value={aguaFecha} onChange={(e) => setAguaFecha(e.target.value)} className={inputClase} />
+            </label>
+            <label className="block">
+              <span className="mb-1 block text-sm font-medium text-gray-700">Energía: lectura</span>
+              <input type="text" inputMode="numeric" value={energiaLectura} onChange={(e) => setEnergiaLectura(e.target.value)} className={inputClase} />
+            </label>
+            <label className="block">
+              <span className="mb-1 block text-sm font-medium text-gray-700">Gas: lectura</span>
+              <input type="text" inputMode="numeric" value={gasLectura} onChange={(e) => setGasLectura(e.target.value)} className={inputClase} />
+            </label>
+          </div>
+          <div className="flex flex-col-reverse gap-3 sm:flex-row">
+            <button type="button" onClick={() => setPaso(3)} className={botonSecundario}>Volver</button>
+            <button type="button" onClick={() => setPaso(5)} className={botonPrimario}>Continuar</button>
+          </div>
+        </section>
+      )}
+
+      {/* PASO 5: Llaves y controles */}
+      {paso === 5 && (
+        <section>
+          <h2 className="mb-4 text-xl font-semibold text-navy-900">Llaves y controles entregados</h2>
+          <div className="mb-6 grid gap-4 sm:grid-cols-2">
+            {[
+              { label: 'Puerta principal', value: llavesPuertaPrincipal, set: setLlavesPuertaPrincipal },
+              { label: 'Puerta de habitaciones', value: llavesHabitaciones, set: setLlavesHabitaciones },
+              { label: 'Buzón', value: llavesBuzon, set: setLlavesBuzon },
+              { label: 'Parqueadero', value: llavesParqueadero, set: setLlavesParqueadero },
+              { label: 'Control de garaje', value: controlesGaraje, set: setControlesGaraje },
+            ].map((item) => (
+              <label key={item.label} className="block">
+                <span className="mb-1 block text-sm font-medium text-gray-700">{item.label}</span>
+                <input type="number" min="0" value={item.value} onChange={(e) => item.set(e.target.value)} className={inputClase} />
+              </label>
+            ))}
+            <label className="block">
+              <span className="mb-1 block text-sm font-medium text-gray-700">Otros (nombre)</span>
+              <input type="text" value={otrosNombre} onChange={(e) => setOtrosNombre(e.target.value)} placeholder="Ej: llave de depósito" className={inputClase} />
+            </label>
+            <label className="block">
+              <span className="mb-1 block text-sm font-medium text-gray-700">Otros (cantidad)</span>
+              <input type="number" min="0" value={otrosCantidad} onChange={(e) => setOtrosCantidad(e.target.value)} className={inputClase} />
+            </label>
+          </div>
+          <p className="mb-6 text-lg font-semibold text-navy-900">Total de elementos: {totalLlaves}</p>
+          <div className="flex flex-col-reverse gap-3 sm:flex-row">
+            <button type="button" onClick={() => setPaso(4)} className={botonSecundario}>Volver</button>
+            <button type="button" onClick={() => setPaso(6)} className={botonPrimario}>Continuar</button>
+          </div>
+        </section>
+      )}
+
+      {/* PASO 6: Inventario */}
+      {paso === 6 && (
+        <section>
+          <h2 className="mb-4 text-xl font-semibold text-navy-900">Inventario de elementos</h2>
+          <p className="mb-6 text-gray-600">
+            Si el inmueble incluye muebles o electrodomésticos, regístralos aquí. Si no, puedes dejar esta sección vacía.
+          </p>
+          <div className="mb-6 rounded-xl border border-navy-100 bg-white p-6 shadow-sm">
+            <div className="grid gap-4 sm:grid-cols-2">
+              <label className="block">
+                <span className="mb-1 block text-sm font-medium text-gray-700">Nombre</span>
+                <input type="text" value={nuevoNombre} onChange={(e) => setNuevoNombre(e.target.value)} placeholder="Nevera" className={inputClase} />
+              </label>
+              <label className="block">
+                <span className="mb-1 block text-sm font-medium text-gray-700">Cantidad</span>
+                <input type="number" min="1" value={nuevoCantidad} onChange={(e) => setNuevoCantidad(e.target.value)} className={inputClase} />
+              </label>
+            </div>
+            <fieldset className="mt-4">
+              <legend className="mb-2 text-sm font-medium text-gray-700">Estado</legend>
+              <div className="flex gap-4">
+                {(['bueno', 'regular', 'malo'] as const).map((estado) => (
+                  <label key={estado} className="inline-flex items-center gap-2 text-sm text-gray-700">
+                    <input type="radio" name="nuevo-estado" value={estado} checked={nuevoEstado === estado} onChange={() => setNuevoEstado(estado)} className="h-4 w-4 border-navy-200 text-navy-600" />
+                    {estado === 'bueno' ? 'Bueno' : estado === 'regular' ? 'Regular' : 'Malo'}
+                  </label>
+                ))}
+              </div>
+            </fieldset>
+            <label className="mt-4 block">
+              <span className="mb-1 block text-sm font-medium text-gray-700">Observación</span>
+              <input type="text" value={nuevoObservacion} onChange={(e) => setNuevoObservacion(e.target.value)} className={inputClase} />
+            </label>
+            <button type="button" onClick={agregarElemento} className={`${botonSecundario} mt-4`}>
+              Agregar elemento
+            </button>
+          </div>
+
+          {elementos.length > 0 && (
+            <div className="mb-6 space-y-3">
+              {elementos.map((el) => (
+                <article key={el.id} className="flex items-start justify-between rounded-xl border border-navy-100 bg-white p-4 shadow-sm">
+                  <div>
+                    <h3 className="font-semibold text-navy-900">{el.nombre} × {el.cantidad}</h3>
+                    <p className="text-sm text-gray-600 capitalize">{el.estado}</p>
+                    {el.observacion && <p className="text-sm text-gray-500">{el.observacion}</p>}
+                  </div>
+                  <button type="button" onClick={() => eliminarElemento(el.id)} className="text-sm font-semibold text-red-600 hover:underline">
+                    Eliminar
+                  </button>
+                </article>
+              ))}
+            </div>
+          )}
+
+          <div className="flex flex-col-reverse gap-3 sm:flex-row">
+            <button type="button" onClick={() => setPaso(5)} className={botonSecundario}>Volver</button>
+            <button type="button" onClick={() => setPaso(7)} className={botonPrimario}>Continuar</button>
+          </div>
+        </section>
+      )}
+
+      {/* PASO 7: Revisión final */}
+      {paso === 7 && (
+        <section>
+          <h2 className="mb-4 text-xl font-semibold text-navy-900">Revisa antes de generar el documento</h2>
+          <ul className="mb-6 space-y-2 text-gray-700">
+            <li>Datos generales: {datos.direccion && datos.arrendador ? '✅ Completos' : '❌ Faltan datos'}</li>
+            <li>
+              Zonas revisadas: {zonas.filter((z) => z.estado !== '').length} de {zonas.length} con estado asignado
+            </li>
+            <li>Medidores: {aguaLectura || energiaLectura || gasLectura ? '✅ Registrados' : '⚠️ No registrados'}</li>
+            <li>Llaves: {totalLlaves > 0 ? `✅ ${totalLlaves} registrados` : '⚠️ No registradas'}</li>
+            <li>Inventario: {elementos.length > 0 ? `✅ ${elementos.length} elementos` : 'Sin elementos'}</li>
+          </ul>
+          <p className="mb-6 text-sm text-gray-500">Algunos campos están vacíos. Puedes continuar de todas formas.</p>
+          <div className="flex flex-col-reverse gap-3 sm:flex-row">
+            <button type="button" onClick={() => setPaso(6)} className={botonSecundario}>Volver</button>
+            <button type="button" onClick={() => {}} className={botonPrimario}>Generar PDF</button>
+          </div>
         </section>
       )}
     </div>
