@@ -19,12 +19,15 @@ const upcomingTools = [
     description: 'Calcula el nuevo valor del canon aplicando el IPC o el índice acordado en el contrato, según la Ley 820 de 2003.',
     available: true,
     href: '/herramientas/reajuste-canon',
+    cta: 'Usar calculadora →',
   },
   {
     icon: TrendingUp,
     title: 'Calculadora de rentabilidad',
     description: 'Proyecta el retorno de inversión de tu inmueble considerando gastos de mantenimiento, impuestos, vacancia y administración.',
-    available: false,
+    available: true,
+    href: '/herramientas/rentabilidad',
+    cta: 'Calcular rentabilidad →',
   },
   {
     icon: ClipboardCheck,
@@ -84,7 +87,7 @@ export default function Herramientas() {
                     href={tool.href}
                     className="inline-flex items-center gap-1 text-sm font-semibold text-navy-600 hover:underline"
                   >
-                    Usar calculadora →
+                    {tool.cta}
                   </Link>
                 </>
               ) : (
