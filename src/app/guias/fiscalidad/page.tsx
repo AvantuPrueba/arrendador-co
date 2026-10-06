@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { FileText, Building2, Receipt, FileCheck, Calculator, Wallet, Home } from 'lucide-react';
+import { FileText, Building2, Receipt, FileCheck, Calculator, Wallet, Home, Wrench, Landmark, AlertCircle, CalendarX, FolderX, Building, FileX } from 'lucide-react';
 import { TAX_YEAR_CONFIG, uvtToCop } from '@/lib/tax-config';
 
 export const metadata: Metadata = {
@@ -385,8 +385,119 @@ export default function FiscalidadGuia() {
           </a>
         </section>
 
+        <section id="documentos" className="border-t border-navy-100 pt-8">
+          <h2 className="mb-4 text-2xl font-bold text-navy-900">
+            Documentos que conviene conservar
+          </h2>
+          <p className="mb-6 text-gray-600">
+            Conservar los soportes adecuados facilita la declaración y ayuda a responder a cualquier requerimiento de la DIAN. Estos son los principales.
+          </p>
+          <div className="mb-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="rounded-xl border border-navy-100 bg-white p-6 shadow-sm">
+              <div className="mb-4 inline-flex items-center justify-center w-10 h-10 rounded-lg bg-navy-50 text-navy-600">
+                <FileText className="w-5 h-5" aria-hidden="true" />
+              </div>
+              <h3 className="mb-2 text-lg font-semibold text-navy-900">Contratos de arrendamiento</h3>
+              <p className="text-sm text-gray-600">El contrato vigente y sus modificaciones (otrosí, adendas).</p>
+            </div>
+            <div className="rounded-xl border border-navy-100 bg-white p-6 shadow-sm">
+              <div className="mb-4 inline-flex items-center justify-center w-10 h-10 rounded-lg bg-navy-50 text-navy-600">
+                <Receipt className="w-5 h-5" aria-hidden="true" />
+              </div>
+              <h3 className="mb-2 text-lg font-semibold text-navy-900">Comprobantes de pago</h3>
+              <p className="text-sm text-gray-600">Soportes de los cánones recibidos: transferencias, recibos, facturas cuando correspondan.</p>
+            </div>
+            <div className="rounded-xl border border-navy-100 bg-white p-6 shadow-sm">
+              <div className="mb-4 inline-flex items-center justify-center w-10 h-10 rounded-lg bg-navy-50 text-navy-600">
+                <Building2 className="w-5 h-5" aria-hidden="true" />
+              </div>
+              <h3 className="mb-2 text-lg font-semibold text-navy-900">Recibos de predial</h3>
+              <p className="text-sm text-gray-600">Recibo del impuesto predial efectivamente pagado del año.</p>
+            </div>
+            <div className="rounded-xl border border-navy-100 bg-white p-6 shadow-sm">
+              <div className="mb-4 inline-flex items-center justify-center w-10 h-10 rounded-lg bg-navy-50 text-navy-600">
+                <Wrench className="w-5 h-5" aria-hidden="true" />
+              </div>
+              <h3 className="mb-2 text-lg font-semibold text-navy-900">Facturas de reparaciones</h3>
+              <p className="text-sm text-gray-600">Facturas de mantenimiento y reparaciones del inmueble.</p>
+            </div>
+            <div className="rounded-xl border border-navy-100 bg-white p-6 shadow-sm">
+              <div className="mb-4 inline-flex items-center justify-center w-10 h-10 rounded-lg bg-navy-50 text-navy-600">
+                <FileCheck className="w-5 h-5" aria-hidden="true" />
+              </div>
+              <h3 className="mb-2 text-lg font-semibold text-navy-900">Certificados de retención</h3>
+              <p className="text-sm text-gray-600">Cuando corresponda, los certificados expedidos por agentes de retención.</p>
+            </div>
+            <div className="rounded-xl border border-navy-100 bg-white p-6 shadow-sm">
+              <div className="mb-4 inline-flex items-center justify-center w-10 h-10 rounded-lg bg-navy-50 text-navy-600">
+                <Landmark className="w-5 h-5" aria-hidden="true" />
+              </div>
+              <h3 className="mb-2 text-lg font-semibold text-navy-900">Certificados bancarios y financieros</h3>
+              <p className="text-sm text-gray-600">Certificados de intereses, saldos y movimientos relacionados con el inmueble.</p>
+            </div>
+          </div>
+          <div className="rounded-xl border border-gray-200 bg-gray-50 p-5">
+            <p className="text-gray-700">
+              La DIAN puede solicitar soportes de las deducciones y costos declarados. Conserva los documentos por el término legal que corresponda.
+            </p>
+          </div>
+        </section>
+
+        <section id="errores" className="border-t border-navy-100 pt-8">
+          <h2 className="mb-4 text-2xl font-bold text-navy-900">
+            Errores frecuentes
+          </h2>
+          <p className="mb-6 text-gray-600">
+            Estos son los errores más comunes que cometen los arrendadores al declarar. Evitarlos te ahorra tiempo y problemas.
+          </p>
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="rounded-xl border border-navy-100 bg-white p-6 shadow-sm">
+              <div className="mb-4 inline-flex items-center justify-center w-10 h-10 rounded-lg bg-navy-50 text-navy-600">
+                <Building className="w-5 h-5" aria-hidden="true" />
+              </div>
+              <h3 className="mb-2 text-lg font-semibold text-navy-900">Confundir predial con renta</h3>
+              <p className="text-sm text-gray-600">El predial es municipal; la renta es nacional. Son impuestos distintos.</p>
+            </div>
+            <div className="rounded-xl border border-navy-100 bg-white p-6 shadow-sm">
+              <div className="mb-4 inline-flex items-center justify-center w-10 h-10 rounded-lg bg-navy-50 text-navy-600">
+                <CalendarX className="w-5 h-5" aria-hidden="true" />
+              </div>
+              <h3 className="mb-2 text-lg font-semibold text-navy-900">Usar umbrales de otro año</h3>
+              <p className="text-sm text-gray-600">La UVT y los umbrales cambian cada año. Verifica siempre el año gravable que te corresponde.</p>
+            </div>
+            <div className="rounded-xl border border-navy-100 bg-white p-6 shadow-sm">
+              <div className="mb-4 inline-flex items-center justify-center w-10 h-10 rounded-lg bg-navy-50 text-navy-600">
+                <Wallet className="w-5 h-5" aria-hidden="true" />
+              </div>
+              <h3 className="mb-2 text-lg font-semibold text-navy-900">Asumir que todo gasto es deducible</h3>
+              <p className="text-sm text-gray-600">No todo gasto relacionado con el inmueble cumple los requisitos de procedencia.</p>
+            </div>
+            <div className="rounded-xl border border-navy-100 bg-white p-6 shadow-sm">
+              <div className="mb-4 inline-flex items-center justify-center w-10 h-10 rounded-lg bg-navy-50 text-navy-600">
+                <FolderX className="w-5 h-5" aria-hidden="true" />
+              </div>
+              <h3 className="mb-2 text-lg font-semibold text-navy-900">No conservar soportes</h3>
+              <p className="text-sm text-gray-600">Sin documentos no puedes probar las deducciones que declaras.</p>
+            </div>
+            <div className="rounded-xl border border-navy-100 bg-white p-6 shadow-sm">
+              <div className="mb-4 inline-flex items-center justify-center w-10 h-10 rounded-lg bg-navy-50 text-navy-600">
+                <AlertCircle className="w-5 h-5" aria-hidden="true" />
+              </div>
+              <h3 className="mb-2 text-lg font-semibold text-navy-900">Confundir vivienda con inmueble comercial</h3>
+              <p className="text-sm text-gray-600">El tratamiento tributario cambia según la destinación del inmueble.</p>
+            </div>
+            <div className="rounded-xl border border-navy-100 bg-white p-6 shadow-sm">
+              <div className="mb-4 inline-flex items-center justify-center w-10 h-10 rounded-lg bg-navy-50 text-navy-600">
+                <FileX className="w-5 h-5" aria-hidden="true" />
+              </div>
+              <h3 className="mb-2 text-lg font-semibold text-navy-900">Asumir que siempre hay retención</h3>
+              <p className="text-sm text-gray-600">No todo arrendatario está obligado a practicar retención. Depende del caso.</p>
+            </div>
+          </div>
+        </section>
+
         {sectionIds
-          .filter((id) => !['renta', 'declaracion', 'predial', 'costos', 'deducciones', 'iva', 'facturacion'].includes(id))
+          .filter((id) => !['renta', 'declaracion', 'predial', 'costos', 'deducciones', 'iva', 'facturacion', 'documentos', 'errores'].includes(id))
           .map((id) => (
             <section
               key={id}
