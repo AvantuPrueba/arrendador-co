@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import CalculadoraRentabilidad from './calculadora';
 
 export const metadata: Metadata = {
   title: 'Calculadora de Rentabilidad de Inmuebles en Colombia | ArrendadorCO',
@@ -7,9 +8,5 @@ export const metadata: Metadata = {
 };
 
 export default function RentabilidadPage() {
-  return (
-    <div className="mx-auto max-w-5xl px-4 py-12 md:py-16">
-      <p className="text-lg text-gray-600">Calculadora en construcción</p>
-    </div>
-  );
+  return <CalculadoraRentabilidad />;
 }
