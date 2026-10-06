@@ -240,8 +240,64 @@ export default function FiscalidadGuia() {
           </div>
         </section>
 
+        <section id="costos" className="border-t border-navy-100 pt-8">
+          <div className="mb-4 inline-flex items-center justify-center w-10 h-10 rounded-lg bg-navy-50 text-navy-600">
+            <Receipt className="w-5 h-5" aria-hidden="true" />
+          </div>
+          <h2 className="mb-4 text-2xl font-bold text-navy-900">
+            Costos y gastos procedentes
+          </h2>
+          <p className="mb-4 text-gray-600">
+            Para rentas de capital (donde caen los arrendamientos), la ley permite restar costos y gastos que cumplan los requisitos generales de procedencia (art. 336 ET).
+          </p>
+          <p className="mb-4 text-gray-600">
+            Algunos ejemplos suelen incluir administración, reparaciones y mantenimiento necesarios, seguros y comisiones. La procedencia depende de cada caso.
+          </p>
+          <p className="mb-6 text-gray-600">
+            Los gastos personales no relacionados con la generación del ingreso no son deducibles de la renta de arrendamiento.
+          </p>
+          <div className="mb-6 rounded-xl border-l-4 border-amber-400 bg-amber-50 p-5">
+            <p className="text-amber-800">
+              No todo gasto relacionado con el inmueble es automáticamente deducible. Debe cumplir los requisitos generales y estar asociado a la generación de la renta.
+            </p>
+          </div>
+          <h3 className="mb-3 text-lg font-semibold text-navy-900">
+            Algunos ejemplos suelen incluir:
+          </h3>
+          <ul className="list-disc pl-6 text-gray-600 space-y-1">
+            <li>Administración del inmueble (cuando aplique)</li>
+            <li>Reparaciones y mantenimiento necesarios</li>
+            <li>Seguros relacionados con el inmueble</li>
+            <li>Comisiones pagadas por gestión</li>
+            <li>Otros gastos que cumplan los requisitos generales</li>
+          </ul>
+        </section>
+
+        <section id="deducciones" className="border-t border-navy-100 pt-8">
+          <div className="mb-4 inline-flex items-center justify-center w-10 h-10 rounded-lg bg-navy-50 text-navy-600">
+            <Wallet className="w-5 h-5" aria-hidden="true" />
+          </div>
+          <h2 className="mb-4 text-2xl font-bold text-navy-900">
+            Deducciones específicas: qué revisar
+          </h2>
+          <p className="mb-4 text-gray-600">
+            Las deducciones especiales (como los intereses de vivienda) son distintas de los costos y gastos de la actividad. Tienen reglas y límites propios.
+          </p>
+          <p className="mb-4 text-gray-600">
+            Intereses de vivienda (art. 119 ET): tienen tratamiento específico y un límite de 1.200 UVT en el formulario 210. No son un gasto del inmueble; son una deducción con condiciones particulares.
+          </p>
+          <p className="mb-6 text-gray-600">
+            Otros beneficios personales (dependientes, AFC, pensiones voluntarias) NO son deducciones del arrendamiento. Son beneficios personales que se aplican según el caso del contribuyente.
+          </p>
+          <div className="rounded-xl border border-gray-200 bg-gray-50 p-5">
+            <p className="text-gray-700">
+              Las deducciones y beneficios aplicables dependen de tu situación tributaria particular. Consulta con un contador antes de aplicarlos en tu declaración.
+            </p>
+          </div>
+        </section>
+
         {sectionIds
-          .filter((id) => !['renta', 'declaracion', 'predial'].includes(id))
+          .filter((id) => !['renta', 'declaracion', 'predial', 'costos', 'deducciones'].includes(id))
           .map((id) => (
             <section
               key={id}
