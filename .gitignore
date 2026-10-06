@@ -53,3 +53,12 @@ next-env.d.ts
 /tmp
 /ucrt64
 /usr
+
+# opennext / cloudflare
+/.open-next/
+/.wrangler/
+.dev.vars
+
+
+# logs de wrangler dev
+wrangler-dev*

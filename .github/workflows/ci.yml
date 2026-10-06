@@ -25,5 +25,5 @@ jobs:
       - name: Lint
         run: npm run lint
 
-      - name: Build
-        run: npm run build
+      - name: Build (OpenNext for Cloudflare Workers)
+        run: npm run build:worker

@@ -7,13 +7,11 @@
  * Mercado Pago, cruza el correo contra esta lista y envía la plantilla.
  * Este módulo existe solo para no perder esos correos.
  *
- * IMPORTANTE — este módulo usa `node:fs`, así que SOLO puede importarse
- * desde Route Handlers y Server Components. Para validar correos en el
- * navegador usa `@/lib/email`.
+ * IMPORTANTE — `node:fs` solo está disponible en desarrollo local, por eso
+ * el import es dinámico dentro de `saveLead`: evita que el bundle del
+ * Worker de Cloudflare dependa de `node:fs` en tiempo de importación.
+ * Para validar correos en el navegador usa `@/lib/email`.
  */
-
-import { promises as fs } from 'node:fs';
-import path from 'node:path';
 
 /** Un correo capturado, listo para persistir. */
 export interface LeadRecord {
@@ -36,7 +34,7 @@ export type SaveLeadResult =
  *
  * Contiene datos personales, por eso `/data` está en `.gitignore`.
  */
-const LEADS_FILE = path.join(process.cwd(), 'data', 'leads.jsonl');
+const LEADS_FILE = 'data/leads.jsonl';
 
 /**
  * En Vercel el sistema de archivos es efímero y de solo lectura fuera de
@@ -44,7 +42,9 @@ const LEADS_FILE = path.join(process.cwd(), 'data', 'leads.jsonl');
  * entre invocaciones. Detecting el entorno en lugar de confiar en que
  * falle la escritura.
  */
-const IS_SERVERLESS = Boolean(process.env.VERCEL);
+const IS_SERVERLESS =
+  Boolean(process.env.VERCEL) ||
+  (typeof navigator !== 'undefined' && navigator.userAgent === 'Cloudflare-Workers');
 
 /**
  * Guarda un correo capturado.
@@ -87,12 +87,17 @@ export async function saveLead(lead: LeadRecord): Promise<SaveLeadResult> {
     // El sistema de archivos no persiste: usamos el log del servidor,
     // que sí se puede consultar y descargar desde Vercel.
     console.info(`[lead] ${line}`);
-    return { captured: true, destination: 'log del servidor de Vercel' };
+    return { captured: true, destination: 'log del servidor' };
   }
 
   try {
-    await fs.mkdir(path.dirname(LEADS_FILE), { recursive: true });
-    await fs.appendFile(LEADS_FILE, `${line}\n`, 'utf8');
+    const [{ promises: fs }, path] = await Promise.all([
+      import('node:fs'),
+      import('node:path'),
+    ]);
+    const filePath = path.join(process.cwd(), LEADS_FILE);
+    await fs.mkdir(path.dirname(filePath), { recursive: true });
+    await fs.appendFile(filePath, `${line}\n`, 'utf8');
     return { captured: true, destination: 'archivo local' };
   } catch (error) {
     // No bloqueamos la venta: devolvemos `captured: false` y el cliente
