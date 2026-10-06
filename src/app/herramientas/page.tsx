@@ -1,112 +1,159 @@
 import type { Metadata } from 'next';
-import AffiliateBox from '@/components/AffiliateBox';
-import NewsletterCTA from '@/components/NewsletterCTA';
+import Link from 'next/link';
+import {
+  Calculator,
+  TrendingUp,
+  ClipboardCheck,
+  ArrowRight,
+} from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Herramientas',
-  description: 'Herramientas recomendadas para arrendadores: seguros, software de facturación y calculadoras de rentabilidad.',
+  title: 'Herramientas para Arrendadores en Colombia | ArrendadorCO',
+  description: 'Próximas calculadoras y utilidades para pequeños arrendadores en Colombia: reajuste del canon, rentabilidad y gestión de inmuebles.',
 };
+
+const upcomingTools = [
+  {
+    icon: Calculator,
+    title: 'Calculadora de reajuste del canon',
+    description: 'Calcula el nuevo valor del canon aplicando el IPC o el índice acordado en el contrato, según la Ley 820 de 2003.',
+  },
+  {
+    icon: TrendingUp,
+    title: 'Calculadora de rentabilidad',
+    description: 'Proyecta el retorno de inversión de tu inmueble considerando gastos de mantenimiento, impuestos, vacancia y administración.',
+  },
+  {
+    icon: ClipboardCheck,
+    title: 'Checklist de entrega',
+    description: 'Lista detallada para documentar el estado del inmueble al entregarlo y recibirlo, con campos para fotos y observaciones.',
+  },
+] as const;
 
 export default function Herramientas() {
   return (
-    <div className="mx-auto max-w-4xl px-4 py-12">
-      <h1 className="mb-4 text-center">Herramientas para Arrendadores</h1>
-      <p className="mb-10 text-center text-gray-600">
-        Recursos y servicios que pueden simplificar la gestión de tus inmuebles.
-      </p>
+    <div className="mx-auto max-w-5xl px-4 py-12 md:py-16">
+      {/* Hero */}
+      <section className="mb-16 md:mb-20">
+        <h1 className="mb-4 text-3xl md:text-4xl font-bold text-navy-900">
+          Herramientas para gestionar tus arriendos
+        </h1>
+        <p className="mb-8 max-w-2xl text-lg text-gray-600">
+          Estamos construyendo calculadoras y utilidades gratuitas para pequeños
+          arrendadores en Colombia. Mientras tanto, explora las guías disponibles.
+        </p>
+        <Link
+          href="/guias"
+          className="inline-flex items-center gap-2 rounded-xl bg-navy-600 px-6 py-3 text-base font-semibold text-white hover:bg-navy-700 transition-colors"
+        >
+          Ver las guías
+          <ArrowRight className="w-5 h-5" aria-hidden="true" />
+        </Link>
+      </section>
 
-      <div className="space-y-6">
-        {/* Seguros de Arrendamiento - Contenido informativo detallado */}
-        <div className="rounded-lg border-2 border-blue-100 bg-blue-50/50 p-6">
-          <h2 className="mb-4 text-xl font-bold text-blue-800">Seguros de Arrendamiento en Colombia: Una Guía Informativa</h2>
-
-          <div className="space-y-4 text-sm text-gray-700">
-            <section>
-              <h3 className="font-semibold text-gray-900">¿Qué es y cómo te protege?</h3>
-              <p className="mt-1">
-                Un seguro de arrendamiento es una póliza que actúa como un respaldo para el propietario.
-                Su función principal es garantizar el pago del canon de arrendamiento y otras obligaciones
-                (como cuotas de administración y servicios públicos) incluso si el inquilino deja de
-                cumplir con sus pagos. La aseguradora asume el pago y luego se encarga de la gestión
-                de cobro al arrendatario. Es una alternativa a la figura tradicional del codeudor.
+      {/* En camino section */}
+      <section className="mb-16 md:mb-20">
+        <h2 className="mb-8 text-2xl md:text-3xl font-bold text-navy-900">
+          Próximamente
+        </h2>
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {upcomingTools.map((tool) => (
+            <article
+              key={tool.title}
+              className="rounded-xl border border-navy-100 bg-white p-6 shadow-sm hover:shadow-md transition-shadow"
+            >
+              <div className="mb-4 inline-flex items-center justify-center w-12 h-12 rounded-xl bg-navy-50 text-navy-600">
+                <tool.icon className="w-6 h-6" aria-hidden="true" />
+              </div>
+              <h3 className="mb-2 text-lg font-semibold text-navy-900">
+                {tool.title}
+              </h3>
+              <p className="mb-4 text-sm text-gray-600">
+                {tool.description}
               </p>
-            </section>
+              <span className="inline-block rounded-full bg-navy-50 px-3 py-1 text-xs font-medium text-navy-700">
+                Próximamente
+              </span>
+            </article>
+          ))}
+        </div>
+      </section>
 
-            <section>
-              <h3 className="font-semibold text-gray-900">Coberturas más comunes</h3>
-              <ul className="mt-1 list-disc list-inside space-y-1">
-                <li>Canon de arrendamiento</li>
-                <li>Cuotas de administración</li>
-                <li>Servicios públicos</li>
-                <li>Asistencia domiciliaria</li>
-                <li>Daños al inmueble</li>
-                <li>Acompañamiento legal</li>
-              </ul>
-            </section>
+      {/* Servicios recomendados section */}
+      <section className="mb-16 md:mb-20">
+        <h2 className="mb-4 text-2xl md:text-3xl font-bold text-navy-900">
+          Servicios que pueden ayudarte a gestionar tus arriendos
+        </h2>
+        <p className="mb-8 max-w-2xl text-gray-600">
+          Estamos revisando opciones para recomendarte. Pronto publicaremos
+          comparativas.
+        </p>
 
-            <section>
-              <h3 className="font-semibold text-gray-900">¿Cuánto cuesta un seguro de arrendamiento?</h3>
-              <p className="mt-1">
-                No existe una tarifa única; el costo depende de la aseguradora, el valor del canon mensual,
-                las coberturas elegidas y el perfil del inquilino. Las modalidades de pago más comunes son:
-                Pago anual único (generalmente entre el 40% y el 70% de un mes de canon) o Pago mensual
-                (entre el 3% y el 10% del canon).
-              </p>
-            </section>
-
-            <section>
-              <h3 className="font-semibold text-gray-900">Principales aseguradoras en Colombia</h3>
-              <ul className="mt-1 list-disc list-inside space-y-1">
-                <li>SURA</li>
-                <li>Seguros Bolívar</li>
-                <li>Mapfre</li>
-                <li>Aseguradora Solidaria</li>
-                <li>Equidad Seguros</li>
-              </ul>
-            </section>
-
-            <section>
-              <h3 className="font-semibold text-gray-900">Requisitos para solicitarlo</h3>
-              <ul className="mt-1 list-disc list-inside space-y-1">
-                <li>Uso residencial del inmueble</li>
-                <li>Canon dentro de un rango (ej. $500.000 - $8.000.000 COP)</li>
-                <li>Documento de identidad del propietario</li>
-                <li>Nombre y correo del inquilino</li>
-                <li>Matrícula inmobiliaria</li>
-                <li>Soportes de ingresos del inquilino</li>
-              </ul>
-            </section>
-
+        <div className="grid gap-6 sm:grid-cols-2">
+          {/* Seguros de arrendamiento - informativo */}
+          <article className="rounded-xl border border-navy-100 bg-white p-6 shadow-sm">
+            <h3 className="mb-4 text-lg font-semibold text-navy-900">
+              Seguros de arrendamiento
+            </h3>
+            <ul className="space-y-2 text-sm text-gray-600">
+              <li>• Garantizan el pago del canon, administración y servicios si el inquilino incumple.</li>
+              <li>• Coberturas comunes: canon, administración, servicios públicos, asistencia domiciliaria, daños, acompañamiento legal.</li>
+              <li>• Costo referencial: 40–70 % de un mes de canon (anual) o 3–10 % del canon (mensual), según aseguradora y perfil.</li>
+              <li>• Principales aseguradoras en Colombia: SURA, Seguros Bolívar, Mapfre, Aseguradora Solidaria, Equidad Seguros.</li>
+              <li>• Requisitos típicos: uso residencial, canon en rango ($500.000–$8.000.000), documentos de identidad, matrícula inmobiliaria, soportes de ingresos del inquilino.</li>
+            </ul>
             <p className="mt-4 text-xs text-gray-500">
-              Este contenido es meramente informativo y no constituye asesoría legal o financiera.
-              Las coberturas, precios y condiciones varían según cada aseguradora y el plan contratado.
-              Consulta siempre los términos y condiciones de la póliza.
+              Información general. Las coberturas, precios y condiciones varían según cada aseguradora y plan. Consulta siempre los términos de la póliza.
+            </p>
+          </article>
+
+          {/* Software de facturación - informativo */}
+          <article className="rounded-xl border border-navy-100 bg-white p-6 shadow-sm">
+            <h3 className="mb-4 text-lg font-semibold text-navy-900">
+              Software de facturación y gestión
+            </h3>
+            <ul className="space-y-2 text-sm text-gray-600">
+              <li>• Genera recibos de pago y controla ingresos mensuales de tus arriendos.</li>
+              <li>• Facilita el cumplimiento de la facturación electrónica ante la DIAN.</li>
+              <li>• Funciones habituales: conciliación bancaria, reportes de rentabilidad, recordatorios de vencimiento, portal para inquilinos.</li>
+              <li>• Opciones en el mercado colombiano: soluciones contables completas y plataformas especializadas en arrendamiento.</li>
+            </ul>
+            <p className="mt-4 text-xs text-gray-500">
+              Información general. Las funcionalidades, precios y cumplimiento normativo varían según cada proveedor. Verifica que la solución se ajuste a tus necesidades.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      {/* Producto section */}
+      <section>
+        <div className="rounded-2xl border border-navy-200 bg-navy-50 p-8 md:p-12">
+          <div className="mx-auto max-w-2xl text-center">
+            <h2 className="mb-4 text-2xl md:text-3xl font-bold text-navy-900">
+              ¿Necesitas el contrato de arrendamiento?
+            </h2>
+            <p className="mb-4 text-lg text-gray-600">
+              Plantilla editable de contrato de vivienda urbana
+            </p>
+            <div className="mb-6 flex items-center justify-center gap-4">
+              <span className="text-2xl md:text-3xl font-bold text-navy-900">
+                $45.000 COP
+              </span>
+              <span className="text-gray-500">Pago único</span>
+            </div>
+            <Link
+              href="/tienda"
+              className="inline-flex items-center gap-2 rounded-xl bg-navy-600 px-8 py-3.5 text-base font-semibold text-white hover:bg-navy-700 transition-colors shadow-lg"
+            >
+              Ver plantilla
+              <ArrowRight className="w-5 h-5" aria-hidden="true" />
+            </Link>
+            <p className="mt-6 text-xs text-gray-500">
+              Modelo informativo. No constituye asesoría legal.
             </p>
           </div>
         </div>
-
-        <AffiliateBox
-          title="🧾 Software de Facturación"
-          description="Genera recibos de pago, controla ingresos mensuales y cumple con la facturación electrónica de la DIAN."
-          ctaText="Ver opciones de software"
-          ctaHref="[PENDIENTE: URL_FACTURACION]"
-        />
-
-        <div className="rounded-lg border border-gray-200 p-6">
-          <h3 className="mb-2 text-lg font-semibold text-gray-800">
-            📊 Calculadora de Rentabilidad
-          </h3>
-          <p className="text-sm text-gray-600">
-            Próximamente — Calcula el retorno de inversión de tu inmueble considerando
-            gastos de mantenimiento, impuestos y vacancia.
-          </p>
-          <span className="mt-3 inline-block rounded-full bg-gray-200 px-4 py-1.5 text-xs font-medium text-gray-600">
-            Próximamente
-          </span>
-        </div>
-      </div>
-
-      <NewsletterCTA source="newsletter-herramientas" />
+      </section>
     </div>
   );
 }
