@@ -41,16 +41,3 @@ updates:
       - dependency-name: "*"
         update-types:
           - "version-update:semver-major"
-
-  # --- ECOSISTEMA: GitHub Actions (para futuros workflows) ---
-  - package-ecosystem: "github-actions"
-    directory: "/"
-    schedule:
-      interval: "weekly"
-      day: "monday"
-      time: "08:00"
-      timezone: "America/Bogota"
-    open-pull-requests-limit: 2 # Las Actions rara vez necesitan actualizaciones
-    labels:
-      - "github-actions"
-      - "dependencies"
