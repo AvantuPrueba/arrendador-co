@@ -1,11 +1,20 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { FileText, Building2, Receipt, FileCheck, Calculator, Wallet, Home, Wrench, Landmark, AlertCircle, CalendarX, FolderX, Building, FileX } from 'lucide-react';
+import { FileText, Building2, Receipt, FileCheck, Calculator, Wallet, Home, Wrench, Landmark, AlertCircle, CalendarX, FolderX, Building, FileX, Store, Globe, Users, Briefcase, Info } from 'lucide-react';
 import { TAX_YEAR_CONFIG, uvtToCop } from '@/lib/tax-config';
 
 export const metadata: Metadata = {
-  title: 'Fiscalidad del Arrendador',
-  description: 'Guía sobre impuestos y obligaciones tributarias del arrendador en Colombia.',
+  title: 'Impuestos y Obligaciones Tributarias del Arrendador en Colombia | ArrendadorCO',
+  description: 'Guía para pequeños arrendadores en Colombia sobre renta, predial, IVA, facturación y documentación tributaria. Enfocada en personas naturales con arrendamiento de vivienda urbana.',
+  alternates: {
+    canonical: 'https://arrendadorco.netlify.app/guias/fiscalidad',
+  },
+  openGraph: {
+    title: 'Impuestos y Obligaciones Tributarias del Arrendador en Colombia',
+    description: 'Guía práctica sobre renta, predial, IVA y facturación para pequeños arrendadores en Colombia.',
+    type: 'article',
+    locale: 'es_CO',
+  },
 };
 
 const fiscalMap = [
@@ -35,20 +44,6 @@ const fiscalMap = [
   },
 ] as const;
 
-const sectionIds = [
-  'renta',
-  'declaracion',
-  'predial',
-  'costos',
-  'deducciones',
-  'iva',
-  'facturacion',
-  'documentos',
-  'errores',
-  'contador',
-  'fuentes',
-] as const;
-
 export default function FiscalidadGuia() {
   const today = new Date().toLocaleDateString('es-CO', {
     year: 'numeric',
@@ -69,7 +64,7 @@ export default function FiscalidadGuia() {
         <div className="flex flex-wrap gap-4 text-sm text-gray-500">
           <span>Enfoque: personas naturales · vivienda urbana</span>
           <span>Última revisión: {today}</span>
-          <span>Año gravable: 2025</span>
+          <span>Año gravable: {TAX_YEAR_CONFIG.year}</span>
         </div>
       </header>
 
@@ -496,17 +491,102 @@ export default function FiscalidadGuia() {
           </div>
         </section>
 
-        {sectionIds
-          .filter((id) => !['renta', 'declaracion', 'predial', 'costos', 'deducciones', 'iva', 'facturacion', 'documentos', 'errores'].includes(id))
-          .map((id) => (
-            <section
-              key={id}
-              id={id}
-              className="min-h-[100px] border-t border-navy-100 pt-8"
-            >
-              {/* Contenido se añadirá en las siguientes partes */}
-            </section>
-          ))}
+        <section id="contador" className="border-t border-navy-100 pt-8">
+          <h2 className="mb-4 text-2xl font-bold text-navy-900">
+            ¿Cuándo conviene consultar a un contador?
+          </h2>
+          <p className="mb-6 text-gray-600">
+            Esta guía cubre el caso general de personas naturales con arrendamiento de vivienda urbana. Hay situaciones donde un profesional tributario puede ahorrarte tiempo, dinero o problemas.
+          </p>
+          <div className="mb-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="rounded-xl border border-navy-100 bg-white p-6 shadow-sm">
+              <div className="mb-4 inline-flex items-center justify-center w-10 h-10 rounded-lg bg-navy-50 text-navy-600"><Building2 className="w-5 h-5" aria-hidden="true" /></div>
+              <h3 className="mb-2 text-lg font-semibold text-navy-900">Tienes varios inmuebles</h3>
+              <p className="text-sm text-gray-600">Múltiples fuentes de ingreso pueden complicar la declaración.</p>
+            </div>
+            <div className="rounded-xl border border-navy-100 bg-white p-6 shadow-sm">
+              <div className="mb-4 inline-flex items-center justify-center w-10 h-10 rounded-lg bg-navy-50 text-navy-600"><Wallet className="w-5 h-5" aria-hidden="true" /></div>
+              <h3 className="mb-2 text-lg font-semibold text-navy-900">Recibes ingresos de varias fuentes</h3>
+              <p className="text-sm text-gray-600">Trabajo, honorarios, arriendos y otros ingresos requieren consolidación.</p>
+            </div>
+            <div className="rounded-xl border border-navy-100 bg-white p-6 shadow-sm">
+              <div className="mb-4 inline-flex items-center justify-center w-10 h-10 rounded-lg bg-navy-50 text-navy-600"><Store className="w-5 h-5" aria-hidden="true" /></div>
+              <h3 className="mb-2 text-lg font-semibold text-navy-900">Tienes inmuebles comerciales</h3>
+              <p className="text-sm text-gray-600">El tratamiento del IVA y otros tributos cambia según la destinación.</p>
+            </div>
+            <div className="rounded-xl border border-navy-100 bg-white p-6 shadow-sm">
+              <div className="mb-4 inline-flex items-center justify-center w-10 h-10 rounded-lg bg-navy-50 text-navy-600"><Globe className="w-5 h-5" aria-hidden="true" /></div>
+              <h3 className="mb-2 text-lg font-semibold text-navy-900">No eres residente fiscal</h3>
+              <p className="text-sm text-gray-600">Las reglas para no residentes son diferentes.</p>
+            </div>
+            <div className="rounded-xl border border-navy-100 bg-white p-6 shadow-sm">
+              <div className="mb-4 inline-flex items-center justify-center w-10 h-10 rounded-lg bg-navy-50 text-navy-600"><Users className="w-5 h-5" aria-hidden="true" /></div>
+              <h3 className="mb-2 text-lg font-semibold text-navy-900">El inmueble es copropiedad</h3>
+              <p className="text-sm text-gray-600">La distribución de ingresos entre copropietarios tiene reglas propias.</p>
+            </div>
+            <div className="rounded-xl border border-navy-100 bg-white p-6 shadow-sm">
+              <div className="mb-4 inline-flex items-center justify-center w-10 h-10 rounded-lg bg-navy-50 text-navy-600"><Briefcase className="w-5 h-5" aria-hidden="true" /></div>
+              <h3 className="mb-2 text-lg font-semibold text-navy-900">Tienes una sociedad</h3>
+              <p className="text-sm text-gray-600">Si arriendas a través de una sociedad, el tratamiento es distinto.</p>
+            </div>
+          </div>
+          <div className="rounded-xl border border-gray-200 bg-gray-50 p-5">
+            <div className="flex items-start gap-3">
+              <Info className="mt-1 w-5 h-5 text-navy-600 shrink-0" aria-hidden="true" />
+              <p className="text-gray-700">
+                Esta guía ofrece información general y no reemplaza asesoría tributaria personalizada. Un contador puede revisar tu caso concreto y ayudarte a cumplir correctamente.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section id="fuentes" className="border-t border-navy-100 pt-8">
+          <h2 className="mb-4 text-2xl font-bold text-navy-900">
+            Fuentes consultadas
+          </h2>
+          <p className="mb-6 text-gray-600">
+            Esta guía se basa en la siguiente normativa y fuentes oficiales. Verifica siempre la información vigente directamente en las fuentes primarias.
+          </p>
+          <ol className="mb-6 list-decimal pl-6 text-gray-600 space-y-4">
+            <li>
+              <strong className="text-navy-900">Estatuto Tributario colombiano</strong>
+              <p className="text-sm">Decreto 624 de 1989 y sus modificaciones.</p>
+              <a href="https://normograma.dian.gov.co/dian/compilacion/docs/estatuto_tributario.htm" target="_blank" rel="noopener noreferrer" className="text-sm font-semibold text-navy-600 hover:underline">
+                Ver en el normograma de la DIAN →
+              </a>
+              <p className="text-sm">Artículos relevantes: 115, 119, 336, 476.</p>
+            </li>
+            <li>
+              <strong className="text-navy-900">DIAN - Dirección de Impuestos y Aduanas Nacionales</strong>
+              <p className="text-sm">
+                <a href="https://www.dian.gov.co/" target="_blank" rel="noopener noreferrer" className="font-semibold text-navy-600 hover:underline">https://www.dian.gov.co/</a>
+              </p>
+            </li>
+            <li>
+              <strong className="text-navy-900">Formulario 210 - Declaración de renta personas naturales</strong>
+              <p className="text-sm">Instructivo vigente disponible en el portal de la DIAN.</p>
+            </li>
+            <li>
+              <strong className="text-navy-900">Resolución anual de UVT</strong>
+              <p className="text-sm">Valor UVT 2026: $52.374. Publicada por la DIAN.</p>
+            </li>
+            <li>
+              <strong className="text-navy-900">Ley 2010 de 2019</strong>
+              <p className="text-sm">Normas de financiamiento y reforma tributaria.</p>
+              <a href="https://normograma.dian.gov.co/dian/compilacion/docs/ley_2010_2019.htm" target="_blank" rel="noopener noreferrer" className="text-sm font-semibold text-navy-600 hover:underline">
+                Ver en el normograma de la DIAN →
+              </a>
+            </li>
+          </ol>
+          <div className="mb-6 rounded-xl border-l-4 border-amber-400 bg-amber-50 p-5">
+            <p className="text-amber-800">
+              La normativa tributaria cambia con frecuencia. Los valores de UVT, umbrales y formularios se actualizan cada año. Verifica siempre la información vigente en las fuentes oficiales antes de tomar decisiones.
+            </p>
+          </div>
+          <p className="text-sm text-gray-400">
+            Última revisión: {today} · Año gravable: {TAX_YEAR_CONFIG.year}
+          </p>
+        </section>
       </div>
     </div>
   );
