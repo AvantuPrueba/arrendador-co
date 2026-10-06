@@ -2,7 +2,7 @@
 
 import { useState, FormEvent } from 'react';
 import { isValidEmail, normalizeEmail } from '@/lib/email';
-import { PRODUCT_CONFIG } from '@/lib/product';
+import { PRODUCT_CONFIG, formatPrice } from '@/lib/product';
 
 /**
  * Microcopy de la sección de pago. El texto exacto es el aprobado por el
@@ -70,22 +70,27 @@ export default function CheckoutForm({ paymentLink }: { paymentLink: string | nu
     window.location.href = paymentLink;
   }
 
+  const submitted = status === 'sent';
+
   if (!paymentLink) {
     return (
-      <div className="mt-6 rounded-md border border-amber-300 bg-amber-50 p-4 text-sm text-amber-900">
-        <p className="font-semibold">El pago en línea no está disponible todavía.</p>
-        <p className="mt-1">
-          Estamos terminando de configurarlo. Escríbenos a{' '}
-          <a href={`mailto:${SUPPORT_EMAIL}`} className="underline">
-            {SUPPORT_EMAIL}
-          </a>{' '}
-          y te ayudamos.
+      <div className="mt-6">
+        <button
+          type="button"
+          disabled
+          className="shrink-0 rounded-md bg-gray-400 px-8 py-3 text-lg font-semibold text-white cursor-not-allowed"
+        >
+          Compra próximamente disponible
+        </button>
+        <p className="mt-2 text-sm text-gray-500">
+          Estamos terminando de configurar los pagos.
+        </p>
+        <p className="mt-4 text-xs text-gray-500">
+          {PRODUCT_CONFIG.disclaimer}
         </p>
       </div>
     );
   }
-
-  const submitted = status === 'sent';
 
   return (
     <div className="mt-6">
@@ -122,7 +127,7 @@ export default function CheckoutForm({ paymentLink }: { paymentLink: string | nu
             disabled={status === 'submitting' || submitted}
             className="shrink-0 rounded-md bg-blue-600 px-8 py-3 text-lg font-semibold text-white transition-colors hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-gray-400"
           >
-            Comprar plantilla — COP 45.000
+            Comprar plantilla — {formatPrice(PRODUCT_CONFIG)}
           </button>
         </div>
 

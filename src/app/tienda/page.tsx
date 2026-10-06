@@ -14,8 +14,11 @@ import { PRODUCT_CONFIG, formatPrice } from '@/lib/product';
 const paymentLink = process.env.NEXT_PUBLIC_MERCADOPAGO_LINK || null;
 
 export const metadata: Metadata = {
-  title: 'Tienda',
-  description: 'Descarga plantillas editables de contratos de arrendamiento para Colombia. Listas para personalizar.',
+  title: 'Plantilla de Contrato de Arrendamiento de Vivienda Urbana | ArrendadorCO',
+  description: 'Plantilla editable de contrato de arrendamiento para vivienda urbana en Colombia. Incluye documento editable y guía de personalización. Pago único de $45.000 COP.',
+  openGraph: {
+    url: '/tienda',
+  },
 };
 
 export default function Tienda() {
