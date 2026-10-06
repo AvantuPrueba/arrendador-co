@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { FileText, Building2, Receipt, FileCheck, Calculator, Wallet } from 'lucide-react';
+import { FileText, Building2, Receipt, FileCheck, Calculator, Wallet, Home } from 'lucide-react';
 import { TAX_YEAR_CONFIG, uvtToCop } from '@/lib/tax-config';
 
 export const metadata: Metadata = {
@@ -296,8 +296,97 @@ export default function FiscalidadGuia() {
           </div>
         </section>
 
+        <section id="iva" className="border-t border-navy-100 pt-8">
+          <div className="mb-4 inline-flex items-center justify-center w-10 h-10 rounded-lg bg-navy-50 text-navy-600">
+            <Receipt className="w-5 h-5" aria-hidden="true" />
+          </div>
+          <h2 className="mb-4 text-2xl font-bold text-navy-900">
+            ¿El arrendamiento tiene IVA?
+          </h2>
+          <p className="mb-6 text-gray-600">
+            El tratamiento del IVA en arrendamiento depende de la destinación del inmueble. No es lo mismo arrendar para vivienda que para uso comercial.
+          </p>
+          <div className="mb-6 grid gap-6 sm:grid-cols-2">
+            <div className="rounded-xl border border-navy-100 bg-white p-6 shadow-sm">
+              <div className="mb-4 inline-flex items-center justify-center w-10 h-10 rounded-lg bg-navy-50 text-navy-600">
+                <Home className="w-5 h-5" aria-hidden="true" />
+              </div>
+              <h3 className="mb-2 text-lg font-semibold text-navy-900">
+                Inmueble destinado a vivienda
+              </h3>
+              <p className="mb-4 text-sm text-gray-600">
+                El arrendamiento de inmuebles para vivienda está excluido del IVA bajo las condiciones previstas en la normativa (Estatuto Tributario, art. 476, num. 15).
+              </p>
+              <span className="inline-flex items-center rounded-full bg-green-50 px-3 py-1 text-xs font-semibold text-green-700 border border-green-200">
+                Excluido de IVA
+              </span>
+            </div>
+            <div className="rounded-xl border border-navy-100 bg-white p-6 shadow-sm">
+              <div className="mb-4 inline-flex items-center justify-center w-10 h-10 rounded-lg bg-navy-50 text-navy-600">
+                <Building2 className="w-5 h-5" aria-hidden="true" />
+              </div>
+              <h3 className="mb-2 text-lg font-semibold text-navy-900">
+                Inmueble de uso comercial o mixto
+              </h3>
+              <p className="mb-4 text-sm text-gray-600">
+                El arrendamiento de inmuebles para usos distintos a vivienda puede estar gravado con IVA. El tratamiento depende de las condiciones particulares de la operación.
+              </p>
+              <span className="inline-flex items-center rounded-full bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-700 border border-amber-200">
+                Puede estar gravado
+              </span>
+            </div>
+          </div>
+          <div className="mb-6 rounded-xl border-l-4 border-amber-400 bg-amber-50 p-5">
+            <p className="text-amber-800">
+              Esta guía cubre arrendamiento de vivienda urbana. Si arriendas locales, oficinas o bodegas, el tratamiento tributario puede ser diferente. Consulta con un contador.
+            </p>
+          </div>
+          <a
+            href="https://www.dian.gov.co/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block rounded-lg border border-navy-200 px-4 py-2 text-sm font-semibold text-navy-700 hover:bg-navy-50 transition-colors"
+          >
+            Consultar información oficial en la DIAN →
+          </a>
+        </section>
+
+        <section id="facturacion" className="border-t border-navy-100 pt-8">
+          <div className="mb-4 inline-flex items-center justify-center w-10 h-10 rounded-lg bg-navy-50 text-navy-600">
+            <FileCheck className="w-5 h-5" aria-hidden="true" />
+          </div>
+          <h2 className="mb-4 text-2xl font-bold text-navy-900">
+            ¿Debo facturar?
+          </h2>
+          <p className="mb-4 text-gray-600">
+            Una cosa es el IVA y otra es la obligación de facturar. Son conceptos distintos y no siempre van juntos.
+          </p>
+          <p className="mb-4 text-gray-600">
+            La obligación de facturar depende de la situación tributaria del arrendador y de las reglas aplicables a la operación.
+          </p>
+          <p className="mb-6 text-gray-600">
+            El hecho de que el arrendamiento de vivienda esté excluido de IVA no significa automáticamente que desaparezcan todas las obligaciones formales de facturación que puedan corresponder.
+          </p>
+          <div className="mb-6 rounded-xl border border-gray-200 bg-gray-50 p-5">
+            <h3 className="mb-2 text-lg font-semibold text-navy-900">
+              ¿Cómo saber si debo facturar?
+            </h3>
+            <p className="text-gray-700">
+              La DIAN define los sujetos obligados a facturar electrónicamente. Consulta la información oficial vigente para tu caso concreto.
+            </p>
+          </div>
+          <a
+            href="https://www.dian.gov.co/impuestos/factura-electronica/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block rounded-lg border border-navy-200 px-4 py-2 text-sm font-semibold text-navy-700 hover:bg-navy-50 transition-colors"
+          >
+            Consultar información oficial sobre facturación electrónica →
+          </a>
+        </section>
+
         {sectionIds
-          .filter((id) => !['renta', 'declaracion', 'predial', 'costos', 'deducciones'].includes(id))
+          .filter((id) => !['renta', 'declaracion', 'predial', 'costos', 'deducciones', 'iva', 'facturacion'].includes(id))
           .map((id) => (
             <section
               key={id}
