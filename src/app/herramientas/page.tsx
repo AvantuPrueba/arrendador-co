@@ -33,7 +33,9 @@ const upcomingTools = [
     icon: ClipboardCheck,
     title: 'Checklist de entrega',
     description: 'Lista detallada para documentar el estado del inmueble al entregarlo y recibirlo, con campos para fotos y observaciones.',
-    available: false,
+    available: true,
+    href: '/herramientas/checklist-entrega',
+    cta: 'Abrir checklist →',
   },
 ] as const;
 

@@ -1,7 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { Home, ClipboardCheck, Building2 } from 'lucide-react';
+import { PRODUCT_CONFIG, formatPrice } from '@/lib/product';
 
 type TipoRegistro = 'entrega' | 'devolucion' | null;
 
@@ -120,8 +122,176 @@ export default function ChecklistEntrega() {
     setError('');
   }
 
+  // === Guardado de progreso en localStorage ===
+  useEffect(() => {
+    try {
+      const guardado = window.localStorage.getItem('checklist-entrega-progreso');
+      if (guardado) {
+        const s = JSON.parse(guardado);
+        /* eslint-disable react-hooks/set-state-in-effect */
+        if (s.paso) setPaso(s.paso);
+        if (s.tipoRegistro !== undefined) setTipoRegistro(s.tipoRegistro);
+        if (s.datos) setDatos(s.datos);
+        if (s.habitaciones !== undefined) setHabitaciones(s.habitaciones);
+        if (s.banos !== undefined) setBanos(s.banos);
+        if (s.comunes) setComunes(s.comunes);
+        if (s.zonas) setZonas(s.zonas);
+        if (s.aguaLectura !== undefined) setAguaLectura(s.aguaLectura);
+        if (s.aguaFecha !== undefined) setAguaFecha(s.aguaFecha);
+        if (s.energiaLectura !== undefined) setEnergiaLectura(s.energiaLectura);
+        if (s.gasLectura !== undefined) setGasLectura(s.gasLectura);
+        if (s.llavesPuertaPrincipal !== undefined) setLlavesPuertaPrincipal(s.llavesPuertaPrincipal);
+        if (s.llavesHabitaciones !== undefined) setLlavesHabitaciones(s.llavesHabitaciones);
+        if (s.llavesBuzon !== undefined) setLlavesBuzon(s.llavesBuzon);
+        if (s.llavesParqueadero !== undefined) setLlavesParqueadero(s.llavesParqueadero);
+        if (s.controlesGaraje !== undefined) setControlesGaraje(s.controlesGaraje);
+        if (s.otrosNombre !== undefined) setOtrosNombre(s.otrosNombre);
+        if (s.otrosCantidad !== undefined) setOtrosCantidad(s.otrosCantidad);
+        if (s.elementos) setElementos(s.elementos);
+        /* eslint-enable react-hooks/set-state-in-effect */
+      }
+    } catch {
+      // Si el dato guardado está corrupto, seguimos con el formulario vacío.
+    }
+  }, []);
+
+  useEffect(() => {
+    try {
+      window.localStorage.setItem(
+        'checklist-entrega-progreso',
+        JSON.stringify({
+          paso, tipoRegistro, datos, habitaciones, banos, comunes, zonas,
+          aguaLectura, aguaFecha, energiaLectura, gasLectura,
+          llavesPuertaPrincipal, llavesHabitaciones, llavesBuzon,
+          llavesParqueadero, controlesGaraje, otrosNombre, otrosCantidad,
+          elementos,
+        }),
+      );
+    } catch {
+      // localStorage puede no estar disponible (modo privado); no bloqueamos.
+    }
+  }, [
+    paso, tipoRegistro, datos, habitaciones, banos, comunes, zonas,
+    aguaLectura, aguaFecha, energiaLectura, gasLectura,
+    llavesPuertaPrincipal, llavesHabitaciones, llavesBuzon,
+    llavesParqueadero, controlesGaraje, otrosNombre, otrosCantidad,
+    elementos,
+  ]);
+
+  function borrarDatos() {
+    try {
+      window.localStorage.removeItem('checklist-entrega-progreso');
+    } catch {
+      // Ignorar.
+    }
+    setPaso(1);
+    setTipoRegistro(null);
+    setDatos({ direccion: '', ciudad: '', fecha: hoyISO(), hora: ahoraHora(), arrendador: '', arrendatario: '' });
+    setHabitaciones('0');
+    setBanos('1');
+    setComunes(Object.fromEntries(ZONAS_COMUNES.map((z) => [z.id, z.marcado])));
+    setZonas([]);
+    setAguaLectura('');
+    setAguaFecha('');
+    setEnergiaLectura('');
+    setGasLectura('');
+    setLlavesPuertaPrincipal('0');
+    setLlavesHabitaciones('0');
+    setLlavesBuzon('0');
+    setLlavesParqueadero('0');
+    setControlesGaraje('0');
+    setOtrosNombre('');
+    setOtrosCantidad('0');
+    setElementos([]);
+    setPdfGenerado(false);
+    setError('');
+  }
+
+  const [pdfGenerado, setPdfGenerado] = useState(false);
+
   function eliminarElemento(id: string) {
     setElementos((prev) => prev.filter((e) => e.id !== id));
+  }
+
+  async function generarPDF() {
+    const { jsPDF } = await import('jspdf');
+    const doc = new jsPDF();
+    const margen = 15;
+    const ancho = doc.internal.pageSize.getWidth();
+    let y = 20;
+
+    const linea = (texto: string, tamano = 10, negrita = false) => {
+      doc.setFont('helvetica', negrita ? 'bold' : 'normal');
+      doc.setFontSize(tamano);
+      const lineas = doc.splitTextToSize(texto, ancho - margen * 2);
+      doc.text(lineas, margen, y);
+      y += lineas.length * (tamano * 0.5) + 2;
+      if (y > 270) {
+        doc.addPage();
+        y = 20;
+      }
+    };
+
+    linea('ArrendadorCO — Checklist de Entrega y Recepción', 14, true);
+    linea(`Tipo de registro: ${tipoRegistro === 'devolucion' ? 'Devolución' : 'Entrega inicial'}`);
+    linea('');
+
+    linea('Datos generales', 12, true);
+    linea(`Dirección: ${datos.direccion}`);
+    linea(`Ciudad: ${datos.ciudad}`);
+    linea(`Fecha: ${datos.fecha} · Hora: ${datos.hora}`);
+    linea(`Arrendador: ${datos.arrendador}`);
+    linea(`Arrendatario: ${datos.arrendatario}`);
+    linea('');
+
+    linea('Zonas', 12, true);
+    zonas.forEach((z) => {
+      linea(`${z.nombre}: ${z.estado ? z.estado : 'Sin calificar'}${z.observaciones ? ` — ${z.observaciones}` : ''}`);
+    });
+    linea('');
+
+    if (aguaLectura || energiaLectura || gasLectura) {
+      linea('Medidores', 12, true);
+      if (aguaLectura) linea(`Agua: ${aguaLectura}${aguaFecha ? ` (${aguaFecha})` : ''}`);
+      if (energiaLectura) linea(`Energía: ${energiaLectura}`);
+      if (gasLectura) linea(`Gas: ${gasLectura}`);
+      linea('');
+    }
+
+    if (totalLlaves > 0) {
+      linea('Llaves y controles', 12, true);
+      linea(`Total de elementos: ${totalLlaves}`);
+      if (otrosNombre) linea(`Otros: ${otrosNombre} × ${otrosCantidad}`);
+      linea('');
+    }
+
+    if (elementos.length > 0) {
+      linea('Inventario', 12, true);
+      elementos.forEach((el) => {
+        linea(`${el.nombre} × ${el.cantidad} — ${el.estado}${el.observacion ? ` (${el.observacion})` : ''}`);
+      });
+      linea('');
+    }
+
+    linea('Firmas', 12, true);
+    linea('_______________________________');
+    linea('Arrendador');
+    linea('_______________________________');
+    linea('Arrendatario');
+    linea('');
+
+    const ahora = new Date();
+    linea(`Documento generado desde arrendadorco.com el ${ahora.toLocaleDateString('es-CO')} ${ahora.toLocaleTimeString('es-CO')}`, 8);
+    doc.setTextColor(120);
+    linea(
+      'Este documento es un registro generado a partir de la información introducida por el usuario. No constituye prueba legal automática ni soporte probatorio garantizado.',
+      8,
+    );
+    doc.setTextColor(0);
+
+    const tipo = tipoRegistro === 'devolucion' ? 'devolucion' : 'entrega';
+    doc.save(`checklist-${tipo}-${datos.fecha || hoyISO()}.pdf`);
+    setPdfGenerado(true);
   }
 
   const inputClase =
@@ -492,10 +662,54 @@ export default function ChecklistEntrega() {
             <li>Inventario: {elementos.length > 0 ? `✅ ${elementos.length} elementos` : 'Sin elementos'}</li>
           </ul>
           <p className="mb-6 text-sm text-gray-500">Algunos campos están vacíos. Puedes continuar de todas formas.</p>
+
+          <div className="mb-6 rounded-xl border-l-4 border-amber-400 bg-amber-50 p-5">
+            <p className="text-amber-800">
+              Este documento es un registro generado a partir de la información que tú introduces. No constituye prueba legal automática ni soporte probatorio garantizado. Para tu caso particular, consulta con un profesional.
+            </p>
+          </div>
+
+          <div className="mb-6 flex flex-wrap gap-3">
+            <button type="button" onClick={borrarDatos} className="text-sm font-semibold text-red-600 hover:underline self-center">
+              Borrar datos
+            </button>
+          </div>
+
           <div className="flex flex-col-reverse gap-3 sm:flex-row">
             <button type="button" onClick={() => setPaso(6)} className={botonSecundario}>Volver</button>
-            <button type="button" onClick={() => {}} className={botonPrimario}>Generar PDF</button>
+            <button type="button" onClick={generarPDF} className={botonPrimario}>Generar PDF</button>
           </div>
+
+          {pdfGenerado && (
+            <div className="mt-8 space-y-6">
+              <div className="rounded-xl border border-green-200 bg-green-50 p-6">
+                <p className="mb-2 font-semibold text-green-800">PDF generado.</p>
+                <p className="mb-4 text-sm text-green-800">
+                  Guarda este PDF en un lugar seguro. No se almacena en nuestros servidores.
+                </p>
+                <div className="flex flex-wrap gap-4">
+                  <button type="button" onClick={generarPDF} className="rounded-lg border border-navy-200 px-4 py-2 text-sm font-semibold text-navy-700 hover:bg-navy-50 transition-colors">
+                    Descargar PDF
+                  </button>
+                  <button type="button" onClick={borrarDatos} className="rounded-lg border border-navy-200 px-4 py-2 text-sm font-semibold text-navy-700 hover:bg-navy-50 transition-colors">
+                    Volver al inicio
+                  </button>
+                </div>
+              </div>
+
+              <div className="rounded-2xl border border-navy-200 bg-navy-50 p-8">
+                <h3 className="mb-2 text-xl font-semibold text-navy-900">¿Tu contrato está listo?</h3>
+                <p className="mb-4 text-gray-600">
+                  El checklist documenta el estado del inmueble, pero no reemplaza el contrato de arrendamiento.
+                </p>
+                <p className="mb-1 font-semibold text-navy-900">{PRODUCT_CONFIG.name}</p>
+                <p className="mb-4 text-lg font-bold text-navy-900">{formatPrice()}</p>
+                <Link href="/tienda" className="inline-flex items-center gap-2 rounded-xl bg-navy-600 px-6 py-3 font-semibold text-white hover:bg-navy-700 transition-colors">
+                  Ver plantilla →
+                </Link>
+              </div>
+            </div>
+          )}
         </section>
       )}
     </div>
