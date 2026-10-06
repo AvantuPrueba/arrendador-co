@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import NewsletterCTA from '@/components/NewsletterCTA';
 
 export const metadata: Metadata = {
@@ -161,6 +162,35 @@ export default function MorososGuia() {
           Para decisiones específicas, consulta con un abogado.
         </p>
       </div>
+
+      {/* Seguros de arrendamiento - contenido educativo */}
+      <section className="mt-12 p-6 rounded-2xl border border-navy-100 bg-navy-50">
+        <h2 className="mb-4 text-xl font-semibold text-navy-900">
+          Seguros de arrendamiento: qué debes saber
+        </h2>
+        <p className="mb-4 text-gray-600">
+          Un seguro de arrendamiento es una póliza que actúa como respaldo para el propietario. Su función principal es garantizar el pago del canon de arrendamiento y otras obligaciones (como cuotas de administración y servicios públicos) incluso si el inquilino deja de cumplir con sus pagos. La aseguradora asume el pago y luego se encarga de la gestión de cobro al arrendatario. Es una alternativa a la figura tradicional del codeudor.
+        </p>
+        <p className="mb-4 text-gray-600">
+          Coberturas habituales: canon de arrendamiento, cuotas de administración, servicios públicos, asistencia domiciliaria, daños al inmueble, acompañamiento legal. El costo varía según aseguradora, valor del canon, coberturas elegidas y perfil del inquilino. Modalidades comunes: pago anual único (generalmente entre el 40 % y el 70 % de un mes de canon) o pago mensual (entre el 3 % y el 10 % del canon).
+        </p>
+        <p className="mb-4 text-gray-600">
+          Principales aseguradoras en Colombia: SURA, Seguros Bolívar, Mapfre, Aseguradora Solidaria, Equidad Seguros. Requisitos típicos: uso residencial del inmueble, canon dentro de un rango (ej. $500.000 – $8.000.000 COP), documento de identidad del propietario, nombre y correo del inquilino, matrícula inmobiliaria, soportes de ingresos del inquilino.
+        </p>
+        <p className="mb-4 text-xs text-gray-500">
+          Las coberturas, precios y condiciones varían según cada aseguradora y el plan contratado. Consulta siempre los términos y condiciones de la póliza.
+        </p>
+        <Link
+          href="/seguros-arrendamiento"
+          className="inline-flex items-center gap-2 rounded-xl bg-navy-600 px-6 py-3 text-base font-semibold text-white hover:bg-navy-700 transition-colors"
+        >
+          Comparar opciones de seguro
+          <span aria-hidden="true">→</span>
+        </Link>
+        <p className="mt-3 text-xs text-gray-500">
+          Nota de transparencia: ArrendadorCO no es intermediario de seguros ni corredor. Este contenido es educativo. Si en el futuro mostramos enlaces a aseguradoras, podríamos recibir una comisión por referidos. Te avisaremos claramente cuando sea el caso.
+        </p>
+      </section>
 
       <NewsletterCTA source="newsletter-guias" />
     </div>
