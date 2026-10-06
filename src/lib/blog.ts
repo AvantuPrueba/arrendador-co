@@ -2,6 +2,11 @@ import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
 
+/** Seguridad: deshabilitar motor JS de gray-matter (CVE-2026-78847).
+ *  Evita ejecución de código si un archivo .md contiene frontmatter tipo ---js o ---javascript. */
+(matter as unknown as { engines: Record<string, () => object> }).engines.javascript = function() { return {}; };
+(matter as unknown as { engines: Record<string, () => object> }).engines.js = function() { return {}; };
+
 const postsDirectory = path.join(process.cwd(), 'content', 'blog');
 
 export interface PostMeta {
