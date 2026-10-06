@@ -17,16 +17,20 @@ const upcomingTools = [
     icon: Calculator,
     title: 'Calculadora de reajuste del canon',
     description: 'Calcula el nuevo valor del canon aplicando el IPC o el índice acordado en el contrato, según la Ley 820 de 2003.',
+    available: true,
+    href: '/herramientas/reajuste-canon',
   },
   {
     icon: TrendingUp,
     title: 'Calculadora de rentabilidad',
     description: 'Proyecta el retorno de inversión de tu inmueble considerando gastos de mantenimiento, impuestos, vacancia y administración.',
+    available: false,
   },
   {
     icon: ClipboardCheck,
     title: 'Checklist de entrega',
     description: 'Lista detallada para documentar el estado del inmueble al entregarlo y recibirlo, con campos para fotos y observaciones.',
+    available: false,
   },
 ] as const;
 
@@ -71,9 +75,23 @@ export default function Herramientas() {
               <p className="mb-4 text-sm text-gray-600">
                 {tool.description}
               </p>
-              <span className="inline-block rounded-full bg-navy-50 px-3 py-1 text-xs font-medium text-navy-700">
-                Próximamente
-              </span>
+              {tool.available ? (
+                <>
+                  <span className="mb-4 inline-block rounded-full bg-green-50 px-3 py-1 text-xs font-medium text-green-700 border border-green-200">
+                    Disponible
+                  </span>
+                  <Link
+                    href={tool.href}
+                    className="inline-flex items-center gap-1 text-sm font-semibold text-navy-600 hover:underline"
+                  >
+                    Usar calculadora →
+                  </Link>
+                </>
+              ) : (
+                <span className="inline-block rounded-full bg-navy-50 px-3 py-1 text-xs font-medium text-navy-700">
+                  Próximamente
+                </span>
+              )}
             </article>
           ))}
         </div>
