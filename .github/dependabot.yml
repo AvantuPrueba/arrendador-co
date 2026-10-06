@@ -1,12 +1,56 @@
-# To get started with Dependabot version updates, you'll need to specify which
-# package ecosystems to update and where the package manifests are located.
-# Please see the documentation for all configuration options:
-# https://docs.github.com/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+# Configuración de Dependabot para ArrendadorCO
+# Documentación: https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
 
 version: 2
 updates:
-  - package-ecosystem: "" # See documentation for possible values
-    directory: "/" # Location of package manifests
+  # --- ECOSISTEMA: npm (Node.js / Next.js) ---
+  - package-ecosystem: "npm"
+    directory: "/" # Ubicación de package.json en la raíz
+    schedule:
+      interval: "weekly" # Revisa actualizaciones una vez por semana
+      day: "monday" # Los lunes
+      time: "08:00" # A las 8:00 AM (hora de Colombia)
+      timezone: "America/Bogota"
+    open-pull-requests-limit: 5 # Máximo 5 PRs abiertos a la vez
+    reviewers:
+      - "albertovargasarias5-creator" # Te asigna los PRs automáticamente
+    labels:
+      - "dependencies"
+      - "npm"
+    # Agrupación de actualizaciones para no crear un PR por cada paquete
+    groups:
+      # Grupo 1: Dependencias de desarrollo (no afectan al usuario final)
+      dev-dependencies:
+        patterns:
+          - "*" # Aplica a todos los paquetes
+        dependency-type: "development"
+        update-types:
+          - "minor"
+          - "patch"
+      # Grupo 2: Dependencias de producción (afectan al sitio)
+      production-dependencies:
+        patterns:
+          - "*"
+        dependency-type: "production"
+        update-types:
+          - "minor"
+          - "patch"
+    # Los saltos de versión MAYOR (ej: 4.x → 5.x) van en PRs individuales
+    # para que puedas revisarlos con cuidado.
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - "version-update:semver-major"
+
+  # --- ECOSISTEMA: GitHub Actions (para futuros workflows) ---
+  - package-ecosystem: "github-actions"
+    directory: "/"
     schedule:
       interval: "weekly"
- 
+      day: "monday"
+      time: "08:00"
+      timezone: "America/Bogota"
+    open-pull-requests-limit: 2 # Las Actions rara vez necesitan actualizaciones
+    labels:
+      - "github-actions"
+      - "dependencies"
