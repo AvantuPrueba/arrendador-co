@@ -87,9 +87,10 @@ export function calcularRentabilidad(
   const diferenciaConCDT = rentabilidadNeta - RENTABILIDAD_DEFAULTS.tasaCDT;
 
   let diagnostico: DiagnosticoRentabilidad;
-  if (diferenciaConCDT > 1) {
+  if (diferenciaConCDT > 0) {
     diagnostico = 'supera_cdt';
-  } else if (diferenciaConCDT >= -1) {
+  } else if (diferenciaConCDT >= -2) {
+    // Entre 9% y 11% neto (CDT de referencia: 11%)
     diagnostico = 'similar_cdt';
   } else {
     diagnostico = 'por_debajo_cdt';
