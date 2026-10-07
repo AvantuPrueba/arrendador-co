@@ -3,6 +3,7 @@ import LegalHeader from './LegalHeader';
 import LegalTableOfContents from './LegalTableOfContents';
 import LegalContactCard from './LegalContactCard';
 import LegalNavigation from './LegalNavigation';
+import { LEGAL_CONFIG } from '@/lib/legal-config';
 
 interface LegalPageLayoutProps {
   badge?: string;
@@ -29,7 +30,7 @@ export default function LegalPageLayout({
       {toc.length > 0 && <LegalTableOfContents items={toc} />}
       <article className="mt-16 space-y-16">{children}</article>
       <div className="mt-16">
-        <LegalContactCard email="spaceyisusshop@gmail.com" />
+        <LegalContactCard email={LEGAL_CONFIG.officialEmail} />
       </div>
       <div className="mt-12">
         <LegalNavigation current={current} />

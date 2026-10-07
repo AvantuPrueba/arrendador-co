@@ -3,7 +3,7 @@ import LegalPageLayout from '@/components/legal/LegalPageLayout';
 import LegalSection from '@/components/legal/LegalSection';
 import LegalCallout from '@/components/legal/LegalCallout';
 import LegalPermissionGrid from '@/components/legal/LegalPermissionGrid';
-import { LEGAL_IDENTITY } from '@/lib/legal-identity';
+import { LEGAL_CONFIG } from '@/lib/legal-config';
 
 export const metadata: Metadata = {
   title: 'Términos y Condiciones',
@@ -39,14 +39,14 @@ export default function TerminosYCondiciones() {
         <p>El sitio web accesible a través de arrendador.co es operado por:</p>
         <div className="rounded-xl border border-slate-200 bg-slate-50 p-6">
           <ul className="space-y-1">
-            <li>Marca comercial: {LEGAL_IDENTITY.marcaComercial}</li>
-            <li>Responsable: {LEGAL_IDENTITY.titular}</li>
-            <li>Documento/NIT: {LEGAL_IDENTITY.documento}</li>
-            <li>Domicilio: {LEGAL_IDENTITY.domicilio}</li>
-            <li>Dirección de notificación: {LEGAL_IDENTITY.direccionNotificacion}</li>
-            <li>Correo oficial: {LEGAL_IDENTITY.correoOficial}</li>
-            <li>Teléfono: {LEGAL_IDENTITY.telefono}</li>
-            <li>Sitio web: {LEGAL_IDENTITY.sitioWeb}</li>
+            <li>Marca comercial: {LEGAL_CONFIG.brandName}</li>
+            <li>Responsable: {LEGAL_CONFIG.legalName}</li>
+            <li>Documento/NIT: {LEGAL_CONFIG.taxId}</li>
+            <li>Domicilio: {LEGAL_CONFIG.city}</li>
+            <li>Dirección de notificación: {LEGAL_CONFIG.address}</li>
+            <li>Correo oficial: {LEGAL_CONFIG.officialEmail}</li>
+            <li>Teléfono: {LEGAL_CONFIG.phone}</li>
+            <li>Sitio web: {LEGAL_CONFIG.website}</li>
           </ul>
         </div>
       </LegalSection>
@@ -131,9 +131,9 @@ export default function TerminosYCondiciones() {
 
       <LegalSection number="12" title="Contacto" id="contacto">
         <ul className="list-disc pl-6 space-y-1">
-          <li>Responsable: {LEGAL_IDENTITY.titular}</li>
-          <li>Documento/NIT: {LEGAL_IDENTITY.documento}</li>
-          <li>Correo oficial: {LEGAL_IDENTITY.correoOficial}</li>
+          <li>Responsable: {LEGAL_CONFIG.legalName}</li>
+          <li>Documento/NIT: {LEGAL_CONFIG.taxId}</li>
+          <li>Correo oficial: {LEGAL_CONFIG.officialEmail}</li>
         </ul>
         <p className="text-sm text-slate-500">
           Este documento es informativo y no constituye asesoría jurídica.
