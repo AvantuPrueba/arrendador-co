@@ -2,324 +2,347 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import {
   FileText,
-  ClipboardCheck,
-  ShieldAlert,
-  Scale,
-  AlertCircle,
+  ClipboardList,
+  ShieldCheck,
+  CalendarClock,
+  AlertTriangle,
   BookOpen,
   Home,
   ChevronRight,
+  UserCheck,
+  Landmark,
+  CheckCircle2,
+  LogOut,
+  Clock,
+  Calendar,
+  Tag,
 } from 'lucide-react';
-import { PRODUCT_CONFIG, formatPrice } from '@/lib/product';
+import { formatPrice } from '@/lib/product';
 import ProductCTA from '@/components/ProductCTA';
 import NewsletterCTA from '@/components/NewsletterCTA';
+import { GuideToc, GuideProgress } from './guia-interactivo';
+import { GUIDE_TOC } from './guia-toc-data';
 
 export const metadata: Metadata = {
   title: 'Contrato de Arrendamiento de Vivienda Urbana en Colombia | ArrendadorCO',
   description: 'Guía práctica sobre contratos de arrendamiento de vivienda urbana en Colombia: requisitos, cláusulas, garantías, prórroga, terminación y errores frecuentes.',
 };
 
-const tocItems = [
-  { id: 'ambito', label: 'Ámbito de esta guía' },
-  { id: 'elementos', label: 'Elementos del contrato' },
-  { id: 'garantias', label: 'Garantías' },
-  { id: 'prorroga', label: 'Duración y prórroga' },
-  { id: 'errores', label: 'Errores frecuentes' },
-  { id: 'fuentes', label: 'Fuentes consultadas' },
-] as const;
+const SEVEN_ELEMENTS = [
+  { n: '01', title: 'Nombre e identificación de los contratantes', text: 'Quiénes son arrendador y arrendatario, con sus datos de identificación.' },
+  { n: '02', title: 'Identificación del inmueble objeto del contrato', text: 'Descripción precisa del inmueble que se arrienda.' },
+  { n: '03', title: 'Parte del inmueble arrendada y zonas compartidas', text: 'Qué parte se arrienda y cuáles zonas o servicios son compartidos con otros ocupantes.' },
+  { n: '04', title: 'Precio y forma de pago', text: 'Canon pactado y cómo y cuándo se paga.' },
+  { n: '05', title: 'Servicios, cosas o usos conexos y adicionales', text: 'Qué está incluido y qué se cobra aparte.' },
+  { n: '06', title: 'Término de duración del contrato', text: 'Período inicial pactado entre las partes.' },
+  { n: '07', title: 'Pago de servicios públicos', text: 'Designación de la parte contratante a cuyo cargo está el pago de los servicios públicos.' },
+];
+
+const ERRORES = [
+  { title: 'No definir quién paga los servicios públicos', text: 'Genera disputas y posibles cortes de servicio.' },
+  { title: 'No indicar datos de notificación', text: 'Sin direcciones o canales válidos, los avisos pierden eficacia.' },
+  { title: 'Confundir recomendación con obligación legal', text: 'No toda buena práctica es una exigencia de la ley.' },
+  { title: 'No documentar el estado del inmueble', text: 'Acta firmada y evidencia fotográfica reducen discusiones al devolver.' },
+  { title: 'Pactar garantías prohibidas', text: 'El art. 16 prohíbe depósitos en efectivo u otras cauciones reales sobre el canon.' },
+  { title: 'Desconocer las reglas de terminación', text: 'Arrendador y arrendatario tienen causales y plazos distintos.' },
+];
 
 export default function ContratosGuia() {
-  const today = new Date().toLocaleDateString('es-CO', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  });
-
   return (
-    <div className="mx-auto max-w-5xl px-4 py-12 md:py-16">
-      {/* Breadcrumb */}
-      <nav className="mb-8 flex items-center gap-2 text-sm text-gray-500" aria-label="Breadcrumb">
-        <Link href="/" className="flex items-center gap-1.5 hover:text-navy-700 transition-colors">
-          <Home className="w-4 h-4" aria-hidden="true" />
-          Inicio
-        </Link>
-        <ChevronRight className="w-4 h-4 flex-shrink-0" aria-hidden="true" />
-        <Link href="/guias" className="hover:text-navy-700 transition-colors">
-          Guías
-        </Link>
-        <ChevronRight className="w-4 h-4 flex-shrink-0" aria-hidden="true" />
-        <span className="text-navy-900 font-medium" aria-current="page">Contratos</span>
-      </nav>
-
-      <div className="flex flex-col lg:flex-row gap-12">
-        {/* Sidebar - Table of Contents */}
-        <aside className="lg:w-64 flex-shrink-0 hidden lg:block">
-          <div className="sticky top-24">
-            <h3 className="mb-3 text-sm font-semibold text-navy-900 uppercase tracking-wide">En esta guía</h3>
-            <nav aria-label="Tabla de contenidos">
-              <ul className="space-y-2">
-                {tocItems.map((item) => (
-                  <li key={item.id}>
-                    <Link
-                      href={`#${item.id}`}
-                      className="block text-sm text-gray-600 hover:text-navy-700 transition-colors py-1 px-2 rounded hover:bg-navy-50"
-                    >
-                      {item.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </nav>
-          </div>
-        </aside>
+    <>
+      <GuideProgress />
+      <div className="mx-auto max-w-[1180px] px-4 py-12 md:py-16">
+        {/* Breadcrumb */}
+        <nav className="mb-8 flex items-center gap-2 text-sm text-slate-500" aria-label="Breadcrumb">
+          <Link href="/" className="flex items-center gap-1.5 hover:text-teal-600 transition-colors">
+            <Home className="h-4 w-4" aria-hidden="true" />
+            Inicio
+          </Link>
+          <ChevronRight className="h-4 w-4 flex-shrink-0" aria-hidden="true" />
+          <Link href="/guias" className="hover:text-teal-600 transition-colors">Guías</Link>
+          <ChevronRight className="h-4 w-4 flex-shrink-0" aria-hidden="true" />
+          <span className="font-medium text-slate-900" aria-current="page">Contratos</span>
+        </nav>
 
         {/* Mobile TOC */}
-        <details className="lg:hidden mb-8">
-          <summary className="flex items-center justify-between cursor-pointer text-sm font-semibold text-navy-900">
-            <span>En esta guía</span>
-            <ChevronRight className="w-5 h-5" aria-hidden="true" />
-          </summary>
-          <nav className="mt-3 p-4 rounded-xl bg-navy-50" aria-label="Tabla de contenidos móvil">
-            <ul className="space-y-2">
-              {tocItems.map((item) => (
+        <details className="mb-8 rounded-xl border border-slate-200 bg-slate-50 p-4 lg:hidden">
+          <summary className="cursor-pointer text-sm font-semibold text-slate-900">En esta guía ↓</summary>
+          <nav className="mt-3" aria-label="Tabla de contenidos móvil">
+            <ol className="space-y-1.5">
+              {GUIDE_TOC.map((item, i) => (
                 <li key={item.id}>
-                  <Link
-                    href={`#${item.id}`}
-                    className="block text-sm text-gray-600 hover:text-navy-700 transition-colors py-1"
-                  >
+                  <Link href={`#${item.id}`} className="block py-1 text-sm text-slate-600 hover:text-teal-600">
+                    <span className="mr-2 font-mono text-xs text-slate-400">{String(i + 1).padStart(2, '0')}</span>
                     {item.label}
                   </Link>
                 </li>
               ))}
-            </ul>
+            </ol>
           </nav>
         </details>
 
-        {/* Main Content */}
-        <main className="flex-1 min-w-0">
-          {/* Hero */}
-          <header className="mb-10">
-            <h1 className="mb-4 text-4xl md:text-5xl font-bold text-navy-900 leading-tight">
-              Contrato de arrendamiento de vivienda urbana en Colombia
-            </h1>
-            <p className="mb-6 text-xl text-gray-600 max-w-2xl">
-              Qué debe contener, qué conviene revisar antes de firmar y cómo evitar errores frecuentes.
-            </p>
-            <div className="flex flex-wrap gap-4 text-sm text-gray-500">
-              <span>Última actualización: {today}</span>
-              <span>Lectura: ~10 min</span>
-            </div>
-          </header>
-
-          {/* "En esta guía" visual summary */}
-          <section id="ambito" className="mb-12 p-6 rounded-2xl bg-navy-50 border border-navy-100">
-            <h2 className="mb-4 text-xl font-semibold text-navy-900 flex items-center gap-2">
-              <BookOpen className="w-5 h-5 text-teal-600" aria-hidden="true" />
-              Qué encontrará en esta guía
-            </h2>
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {[
-                { icon: FileText, title: 'Elementos del contrato', desc: 'Los 7 puntos mínimos que exige la Ley 820 (art. 3)' },
-                { icon: ClipboardCheck, title: 'Cláusulas recomendadas', desc: 'Inventario, acta de entrega, comunicaciones por escrito' },
-                { icon: ShieldAlert, title: 'Garantías permitidas', desc: 'Fiador, póliza, depósito solo para servicios públicos' },
-                { icon: Scale, title: 'Duración y prórroga', desc: 'Cómo opera la prórroga legal y la terminación' },
-                { icon: AlertCircle, title: 'Errores frecuentes', desc: '6 errores reales que conviene evitar' },
-                { icon: BookOpen, title: 'Fuentes', desc: 'Ley 820 de 2003 con enlace al texto oficial' },
-              ].map((item, i) => (
-                <div key={i} className="flex gap-3">
-                  <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-white text-teal-600 flex items-center justify-center shadow-sm">
-                    <item.icon className="w-5 h-5" aria-hidden="true" />
-                  </div>
-                  <div>
-                    <p className="font-medium text-navy-900 text-sm">{item.title}</p>
-                    <p className="text-xs text-gray-500">{item.desc}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          <div className="prose prose-navy max-w-none">
-            {/* Ámbito */}
-            <h2 id="ambito" className="scroll-mt-24">Ámbito de esta guía</h2>
-            <p>
-              Esta guía se refiere al <strong>arrendamiento de vivienda urbana</strong> regulado por la <strong>Ley 820 de 2003</strong>.
-              No cubre arrendamiento rural, comercial, ni fincas raíz distintas a vivienda urbana.
-            </p>
-
-            {/* Elementos del contrato - split obligatory vs recommended */}
-            <h2 id="elementos" className="scroll-mt-24">Elementos del contrato: lo obligatorio vs. lo recomendable</h2>
-            <p>
-              En vivienda urbana, el contrato puede ser <strong>verbal o escrito</strong>. En cualquier caso,
-              el artículo 3 de la Ley 820 de 2003 establece que las partes deben acordar como mínimo estos
-              <strong>siete puntos</strong>:
-            </p>
-
-            <div className="grid gap-6 md:grid-cols-2 my-8">
-              {/* Debe contemplarse */}
-              <div className="rounded-xl border border-navy-100 bg-white p-6 shadow-sm">
-                <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold text-navy-900">
-                  <ClipboardCheck className="w-5 h-5 text-teal-600" aria-hidden="true" />
-                  Debe contemplarse (mínimo legal, art. 3 Ley 820)
-                </h3>
-                <ol className="list-decimal list-inside space-y-3 text-sm">
-                  <li><strong>Las partes</strong>: nombre completo e identificación (documento de identidad) de arrendador y arrendatario.</li>
-                  <li><strong>El inmueble</strong>: identificación precisa (dirección, matrícula inmobiliaria si existe) y zonas o servicios compartidos si aplica.</li>
-                  <li><strong>Canon y forma de pago</strong>: valor del canon mensual y periodicidad de pago (mensual, quincenal, etc.).</li>
-                  <li><strong>Servicios, cosas o usos conexos y adicionales</strong>: qué está incluido (parqueadero, depósito, zonas comunes, etc.).</li>
-                  <li><strong>Duración del contrato</strong>: término inicial pactado (puede ser indefinido).</li>
-                  <li><strong>Designación de quién paga los servicios públicos</strong>: agua, energía, gas, internet, etc.</li>
-                  <li><strong>Reajuste del canon</strong>: forma en que se actualizará el canon (IPC, índice acordado, etc.).</li>
-                </ol>
-                <p className="mt-4 text-xs text-gray-500"><em>Fuente: Ley 820 de 2003, art. 3.</em></p>
-              </div>
-
-              {/* Conviene documentar */}
-              <div className="rounded-xl border border-navy-100 bg-white p-6 shadow-sm">
-                <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold text-navy-900">
-                  <FileText className="w-5 h-5 text-gray-500" aria-hidden="true" />
-                  Conviene documentar (no es requisito legal)
-                </h3>
-                <ul className="list-disc list-inside space-y-3 text-sm text-gray-700">
-                  <li><strong>Inventario detallado</strong> del inmueble y sus accesorios (fotos, videos, estado de paredes, pisos, instalaciones).</li>
-                  <li><strong>Acta de entrega y recepción</strong> firmada por ambas partes al inicio y al final del contrato.</li>
-                  <li><strong>Medios de notificación</strong>: direcciones físicas y electrónicas válidas para notificaciones.</li>
-                  <li><strong>Registro de comunicaciones</strong> por escrito (correo, mensajería) para pruebas futuras.</li>
-                  <li><strong>Cláusula de restitución anticipada</strong> con plazos y consecuencias claras.</li>
-                  <li><strong>Especificación de reparaciones locativas</strong> vs. mejoras a cargo del arrendador.</li>
-                </ul>
-                <p className="mt-4 text-xs text-gray-500">
-                  <strong>Clave:</strong> ninguna de estas cláusulas es obligatoria por ley. Son recomendaciones prácticas para reducir riesgos.
-                </p>
-              </div>
-            </div>
-
-            {/* Garantías */}
-            <h2 id="garantias" className="scroll-mt-24">Garantías: qué debes saber</h2>
-            <div className="rounded-xl border-l-4 border-amber-500 bg-amber-50 p-5 my-6">
-              <p className="font-semibold text-amber-900 flex items-start gap-2">
-                <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5" aria-hidden="true" />
-                En contratos de vivienda urbana, el artículo 16 de la Ley 820 <strong>prohíbe exigir
-                depósitos en dinero efectivo u otras cauciones reales</strong> para garantizar las obligaciones del arrendatario.
+        <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_260px] lg:gap-12">
+          <main className="min-w-0">
+            {/* HERO */}
+            <header className="mb-12">
+              <span className="mb-5 inline-block rounded-full border border-teal-200 bg-teal-50 px-3 py-1 text-xs font-semibold text-teal-700">
+                Ley 820 de 2003 · Vivienda urbana
+              </span>
+              <h1 className="mb-4 text-3xl md:text-5xl font-bold leading-tight text-slate-900">
+                Contrato de arrendamiento de vivienda urbana en Colombia
+              </h1>
+              <p className="mb-6 max-w-2xl text-lg text-slate-600">
+                Qué debe contener, qué conviene documentar y qué revisar antes de firmar.
               </p>
-            </div>
-            <p>
-              Ninguna garantía es un requisito legal universal. Las opciones que usan las partes por acuerdo son:
-            </p>
-            <ul className="list-disc list-inside space-y-3">
-              <li>
-                <strong>Fiador / codeudor solidario</strong>: una persona natural responde con su patrimonio si el arrendatario incumple.
-              </li>
-              <li>
-                <strong>Póliza de seguro de arrendamiento</strong>: una aseguradora cubre canon, administración, servicios y daños, según la póliza.
-              </li>
-              <li>
-                <strong>Garantía para servicios públicos</strong>: se puede pactar un depósito <strong>exclusivamente</strong> para cubrir servicios públicos domiciliarios, pero nunca para el canon.
-              </li>
-            </ul>
-            <p>
-              El arrendador no puede obligar al arrendatario a constituir garantía alguna como condición para celebrar el contrato.
-            </p>
+              <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-slate-500">
+                <span className="inline-flex items-center gap-1.5"><Clock className="h-4 w-4" aria-hidden="true" />~10 min de lectura</span>
+                <span className="inline-flex items-center gap-1.5"><Calendar className="h-4 w-4" aria-hidden="true" />Actualizado · Octubre 2026</span>
+                <span className="inline-flex items-center gap-1.5"><BookOpen className="h-4 w-4" aria-hidden="true" />Fuente normativa</span>
+                <span className="inline-flex items-center gap-1.5"><Tag className="h-4 w-4" aria-hidden="true" />Guía práctica</span>
+              </div>
+            </header>
 
-            {/* Prórroga y terminación */}
-            <h2 id="prorroga" className="scroll-mt-24">Duración, prórroga y terminación</h2>
+            {/* ANTES DE FIRMAR */}
+            <section className="mb-12 rounded-xl border border-slate-200 bg-slate-50 p-6" aria-labelledby="antes-de-firmar">
+              <h2 id="antes-de-firmar" className="mb-4 text-xs font-semibold uppercase tracking-wider text-slate-500">Antes de firmar</h2>
+              <ul className="grid gap-2 sm:grid-cols-2 text-sm text-slate-700">
+                {['Identifica correctamente a las partes', 'Describe el inmueble', 'Define canon y forma de pago', 'Deja claro quién paga los servicios', 'Establece el término', 'Documenta la entrega'].map((item) => (
+                  <li key={item} className="flex items-center gap-2">
+                    <CheckCircle2 className="h-4 w-4 text-teal-600" aria-hidden="true" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+              <a href="#elementos" className="mt-4 inline-block text-sm font-semibold text-teal-600 hover:underline">
+                Ir a los 7 elementos ↓
+              </a>
+            </section>
 
-            <h3 className="scroll-mt-20">Prórroga legal</h3>
-            <p>
-              El contrato se entiende <strong>prorrogado por el mismo término inicial</strong> (o por períodos anuales si era indefinido),
-              siempre que <strong>cada parte haya cumplido sus obligaciones</strong> y el arrendatario acepte los reajustes del canon
-              autorizados por la ley. No opera una &ldquo;renovación automática&rdquo; sin más; la prórroga depende del cumplimiento y la aceptación del reajuste.
-            </p>
-
-            <h3 className="scroll-mt-20">Terminación por el arrendador</h3>
-            <ul className="list-disc list-inside space-y-2">
-              <li>Por incumplimiento del arrendatario (canon, servicios, uso indebido, subarriendo no autorizado).</li>
-              <li>Por necesidad de vivienda propia (con prueba y notificación con 6 meses de antelación).</li>
-              <li>Por demolición o reparación estructural que exija desocupación.</li>
-            </ul>
-
-            <h3 className="scroll-mt-20">Terminación por el arrendatario</h3>
-            <ul className="list-disc list-inside space-y-2">
-              <li>En cualquier momento, notificando con <strong>3 meses de antelación</strong> (art. 22 Ley 820).</li>
-              <li>Por incumplimiento grave del arrendador (no entregar el inmueble, no hacer reparaciones locativas).</li>
-            </ul>
-
-            {/* Errores frecuentes */}
-            <h2 id="errores" className="scroll-mt-24">Errores frecuentes que conviene evitar</h2>
-            <ol className="list-decimal list-inside space-y-4">
-              <li>
-                <strong>No definir quién paga los servicios públicos</strong>: genera disputas y cortes de servicio.
-              </li>
-              <li>
-                <strong>No dejar datos de notificación en el contrato</strong>: direcciones físicas y electrónicas para notificaciones válidas.
-              </li>
-              <li>
-                <strong>Confundir una cláusula recomendada con una obligación legal</strong>: ejemplo, inventario detallado, cláusula de restitución anticipada, multas contractuales.
-              </li>
-              <li>
-                <strong>No documentar el estado del inmueble al entregarlo</strong>: fotos, videos y acta firmada por ambas partes.
-              </li>
-              <li>
-                <strong>Intentar pactar depósitos prohibidos</strong>: dinero en efectivo como garantía del canon (art. 16 Ley 820).
-              </li>
-              <li>
-                <strong>Desconocer las reglas de terminación aplicables</strong>: preavisos, causales y procedimientos distintos para arrendador y arrendatario.
-              </li>
-            </ol>
-
-            {/* CTA Producto */}
-            <section className="mt-16 rounded-2xl border border-navy-200 bg-navy-50 p-8 md:p-10">
-              <div className="text-center">
-                <h2 className="mb-3 text-2xl md:text-3xl font-bold text-navy-900">
-                  ¿Prefieres partir de un documento ya estructurado?
-                </h2>
-                <p className="mb-4 text-lg text-gray-600">
-                  Plantilla editable de contrato de arrendamiento de vivienda urbana
-                </p>
-                <div className="mb-6 flex items-center justify-center gap-4">
-                  <span className="text-2xl md:text-3xl font-bold text-navy-900">
-                    {formatPrice(PRODUCT_CONFIG)}
-                  </span>
-                  <span className="text-gray-500">Pago único</span>
-                </div>
-                <Link
-                  href="/tienda"
-                  className="inline-flex items-center gap-2 rounded-xl bg-navy-600 px-8 py-3.5 text-base font-semibold text-white hover:bg-navy-700 transition-colors shadow-lg"
-                >
-                  Ver plantilla
-                  <ChevronRight className="w-5 h-5" aria-hidden="true" />
-                </Link>
-                <p className="mt-6 text-xs text-gray-500">
-                  Modelo informativo. No constituye asesoría legal.
-                </p>
+            {/* EN ESTA GUÍA */}
+            <section className="mb-14">
+              <h2 className="mb-2 text-2xl font-bold text-slate-900">En esta guía</h2>
+              <p className="mb-6 text-slate-600">Lo esencial para estructurar y revisar un contrato de vivienda urbana.</p>
+              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {[
+                  { icon: FileText, title: 'Elementos del contrato', text: 'Los 7 puntos mínimos del art. 3.' },
+                  { icon: ClipboardList, title: 'Cláusulas prácticas', text: 'Inventario, acta y comunicaciones.' },
+                  { icon: ShieldCheck, title: 'Garantías', text: 'Fiador, póliza y servicios públicos.' },
+                  { icon: CalendarClock, title: 'Duración y terminación', text: 'Prórroga, causales y preavisos.' },
+                  { icon: AlertTriangle, title: 'Errores frecuentes', text: '6 cosas que conviene evitar.' },
+                  { icon: BookOpen, title: 'Fuentes normativas', text: 'Ley 820 de 2003.' },
+                ].map((item, i) => (
+                  <div key={item.title} className="rounded-xl border border-slate-200 bg-white p-5 transition-all duration-300 hover:-translate-y-[3px] hover:border-teal-300 hover:shadow-md">
+                    <span className="mb-3 block font-mono text-xs text-slate-400">{String(i + 1).padStart(2, '0')}</span>
+                    <item.icon className="mb-2 h-6 w-6 text-teal-600" aria-hidden="true" />
+                    <h3 className="text-sm font-semibold text-slate-900">{item.title}</h3>
+                    <p className="mt-1 text-xs text-slate-600">{item.text}</p>
+                  </div>
+                ))}
               </div>
             </section>
 
-            {/* Fuentes */}
-            <h2 id="fuentes" className="scroll-mt-24">Fuentes consultadas</h2>
-            <ul className="list-disc list-inside space-y-2 text-sm">
-              <li>
-                Ley 820 de 2003, artículos 1, 2, 3, 6, 16, 22 y concordantes.
+            {/* ÁMBITO */}
+            <section id="ambito" className="mb-14 scroll-mt-24">
+              <h2 className="mb-4 text-2xl font-bold text-slate-900">Ámbito de esta guía</h2>
+              <div className="rounded-xl border border-slate-200 bg-slate-50 p-6">
+                <div className="grid gap-6 sm:grid-cols-2">
+                  <div>
+                    <h3 className="mb-2 text-xs font-semibold uppercase tracking-wider text-teal-700">Aplica a</h3>
+                    <ul className="space-y-1 text-sm text-slate-700">
+                      <li>· Arrendamiento de vivienda urbana</li>
+                      <li>· Ley 820 de 2003</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <h3 className="mb-2 text-xs font-semibold uppercase tracking-wider text-slate-500">No cubre</h3>
+                    <ul className="space-y-1 text-sm text-slate-700">
+                      <li>· Arrendamiento comercial</li>
+                      <li>· Arrendamiento rural</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* ELEMENTOS */}
+            <section id="elementos" className="mb-14 scroll-mt-24">
+              <h2 className="mb-4 text-2xl font-bold text-slate-900">Elementos del contrato</h2>
+              <p className="mb-8 text-slate-600">
+                El artículo 3 de la Ley 820 de 2003 exige acordar como mínimo estos siete elementos. El
+                reajuste del canon no hace parte de este listado; tiene regulación propia en el art. 20.
+              </p>
+              <ol className="relative space-y-6 border-l border-slate-200 pl-8">
+                {SEVEN_ELEMENTS.map((el) => (
+                  <li key={el.n} className="relative">
+                    <span className="absolute -left-[41px] top-1 flex h-8 w-8 items-center justify-center rounded-full border border-slate-200 bg-white font-mono text-xs text-teal-600">
+                      {el.n}
+                    </span>
+                    <h3 className="font-semibold text-slate-900">{el.title}</h3>
+                    <p className="mt-1 text-sm text-slate-600">{el.text}</p>
+                    <p className="mt-2 text-xs text-slate-400">Ley 820 de 2003, art. 3</p>
+                  </li>
+                ))}
+              </ol>
+
+              {/* Mínimo legal vs recomendado */}
+              <div className="mt-10 grid gap-4 sm:grid-cols-2">
+                <div className="rounded-xl border border-teal-200 bg-teal-50 p-5">
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-teal-700">Mínimo legal</h3>
+                  <p className="mt-1 text-sm text-teal-900">Art. 3 — los 7 elementos obligatorios.</p>
+                </div>
+                <div className="rounded-xl border border-slate-200 bg-slate-50 p-5">
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-slate-600">Recomendado</h3>
+                  <p className="mt-1 text-sm text-slate-700">Buenas prácticas como inventario y acta. No son obligaciones legales.</p>
+                </div>
+              </div>
+            </section>
+
+            {/* GARANTÍAS */}
+            <section id="garantias" className="mb-14 scroll-mt-24">
+              <h2 className="mb-4 text-2xl font-bold text-slate-900">Garantías</h2>
+              <div className="grid gap-4 md:grid-cols-3">
+                {[
+                  { icon: UserCheck, title: 'Fiador / codeudor', text: 'Qué es: una persona natural responde patrimonialmente por el arrendatario.', revisar: 'Qué debe revisar el arrendador: solvencia del fiador y alcance del codeudo solidario.', limit: 'Limitación: depende del patrimonio del fiador.' },
+                  { icon: ShieldCheck, title: 'Póliza de seguro', text: 'Qué es: una aseguradora cubre canon, administración, servicios y daños según la póliza.', revisar: 'Qué debe revisar el arrendador: cobertura, exclusiones y deducibles.', limit: 'Limitación: sujeto a las condiciones de la póliza.' },
+                  { icon: Landmark, title: 'Garantías para servicios públicos', text: 'Qué es: garantía específica para cubrir servicios públicos domiciliarios.', revisar: 'Qué debe revisar el arrendador: que se limite a servicios públicos y respete los límites del art. 15.', limit: 'Limitación: no es un depósito para el canon (art. 16).' },
+                ].map((g) => (
+                  <article key={g.title} className="rounded-xl border border-slate-200 bg-white p-6">
+                    <g.icon className="mb-3 h-7 w-7 text-teal-600" aria-hidden="true" />
+                    <h3 className="mb-2 font-semibold text-slate-900">{g.title}</h3>
+                    <p className="mb-2 text-sm text-slate-600">{g.text}</p>
+                    <p className="mb-2 text-sm text-slate-600">{g.revisar}</p>
+                    <p className="text-xs text-slate-500">{g.limit}</p>
+                  </article>
+                ))}
+              </div>
+
+              <div className="mt-6 rounded-xl border-l-4 border-amber-400 bg-amber-50 p-5">
+                <h3 className="mb-2 font-semibold text-amber-900">Importante sobre los depósitos</h3>
+                <p className="text-sm text-amber-900">
+                  El artículo 16 de la Ley 820 prohíbe exigir depósitos en dinero efectivo u otras
+                  cauciones reales para garantizar obligaciones del contrato. Distinto es el régimen
+                  del artículo 15 sobre garantías para servicios públicos domiciliarios.
+                </p>
+                <p className="mt-2 text-xs text-amber-800">Fuente: Ley 820 de 2003, arts. 15 y 16.</p>
+              </div>
+            </section>
+
+            {/* DURACIÓN Y PRÓRROGA */}
+            <section id="prorroga" className="mb-14 scroll-mt-24">
+              <h2 className="mb-4 text-2xl font-bold text-slate-900">Duración y prórroga</h2>
+              <div className="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-wider text-slate-500">
+                <span className="rounded-full border border-slate-200 px-3 py-1">Contrato</span>
+                <span aria-hidden="true">→</span>
+                <span className="rounded-full border border-slate-200 px-3 py-1">Vencimiento del término</span>
+                <span aria-hidden="true">→</span>
+                <span className="rounded-full border border-slate-200 px-3 py-1">Prórroga / Terminación</span>
+                <span aria-hidden="true">→</span>
+                <span className="rounded-full border border-slate-200 px-3 py-1">Nuevo período</span>
+              </div>
+              <p className="mt-6 text-slate-600">
+                El contrato se entiende prorrogado por el mismo término inicial cuando ambas partes
+                cumplen sus obligaciones y el arrendatario acepta los reajustes de ley. No es una
+                &ldquo;renovación automática&rdquo; sin más.
+              </p>
+              <div className="mt-6 rounded-xl border border-slate-200 bg-slate-50 p-6">
+                <h3 className="mb-2 font-semibold text-slate-900">Reajuste del canon</h3>
+                <p className="text-sm text-slate-600">
+                  El reajuste tiene regulación específica en el artículo 20 de la Ley 820 y NO forma
+                  parte de los siete elementos del artículo 3.
+                </p>
+              </div>
+
+              <div className="mt-10 grid gap-4 md:grid-cols-2">
+                <div className="rounded-xl border border-slate-200 p-6">
+                  <LogOut className="mb-3 h-6 w-6 text-teal-600" aria-hidden="true" />
+                  <h3 className="mb-1 font-semibold text-slate-900">Terminación por el arrendador</h3>
+                  <p className="text-sm text-slate-600">Incumplimiento, necesidad de vivienda propia, demolición o reparación estructural (Ley 820, art. 22).</p>
+                </div>
+                <div className="rounded-xl border border-slate-200 p-6">
+                  <CalendarClock className="mb-3 h-6 w-6 text-teal-600" aria-hidden="true" />
+                  <h3 className="mb-1 font-semibold text-slate-900">Terminación por el arrendatario</h3>
+                  <p className="text-sm text-slate-600">Previo aviso con 3 meses de antelación, o por incumplimiento grave del arrendador (Ley 820, art. 25).</p>
+                </div>
+              </div>
+            </section>
+
+            {/* ERRORES */}
+            <section id="errores" className="mb-14 scroll-mt-24">
+              <h2 className="mb-6 text-2xl font-bold text-slate-900">6 errores que conviene evitar</h2>
+              <ol className="space-y-4">
+                {ERRORES.map((e, i) => (
+                  <li key={e.title} className="flex gap-4 rounded-xl border border-slate-200 bg-white p-5 transition-colors hover:border-teal-200">
+                    <AlertTriangle className="mt-1 h-5 w-5 shrink-0 text-amber-500" aria-hidden="true" />
+                    <div>
+                      <span className="font-mono text-xs text-slate-400">{String(i + 1).padStart(2, '0')}</span>
+                      <h3 className="font-semibold text-slate-900">{e.title}</h3>
+                      <p className="text-sm text-slate-600">{e.text}</p>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+            </section>
+
+            {/* CTA MID-PAGE */}
+            <section className="mb-14 rounded-2xl border border-teal-900/30 bg-slate-950 p-8 text-white md:p-10">
+              <span className="mb-4 inline-block rounded-full border border-slate-700 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-slate-300">
+                Plantilla editable
+              </span>
+              <h2 className="mb-3 text-2xl md:text-3xl font-bold">¿Quieres partir de un documento ya estructurado?</h2>
+              <p className="mb-6 text-slate-300">
+                {formatPrice()} · Pago único · Incluye Word editable, Google Docs y guía de personalización.
+              </p>
+              <Link href="/tienda" className="inline-flex items-center gap-2 rounded-xl bg-teal-600 px-8 py-3.5 font-semibold text-white hover:bg-teal-700">
+                Ver plantilla
+                <ChevronRight className="h-5 w-5" aria-hidden="true" />
+              </Link>
+              <p className="mt-4 text-xs text-slate-500">Entrega por correo después de confirmar el pago.</p>
+            </section>
+
+            {/* FUENTES */}
+            <section id="fuentes" className="mb-14 scroll-mt-24">
+              <h2 className="mb-4 text-2xl font-bold text-slate-900">Fuentes normativas</h2>
+              <div className="rounded-xl border border-slate-200 bg-white p-6">
+                <h3 className="mb-1 font-semibold text-slate-900">Ley 820 de 2003</h3>
+                <p className="mb-3 text-sm text-slate-600">Artículos relevantes: 3, 15, 16, 18, 20, 22 y concordantes.</p>
                 <a
                   href="http://www.secretariasenado.gov.co/senado/basedoc/ley_0820_2003.html"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-teal-600 hover:underline"
+                  className="text-sm font-semibold text-teal-600 hover:underline"
                 >
                   Ver texto oficial
                 </a>
-              </li>
-            </ul>
-            <p className="mt-6 text-xs text-gray-500">
-              <strong>Contenido informativo.</strong> No constituye asesoría jurídica personalizada.
-              Para decisiones específicas, consulta con un abogado.
-            </p>
-          </div>
+              </div>
+              <p className="mt-6 text-xs text-slate-500">
+                Actualizado: Octubre de 2026 · Contenido informativo. No constituye asesoría jurídica personalizada.
+              </p>
+            </section>
 
-          <ProductCTA />
-          <NewsletterCTA />
-        </main>
+            {/* CTA FINAL */}
+            <section className="mb-14 rounded-xl border border-slate-200 bg-slate-50 p-6 text-center">
+              <h2 className="mb-3 text-xl font-semibold text-slate-900">¿Listo para revisar tu contrato?</h2>
+              <Link href="/tienda" className="inline-flex items-center gap-2 rounded-xl bg-slate-900 px-6 py-3 font-semibold text-white hover:bg-slate-800">
+                Ver plantilla
+              </Link>
+            </section>
+
+            <p className="text-xs text-slate-500 border-l-2 border-slate-200 pl-4">
+              Contenido informativo. No constituye asesoría jurídica personalizada.
+            </p>
+          </main>
+
+          {/* SIDEBAR TOC */}
+          <aside className="hidden lg:block">
+            <div className="sticky top-24">
+              <GuideToc />
+            </div>
+          </aside>
+        </div>
+
+        <ProductCTA />
+        <NewsletterCTA />
       </div>
-    </div>
+    </>
   );
 }
