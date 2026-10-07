@@ -30,12 +30,18 @@ export default function AvisoLegal() {
       current="/aviso-legal"
     >
       <LegalSection number="01" title="Titular del Sitio" id="titular">
-        <ul className="list-disc pl-6 space-y-1">
-          <li>Titular: {LEGAL_IDENTITY.titular}</li>
-          <li>Identificación: {LEGAL_IDENTITY.identificacion}</li>
-          <li>Correo oficial: {LEGAL_IDENTITY.correoOficial}</li>
-          <li>País: {LEGAL_IDENTITY.pais}</li>
-        </ul>
+        <div className="rounded-xl border border-slate-200 bg-slate-50 p-6">
+          <ul className="space-y-1">
+            <li>Marca comercial: {LEGAL_IDENTITY.marcaComercial}</li>
+            <li>Responsable: {LEGAL_IDENTITY.titular}</li>
+            <li>Documento/NIT: {LEGAL_IDENTITY.documento}</li>
+            <li>Domicilio: {LEGAL_IDENTITY.domicilio}</li>
+            <li>Dirección de notificación: {LEGAL_IDENTITY.direccionNotificacion}</li>
+            <li>Correo oficial: {LEGAL_IDENTITY.correoOficial}</li>
+            <li>Teléfono: {LEGAL_IDENTITY.telefono}</li>
+            <li>Sitio web: {LEGAL_IDENTITY.sitioWeb}</li>
+          </ul>
+        </div>
       </LegalSection>
 
       <LegalSection number="02" title="Objeto" id="objeto">

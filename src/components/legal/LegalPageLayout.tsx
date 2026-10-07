@@ -29,7 +29,7 @@ export default function LegalPageLayout({
       {toc.length > 0 && <LegalTableOfContents items={toc} />}
       <article className="mt-16 space-y-16">{children}</article>
       <div className="mt-16">
-        <LegalContactCard email="[CORREO OFICIAL]" />
+        <LegalContactCard email="spaceyisusshop@gmail.com" />
       </div>
       <div className="mt-12">
         <LegalNavigation current={current} />

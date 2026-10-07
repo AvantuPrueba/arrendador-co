@@ -15,7 +15,7 @@ const TOC = [
   { id: 'cuando-procede', label: 'Cuándo Procede' },
   { id: 'cuando-no-procede', label: 'Cuándo No Procede' },
   { id: 'como-solicitarlo', label: 'Cómo Solicitarlo' },
-  { id: 'plazos', label: 'Plazos' },
+  { id: 'plazos', label: 'Plazos de Devolución' },
   { id: 'reversion-pagos', label: 'Reversión de Pagos' },
   { id: 'contacto', label: 'Contacto' },
 ];
@@ -45,8 +45,8 @@ export default function RetractoYDevoluciones() {
 
       <LegalSection number="03" title="Cuándo No Procede" id="cuando-no-procede">
         <LegalCallout title="Excepción por descarga del archivo" variant="warning">
-          Si el archivo ya fue descargado, no aplica retracto. Aplica únicamente cuando el producto
-          no haya sido descargado.
+          Si el archivo digital ya fue descargado, el derecho de retracto no aplica, conforme a las
+          excepciones de la Ley 1480 de 2011.
         </LegalCallout>
       </LegalSection>
 
@@ -57,10 +57,10 @@ export default function RetractoYDevoluciones() {
         </p>
       </LegalSection>
 
-      <LegalSection number="05" title="Plazos" id="plazos">
+      <LegalSection number="05" title="Plazos de Devolución" id="plazos">
         <p>
-          Plazo para ejercer el retracto: 5 días hábiles desde la compra. Plazo máximo de devolución
-          del dinero: 15 días calendario (Ley 2439 de 2024).
+          Plazo para ejercer el retracto: 5 días hábiles desde la compra. La devolución del dinero
+          no podrá exceder de 15 días calendario desde que ejerzas el derecho (Ley 2439 de 2024).
         </p>
       </LegalSection>
 

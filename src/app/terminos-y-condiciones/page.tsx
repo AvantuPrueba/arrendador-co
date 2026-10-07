@@ -37,12 +37,18 @@ export default function TerminosYCondiciones() {
     >
       <LegalSection number="01" title="Información General y Titularidad" id="info-general">
         <p>El sitio web accesible a través de arrendador.co es operado por:</p>
-        <ul className="list-disc pl-6 space-y-1">
-          <li>Titular: {LEGAL_IDENTITY.titular}</li>
-          <li>Identificación: {LEGAL_IDENTITY.identificacion}</li>
-          <li>Correo oficial: {LEGAL_IDENTITY.correoOficial}</li>
-          <li>País: {LEGAL_IDENTITY.pais}</li>
-        </ul>
+        <div className="rounded-xl border border-slate-200 bg-slate-50 p-6">
+          <ul className="space-y-1">
+            <li>Marca comercial: {LEGAL_IDENTITY.marcaComercial}</li>
+            <li>Responsable: {LEGAL_IDENTITY.titular}</li>
+            <li>Documento/NIT: {LEGAL_IDENTITY.documento}</li>
+            <li>Domicilio: {LEGAL_IDENTITY.domicilio}</li>
+            <li>Dirección de notificación: {LEGAL_IDENTITY.direccionNotificacion}</li>
+            <li>Correo oficial: {LEGAL_IDENTITY.correoOficial}</li>
+            <li>Teléfono: {LEGAL_IDENTITY.telefono}</li>
+            <li>Sitio web: {LEGAL_IDENTITY.sitioWeb}</li>
+          </ul>
+        </div>
       </LegalSection>
 
       <LegalSection number="02" title="Uso del Sitio" id="uso-del-sitio">
@@ -125,10 +131,9 @@ export default function TerminosYCondiciones() {
 
       <LegalSection number="12" title="Contacto" id="contacto">
         <ul className="list-disc pl-6 space-y-1">
-          <li>Titular: {LEGAL_IDENTITY.titular}</li>
-          <li>Identificación: {LEGAL_IDENTITY.identificacion}</li>
+          <li>Responsable: {LEGAL_IDENTITY.titular}</li>
+          <li>Documento/NIT: {LEGAL_IDENTITY.documento}</li>
           <li>Correo oficial: {LEGAL_IDENTITY.correoOficial}</li>
-          <li>País: {LEGAL_IDENTITY.pais}</li>
         </ul>
         <p className="text-sm text-slate-500">
           Este documento es informativo y no constituye asesoría jurídica.

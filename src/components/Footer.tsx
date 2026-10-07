@@ -37,12 +37,12 @@ export default function Footer() {
           <div>
             <h4 className="font-semibold text-white mb-4">Contacto</h4>
             <ul className="space-y-2 text-sm text-navy-300">
-              <li>Email: <a href="mailto:spaceyisusshop@gmail.com" className="hover:text-teal-300 transition-colors">spaceyisusshop@gmail.com</a></li>
-              <li>Sitio operado por AvantuPrueba</li>
+              <li>Email: [PENDIENTE: CORREO OFICIAL]</li>
               <li>Colombia</li>
               <li>
+                Autoridad de protección al consumidor:{' '}
                 <a href="https://www.sic.gov.co/" target="_blank" rel="noopener noreferrer" className="hover:text-teal-300 transition-colors">
-                  Superintendencia de Industria y Comercio
+                  Superintendencia de Industria y Comercio — www.sic.gov.co
                 </a>
               </li>
             </ul>
