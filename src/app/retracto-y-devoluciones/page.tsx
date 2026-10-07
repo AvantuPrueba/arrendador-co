@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 
 /** Correo de soporte leído en build time (NEXT_PUBLIC_ = inlined en bundle). */
 const supportEmail =
-  process.env.NEXT_PUBLIC_SUPPORT_EMAIL || '[PENDIENTE: correo electrónico]';
+  process.env.NEXT_PUBLIC_SUPPORT_EMAIL || 'spaceyisusshop@gmail.com';
 
 export const metadata: Metadata = {
   title: 'Política de Retracto y Devoluciones',
@@ -23,10 +23,10 @@ export default function RetractoYDevoluciones() {
       </p>
       <ul>
         <li>
-          <strong>Razón Social:</strong> [PENDIENTE: razón social]
+          <strong>Nombre:</strong> AvantuPrueba
         </li>
         <li>
-          <strong>RUT / NIT:</strong> [PENDIENTE: RUT]
+          <strong>Cédula/NIT:</strong> NO
         </li>
         <li>
           <strong>Correo de atención y soporte:</strong>{' '}
@@ -51,23 +51,21 @@ export default function RetractoYDevoluciones() {
 
       <h2>4. Aplicación del Derecho de Retracto y Excepciones</h2>
       <p>
-        El artículo 47 de la Ley 1480 de 2011 consagra el derecho de retracto en las ventas a distancia.
-        No obstante, el numeral 4 de dicho artículo establece excepciones expresas para:
+        El derecho de retracto aplica durante un plazo de <strong>5 días hábiles</strong> desde la
+        compra, siempre que el producto no haya sido descargado. Si el archivo ya fue descargado, no
+        aplica retracto, conforme a las excepciones del artículo 47 de la Ley 1480 de 2011 para
+        contenidos digitales cuyo suministro o descarga ya haya iniciado.
       </p>
-      <blockquote>
-        &ldquo;En los contratos de suministro de bienes que, por su naturaleza, no puedan ser
-        devueltos o puedan deteriorarse con rapidez;&rdquo; y contratos de suministro de grabaciones,
-        programas informáticos o contenidos digitales cuyo suministro o descarga ya haya iniciado.
-      </blockquote>
       <p>
-        Por consiguiente, <strong>una vez que el usuario ha completado el pago y ha obtenido acceso al enlace de descarga o al contenido digital editable, no operará el derecho de retracto</strong>,
-        toda vez que el producto queda en posesión permanente del comprador sin posibilidad material de
-        devolución física del bien intangible.
+        El plazo de devolución del dinero es máximo de <strong>15 días calendario</strong> (Ley 2439
+        de 2024). Para solicitar el retracto, escribe al correo oficial{' '}
+        <a href={`mailto:${supportEmail}`}>{supportEmail}</a> indicando el número de orden o el correo
+        utilizado en la compra.
       </p>
 
       <h2>5. Garantía de Entrega y Soporte de Calidad</h2>
       <p>
-        Sin perjuicio de la excepción legal anterior, <strong>[PENDIENTE: razón social]</strong> está
+        Sin perjuicio de la excepción legal anterior, <strong>AvantuPrueba</strong> está
         comprometido con la completa satisfacción y la calidad técnica de sus productos digitales.
       </p>
       <p>
@@ -108,7 +106,7 @@ export default function RetractoYDevoluciones() {
         </li>
       </ol>
       <p>
-        En tales circunstancias, <strong>[PENDIENTE: razón social]</strong> solicitará la reversión o
+        En tales circunstancias, <strong>AvantuPrueba</strong> solicitará la reversión o
         reembolso ante el operador de pagos correspondiente en los términos y plazos fijados por la
         entidad bancaria emisora.
       </p>
@@ -118,6 +116,10 @@ export default function RetractoYDevoluciones() {
         Si tiene dudas sobre las características o especificaciones de un producto antes de adquirirlo,
         le invitamos a escribirnos a:{' '}
         <a href={`mailto:${supportEmail}`}>{supportEmail}</a>.
+      </p>
+
+      <p className="text-sm text-gray-500">
+        Este documento es informativo y no constituye asesoría jurídica.
       </p>
     </div>
   );

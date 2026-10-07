@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 
 /** Correo de soporte leído en build time (NEXT_PUBLIC_ = inlined en bundle). */
 const supportEmail =
-  process.env.NEXT_PUBLIC_SUPPORT_EMAIL || '[PENDIENTE: correo electrónico]';
+  process.env.NEXT_PUBLIC_SUPPORT_EMAIL || 'spaceyisusshop@gmail.com';
 
 export const metadata: Metadata = {
   title: 'Política de Tratamiento de Datos Personales',
@@ -24,10 +24,10 @@ export default function PoliticaDeDatos() {
       </p>
       <ul>
         <li>
-          <strong>Razón Social:</strong> [PENDIENTE: razón social]
+          <strong>Nombre:</strong> AvantuPrueba
         </li>
         <li>
-          <strong>RUT / NIT:</strong> [PENDIENTE: RUT]
+          <strong>Cédula/NIT:</strong> NO
         </li>
         <li>
           <strong>Correo electrónico para atención de Habeas Data:</strong>{' '}
@@ -101,7 +101,7 @@ export default function PoliticaDeDatos() {
       <ul>
         <li>
           Conocer, actualizar y rectificar sus datos personales frente a{' '}
-          <strong>[PENDIENTE: razón social]</strong>.
+          <strong>AvantuPrueba</strong>.
         </li>
         <li>
           Solicitar prueba de la autorización otorgada para el tratamiento de sus datos.
@@ -126,7 +126,7 @@ export default function PoliticaDeDatos() {
       <p>
         El titular o sus causahabientes podrán ejercer sus derechos de consulta, actualización,
         rectificación o supresión enviando una comunicación escrita dirigida a{' '}
-        <strong>[PENDIENTE: razón social]</strong> al correo electrónico:{' '}
+        <strong>AvantuPrueba</strong> al correo electrónico:{' '}
         <a href={`mailto:${supportEmail}`}>{supportEmail}</a>.
       </p>
       <p>
@@ -141,7 +141,7 @@ export default function PoliticaDeDatos() {
 
       <h2>7. Medidas de Seguridad de la Información</h2>
       <p>
-        <strong>[PENDIENTE: razón social]</strong> adopta medidas técnicas, organizativas y humanas
+        <strong>AvantuPrueba</strong> adopta medidas técnicas, organizativas y humanas
         razonables para proteger los datos personales contra adulteración, pérdida, consulta indebida,
         uso fraudulento o acceso no autorizado.
       </p>
@@ -159,6 +159,15 @@ export default function PoliticaDeDatos() {
         Las bases de datos tendrán una vigencia equivalente al tiempo necesario para cumplir las
         finalidades para las cuales fueron recolectadas o por el lapso que determinen las exigencias
         legales o reglamentarias aplicables.
+      </p>
+
+      <h2>10. Compartición con Terceros</h2>
+      <p>
+        Los datos personales no se comparten con terceros salvo para procesar pagos (Mercado Pago).
+      </p>
+
+      <p className="text-sm text-gray-500">
+        Este documento es informativo y no constituye asesoría jurídica.
       </p>
     </div>
   );

@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 
 /** Correo de soporte leído en build time (NEXT_PUBLIC_ = inlined en bundle). */
 const supportEmail =
-  process.env.NEXT_PUBLIC_SUPPORT_EMAIL || '[PENDIENTE: correo electrónico]';
+  process.env.NEXT_PUBLIC_SUPPORT_EMAIL || 'spaceyisusshop@gmail.com';
 
 export const metadata: Metadata = {
   title: 'Términos y Condiciones',
@@ -19,10 +19,10 @@ export default function TerminosYCondiciones() {
       <h2>1. Información General y Titularidad</h2>
       <p>
         El presente sitio web, accesible a través de <strong>arrendador.co</strong>, es operado y
-        administrado por <strong>[PENDIENTE: razón social]</strong>, titular identificado con el
-        Registro Único Tributario (RUT) / NIT <strong>[PENDIENTE: RUT]</strong>, con correo
-        electrónico de contacto y atención:{' '}
-        <a href={`mailto:${supportEmail}`}>{supportEmail}</a>.
+        administrado por <strong>AvantuPrueba</strong>, persona natural identificada con
+        Cédula/NIT <strong>NO</strong>, con correo electrónico de contacto y atención:{' '}
+        <a href={`mailto:${supportEmail}`}>{supportEmail}</a>. Dirección de notificación: NO.
+        Teléfono: NO.
       </p>
 
       <h2>2. Aceptación de los Términos</h2>
@@ -59,7 +59,7 @@ export default function TerminosYCondiciones() {
       <h2>5. Licencia de Uso de Productos Digitales</h2>
       <p>
         Al adquirir cualquiera de nuestras plantillas descargables (formatos .docx, Google Docs u
-        otros documentos auxiliares), <strong>[PENDIENTE: razón social]</strong> concede al comprador
+        otros documentos auxiliares), <strong>AvantuPrueba</strong> concede al comprador
         una licencia de uso personal, profesional, limitada, revocable y no exclusiva sujeta a las
         siguientes reglas:
       </p>
@@ -80,7 +80,7 @@ export default function TerminosYCondiciones() {
       <p>
         Los precios de los productos y servicios digitales están expresados en pesos colombianos
         (COP) e incluyen los impuestos aplicables conforme a la normatividad tributaria colombiana.
-        Las transacciones son procesadas a través de pasarelas de pago seguras de terceros. ArrendadorCO
+        Las transacciones son procesadas a través de pasarelas de pago seguras de terceros. Los pagos se procesan mediante Mercado Pago. ArrendadorCO
         no almacena ni tiene acceso directo a datos sensibles de medios de pago como números completos
         de tarjetas de crédito o credenciales de cuentas bancarias.
       </p>
@@ -89,7 +89,7 @@ export default function TerminosYCondiciones() {
       <p>
         Todos los contenidos, marcas comerciales, logotipos, textos, ilustraciones, diseños, código
         fuente y elementos gráficos que componen el sitio web son propiedad exclusiva de{' '}
-        <strong>[PENDIENTE: razón social]</strong> o de terceros licenciantes que han autorizado su
+        <strong>AvantuPrueba</strong> o de terceros licenciantes que han autorizado su
         uso, encontrándose amparados por la legislación colombiana en materia de derechos de autor
         y propiedad industrial.
       </p>
@@ -106,7 +106,7 @@ export default function TerminosYCondiciones() {
 
       <h2>9. Limitación de Responsabilidad</h2>
       <p>
-        En la medida máxima permitida por la ley aplicable, <strong>[PENDIENTE: razón social]</strong>{' '}
+        En la medida máxima permitida por la ley aplicable, <strong>AvantuPrueba</strong>{' '}
         no será responsable por daños directos, indirectos, incidentales, contractuales o
         extracontractuales que se deriven del uso o la imposibilidad de uso del material, ni de los
         resultados obtenidos al emplear las plantillas contractuales en transacciones reales entre
@@ -128,6 +128,19 @@ export default function TerminosYCondiciones() {
         Colombia.
       </p>
 
+      <h2>Autoridad de Protección al Consumidor</h2>
+      <p>
+        Autoridad de protección al consumidor: Superintendencia de Industria y Comercio —{' '}
+        <a href="https://www.sic.gov.co/" target="_blank" rel="noopener noreferrer">
+          www.sic.gov.co
+        </a>
+        .
+      </p>
+
+      <p className="text-sm text-gray-500">
+        Este documento es informativo y no constituye asesoría jurídica.
+      </p>
+
       <h2>12. Contacto y Atención de Consultas</h2>
       <p>
         Para cualquier duda, petición o aclaración relativa a estos Términos y Condiciones, por
@@ -135,10 +148,10 @@ export default function TerminosYCondiciones() {
       </p>
       <ul>
         <li>
-          <strong>Razón social:</strong> [PENDIENTE: razón social]
+          <strong>Nombre:</strong> AvantuPrueba
         </li>
         <li>
-          <strong>RUT:</strong> [PENDIENTE: RUT]
+          <strong>Cédula/NIT:</strong> NO
         </li>
         <li>
           <strong>Correo electrónico:</strong>{' '}

@@ -9,7 +9,7 @@ import { PRODUCT_CONFIG, formatPrice } from '@/lib/product';
  * fundador; solo el correo de soporte es un placeholder pendiente.
  */
 export const SUPPORT_EMAIL =
-  process.env.NEXT_PUBLIC_SUPPORT_EMAIL || '[PENDIENTE: correo electrónico]';
+  process.env.NEXT_PUBLIC_SUPPORT_EMAIL || 'spaceyisusshop@gmail.com';
 
 const INVALID_EMAIL_MESSAGE = 'Escribe un correo electrónico válido.';
 

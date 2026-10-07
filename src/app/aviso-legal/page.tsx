@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 
 /** Correo de soporte leído en build time (NEXT_PUBLIC_ = inlined en bundle). */
 const supportEmail =
-  process.env.NEXT_PUBLIC_SUPPORT_EMAIL || '[PENDIENTE: correo electrónico]';
+  process.env.NEXT_PUBLIC_SUPPORT_EMAIL || 'spaceyisusshop@gmail.com';
 
 export const metadata: Metadata = {
   title: 'Aviso Legal',
@@ -24,10 +24,10 @@ export default function AvisoLegal() {
       </p>
       <ul>
         <li>
-          <strong>Razón Social:</strong> [PENDIENTE: razón social]
+          <strong>Nombre:</strong> AvantuPrueba
         </li>
         <li>
-          <strong>RUT / NIT:</strong> [PENDIENTE: RUT]
+          <strong>Cédula/NIT:</strong> NO
         </li>
         <li>
           <strong>Correo electrónico de contacto:</strong>{' '}
@@ -49,7 +49,7 @@ export default function AvisoLegal() {
       <p>
         La consulta, lectura o uso de los artículos, modelos y plantillas publicados en este portal no
         configura ni sustituye una asesoría jurídica formal, ni genera vínculo contractual alguno de
-        relación abogado-cliente entre el usuario y <strong>[PENDIENTE: razón social]</strong>.
+        relación abogado-cliente entre el usuario y <strong>AvantuPrueba</strong>.
       </p>
       <p>
         La normatividad sobre arrendamientos en Colombia (como la Ley 820 de 2003, el Código Civil y
@@ -77,14 +77,14 @@ export default function AvisoLegal() {
       <h2>5. Derechos de Propiedad Intelectual</h2>
       <p>
         Los textos, marcas, imágenes y código fuente integrados en este sitio web son titularidad de{' '}
-        <strong>[PENDIENTE: razón social]</strong> o de terceros que han concedido los permisos
+        <strong>AvantuPrueba</strong> o de terceros que han concedido los permisos
         pertinentes. Se prohíbe cualquier uso no autorizado, reproducción o redistribución de los
         mismos.
       </p>
 
       <h2>6. Limitación de Responsabilidad</h2>
       <p>
-        <strong>[PENDIENTE: razón social]</strong> procura mantener la información actualizada y
+        <strong>AvantuPrueba</strong> procura mantener la información actualizada y
         precisa. No obstante, no garantiza la ausencia total de errores tipográficos o normativos ni
         se responsabiliza por los perjuicios que pudieren suscitarse del empleo de los modelos de
         documentos en acuerdos particulares.
@@ -99,6 +99,10 @@ export default function AvisoLegal() {
           legales. Los enlaces marcados como afiliados pueden generar una comisión para el sitio.
         </p>
       </div>
+
+      <p className="text-sm text-gray-500">
+        Este documento es informativo y no constituye asesoría jurídica.
+      </p>
     </div>
   );
 }
