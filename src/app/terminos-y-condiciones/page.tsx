@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
-
-/** Correo de soporte leído en build time (NEXT_PUBLIC_ = inlined en bundle). */
-const supportEmail =
-  process.env.NEXT_PUBLIC_SUPPORT_EMAIL || 'spaceyisusshop@gmail.com';
+import LegalPageLayout from '@/components/legal/LegalPageLayout';
+import LegalSection from '@/components/legal/LegalSection';
+import LegalCallout from '@/components/legal/LegalCallout';
+import LegalPermissionGrid from '@/components/legal/LegalPermissionGrid';
+import { LEGAL_IDENTITY } from '@/lib/legal-identity';
 
 export const metadata: Metadata = {
   title: 'Términos y Condiciones',
@@ -10,154 +11,129 @@ export const metadata: Metadata = {
     'Términos y condiciones de uso de la plataforma y productos digitales de ArrendadorCO.',
 };
 
+const TOC = [
+  { id: 'info-general', label: 'Información General y Titularidad' },
+  { id: 'uso-del-sitio', label: 'Uso del Sitio' },
+  { id: 'naturaleza-servicios', label: 'Naturaleza de los Servicios' },
+  { id: 'caracter-informativo', label: 'Carácter Informativo' },
+  { id: 'propiedad-licencia', label: 'Propiedad Intelectual y Licencia' },
+  { id: 'precios-pagos', label: 'Precios y Pagos' },
+  { id: 'responsabilidades', label: 'Responsabilidades' },
+  { id: 'afiliados', label: 'Afiliados y Recomendaciones' },
+  { id: 'disponibilidad', label: 'Disponibilidad del Servicio' },
+  { id: 'modificaciones', label: 'Modificaciones' },
+  { id: 'ley-aplicable', label: 'Ley Aplicable' },
+  { id: 'contacto', label: 'Contacto' },
+];
+
 export default function TerminosYCondiciones() {
   return (
-    <div className="prose mx-auto px-4 py-12">
-      <h1>Términos y Condiciones de Uso</h1>
-      <p className="text-sm text-gray-500">Última actualización: Octubre de 2026</p>
+    <LegalPageLayout
+      title="Términos y Condiciones de Uso"
+      subtitle="Las reglas generales de uso de ArrendadorCO y de la compra de nuestros productos digitales."
+      lastUpdated="Octubre de 2026"
+      toc={TOC}
+      current="/terminos-y-condiciones"
+    >
+      <LegalSection number="01" title="Información General y Titularidad" id="info-general">
+        <p>El sitio web accesible a través de arrendador.co es operado por:</p>
+        <ul className="list-disc pl-6 space-y-1">
+          <li>Titular: {LEGAL_IDENTITY.titular}</li>
+          <li>Identificación: {LEGAL_IDENTITY.identificacion}</li>
+          <li>Correo oficial: {LEGAL_IDENTITY.correoOficial}</li>
+          <li>País: {LEGAL_IDENTITY.pais}</li>
+        </ul>
+      </LegalSection>
 
-      <h2>1. Información General y Titularidad</h2>
-      <p>
-        El presente sitio web, accesible a través de <strong>arrendador.co</strong>, es operado y
-        administrado por <strong>AvantuPrueba</strong>, persona natural identificada con
-        Cédula/NIT <strong>NO</strong>, con correo electrónico de contacto y atención:{' '}
-        <a href={`mailto:${supportEmail}`}>{supportEmail}</a>. Dirección de notificación: NO.
-        Teléfono: NO.
-      </p>
+      <LegalSection number="02" title="Uso del Sitio" id="uso-del-sitio">
+        <p>
+          El acceso y uso del sitio atribuye la condición de usuario e implica la aceptación de estas
+          condiciones. Si no está de acuerdo, absténgase de usar el sitio.
+        </p>
+      </LegalSection>
 
-      <h2>2. Aceptación de los Términos</h2>
-      <p>
-        El acceso, navegación y uso de este sitio web, así como la adquisición de los productos o
-        recursos digitales ofrecidos en él, atribuye la condición de usuario e implica la aceptación
-        plena y sin reservas de la totalidad de las condiciones establecidas en los presentes Términos y
-        Condiciones. Si usted no está de acuerdo con cualquiera de estas cláusulas, deberá abstenerse
-        de utilizar el sitio web y sus servicios asociados.
-      </p>
+      <LegalSection number="03" title="Naturaleza de los Servicios" id="naturaleza-servicios">
+        <p>
+          ArrendadorCO ofrece contenido informativo, guías prácticas, modelos de referencia,
+          herramientas de orientación y plantillas digitales editables para arrendadores de vivienda
+          urbana en Colombia.
+        </p>
+      </LegalSection>
 
-      <h2>3. Objeto del Sitio Web</h2>
-      <p>
-        ArrendadorCO es una plataforma digital enfocada en la divulgación de contenido informativo,
-        guías prácticas, modelos de referencia y herramientas de orientación para propietarios y
-        arrendadores de vivienda urbana en Colombia. Asimismo, ofrece a la venta recursos y plantillas
-        digitales editables orientados a facilitar la gestión de contratos de arrendamiento.
-      </p>
+      <LegalSection number="04" title="Carácter Informativo" id="caracter-informativo">
+        <LegalCallout title="Contenido orientativo" variant="info">
+          Todo el contenido tiene finalidad pedagógica e informativa y no sustituye la asesoría
+          jurídica calificada. Consulta a un abogado matriculado antes de celebrar contratos o iniciar
+          trámites.
+        </LegalCallout>
+      </LegalSection>
 
-      <h2>4. Carácter Informativo y No Asesoría Legal</h2>
-      <p>
-        Todo el contenido publicado en ArrendadorCO, incluyendo artículos, modelos de contratos,
-        actas de entrega, guías operativas y calculadoras, tiene una finalidad exclusivamente
-        pedagógica, didáctica e informativa.
-      </p>
-      <p>
-        <strong>ArrendadorCO no es una firma o despacho de abogados ni presta servicios de consultoría legal personalizada.</strong>{' '}
-        La utilización del material o de las plantillas no sustituye la asesoría jurídica calificada.
-        Dado que cada caso o inmueble puede contar con particularidades legales y contractuales
-        únicas, recomendamos expresamente consultar con un abogado matriculado antes de celebrar
-        contratos o iniciar trámites de restitución.
-      </p>
+      <LegalSection number="05" title="Propiedad Intelectual y Licencia" id="propiedad-licencia">
+        <LegalPermissionGrid
+          allowed={[
+            'Descargar y modificar las plantillas para tus propios inmuebles',
+            'Usar las plantillas en la administración directa de tus inmuebles',
+          ]}
+          forbidden={[
+            'Revender o sublicenciar las plantillas',
+            'Compartirlas públicamente o distribuirlas de forma masiva',
+          ]}
+        />
+      </LegalSection>
 
-      <h2>5. Licencia de Uso de Productos Digitales</h2>
-      <p>
-        Al adquirir cualquiera de nuestras plantillas descargables (formatos .docx, Google Docs u
-        otros documentos auxiliares), <strong>AvantuPrueba</strong> concede al comprador
-        una licencia de uso personal, profesional, limitada, revocable y no exclusiva sujeta a las
-        siguientes reglas:
-      </p>
-      <ul>
-        <li>
-          <strong>Uso autorizado:</strong> El usuario tiene derecho a descargar, modificar, adaptar y
-          completar las plantillas tantas veces como requiera para la administración de sus propios
-          inmuebles o los inmuebles que gestione directamente.
-        </li>
-        <li>
-          <strong>Prohibición de reventa y distribución:</strong> Queda terminantemente prohibido
-          revender, sublicenciar, compartir públicamente, comercializar o distribuir de forma masiva
-          las plantillas a terceros, ya sea de manera gratuita o remunerada.
-        </li>
-      </ul>
+      <LegalSection number="06" title="Precios y Pagos" id="precios-pagos">
+        <p>
+          Los precios están expresados en pesos colombianos (COP). Los pagos se procesan mediante
+          Mercado Pago. ArrendadorCO no almacena datos sensibles de medios de pago.
+        </p>
+      </LegalSection>
 
-      <h2>6. Precios, Pagos y Facturación</h2>
-      <p>
-        Los precios de los productos y servicios digitales están expresados en pesos colombianos
-        (COP) e incluyen los impuestos aplicables conforme a la normatividad tributaria colombiana.
-        Las transacciones son procesadas a través de pasarelas de pago seguras de terceros. Los pagos se procesan mediante Mercado Pago. ArrendadorCO
-        no almacena ni tiene acceso directo a datos sensibles de medios de pago como números completos
-        de tarjetas de crédito o credenciales de cuentas bancarias.
-      </p>
+      <LegalSection number="07" title="Responsabilidades" id="responsabilidades">
+        <p>
+          En la medida máxima permitida por la ley, el titular no será responsable por daños derivados
+          del uso del material ni de los resultados obtenidos al emplear las plantillas.
+        </p>
+      </LegalSection>
 
-      <h2>7. Propiedad Intelectual e Industrial</h2>
-      <p>
-        Todos los contenidos, marcas comerciales, logotipos, textos, ilustraciones, diseños, código
-        fuente y elementos gráficos que componen el sitio web son propiedad exclusiva de{' '}
-        <strong>AvantuPrueba</strong> o de terceros licenciantes que han autorizado su
-        uso, encontrándose amparados por la legislación colombiana en materia de derechos de autor
-        y propiedad industrial.
-      </p>
+      <LegalSection number="08" title="Afiliados y Recomendaciones" id="afiliados">
+        <p>
+          Algunos enlaces a servicios de terceros pueden generar una comisión para ArrendadorCO sin
+          costo extra para el usuario. No ejercemos control sobre esos terceros.
+        </p>
+      </LegalSection>
 
-      <h2>8. Enlaces de Afiliados y Sitios Web de Terceros</h2>
-      <p>
-        El sitio web puede incluir hipervínculos a páginas de terceros o recomendaciones de
-        servicios complementarios (como seguros de arrendamiento, software contable o plataformas de
-        facturación). Algunos de estos enlaces forman parte de programas de afiliados y pueden
-        generar una comisión para ArrendadorCO sin ningún costo extra para el usuario. ArrendadorCO no
-        ejerce control ni asume responsabilidad sobre las políticas, condiciones comerciales o
-        servicios prestados por terceros.
-      </p>
+      <LegalSection number="09" title="Disponibilidad del Servicio" id="disponibilidad">
+        <p>El sitio puede presentar interrupciones por mantenimiento o causas ajenas a nosotros.</p>
+      </LegalSection>
 
-      <h2>9. Limitación de Responsabilidad</h2>
-      <p>
-        En la medida máxima permitida por la ley aplicable, <strong>AvantuPrueba</strong>{' '}
-        no será responsable por daños directos, indirectos, incidentales, contractuales o
-        extracontractuales que se deriven del uso o la imposibilidad de uso del material, ni de los
-        resultados obtenidos al emplear las plantillas contractuales en transacciones reales entre
-        partes.
-      </p>
+      <LegalSection number="10" title="Modificaciones" id="modificaciones">
+        <p>Podemos actualizar estos términos en cualquier momento; rigen desde su publicación.</p>
+      </LegalSection>
 
-      <h2>10. Modificaciones a los Términos</h2>
-      <p>
-        Nos reservamos el derecho de modificar o actualizar estos Términos y Condiciones en cualquier
-        momento. Las actualizaciones entrarán en vigor a partir de su publicación en este sitio web.
-        Se sugiere al usuario revisar periódicamente esta página.
-      </p>
+      <LegalSection number="11" title="Ley Aplicable" id="ley-aplicable">
+        <p>
+          Se rigen por las leyes de la República de Colombia y las autoridades competentes del país.
+        </p>
+        <p>
+          Autoridad de protección al consumidor: Superintendencia de Industria y Comercio —{' '}
+          <a href="https://www.sic.gov.co/" target="_blank" rel="noopener noreferrer" className="text-teal-600 hover:underline">
+            www.sic.gov.co
+          </a>
+          .
+        </p>
+      </LegalSection>
 
-      <h2>11. Legislación Aplicable y Jurisdicción</h2>
-      <p>
-        Los presentes Términos y Condiciones se regirán e interpretarán de acuerdo con las leyes de la
-        República de Colombia. Para la resolución de cualquier controversia o litigio, las partes se
-        someten a la jurisdicción de las autoridades administrativas y jueces de la República de
-        Colombia.
-      </p>
-
-      <h2>Autoridad de Protección al Consumidor</h2>
-      <p>
-        Autoridad de protección al consumidor: Superintendencia de Industria y Comercio —{' '}
-        <a href="https://www.sic.gov.co/" target="_blank" rel="noopener noreferrer">
-          www.sic.gov.co
-        </a>
-        .
-      </p>
-
-      <p className="text-sm text-gray-500">
-        Este documento es informativo y no constituye asesoría jurídica.
-      </p>
-
-      <h2>12. Contacto y Atención de Consultas</h2>
-      <p>
-        Para cualquier duda, petición o aclaración relativa a estos Términos y Condiciones, por
-        favor contáctenos a través de:
-      </p>
-      <ul>
-        <li>
-          <strong>Nombre:</strong> AvantuPrueba
-        </li>
-        <li>
-          <strong>Cédula/NIT:</strong> NO
-        </li>
-        <li>
-          <strong>Correo electrónico:</strong>{' '}
-          <a href={`mailto:${supportEmail}`}>{supportEmail}</a>
-        </li>
-      </ul>
-    </div>
+      <LegalSection number="12" title="Contacto" id="contacto">
+        <ul className="list-disc pl-6 space-y-1">
+          <li>Titular: {LEGAL_IDENTITY.titular}</li>
+          <li>Identificación: {LEGAL_IDENTITY.identificacion}</li>
+          <li>Correo oficial: {LEGAL_IDENTITY.correoOficial}</li>
+          <li>País: {LEGAL_IDENTITY.pais}</li>
+        </ul>
+        <p className="text-sm text-slate-500">
+          Este documento es informativo y no constituye asesoría jurídica.
+        </p>
+      </LegalSection>
+    </LegalPageLayout>
   );
 }
