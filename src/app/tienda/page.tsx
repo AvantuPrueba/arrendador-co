@@ -13,7 +13,7 @@ import CheckoutForm from '@/components/CheckoutForm';
 import { MobileBuyBar } from './mobile-buy-bar';
 import { formatPrice } from '@/lib/product';
 
-const paymentLink = process.env.NEXT_PUBLIC_MERCADOPAGO_LINK || 'https://mpago.li/2kC2Gbt';
+const paymentLink = 'https://mpago.li/2kC2Gbt';
 
 export const metadata: Metadata = {
   title: 'Plantilla de Contrato de Arrendamiento | ArrendadorCO',
