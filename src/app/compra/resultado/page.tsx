@@ -11,6 +11,7 @@ function Contenido() {
   const searchParams = useSearchParams();
   const paymentId = searchParams.get('payment_id');
   const [estado, setEstado] = useState<Estado>('cargando');
+  const [entregaLista, setEntregaLista] = useState(false);
 
   useEffect(() => {
     if (!paymentId) {
@@ -27,8 +28,15 @@ function Contenido() {
           setEstado('error');
           return;
         }
-        if (data.status === 'approved') setEstado('approved');
-        else if (data.status === 'pending' || data.status === 'in_process') setEstado('pending');
+        if (data.status === 'approved') {
+          setEstado('approved');
+          fetch(`/api/orders/status?payment_id=${encodeURIComponent(paymentId)}`)
+            .then((r2) => r2.json())
+            .then((s) => {
+              if (!cancelado && s.delivery_status === 'sent') setEntregaLista(true);
+            })
+            .catch(() => {});
+        } else if (data.status === 'pending' || data.status === 'in_process') setEstado('pending');
         else if (data.status === 'rejected' || data.status === 'cancelled') setEstado('rejected');
         else setEstado('error');
       })
@@ -54,7 +62,12 @@ function Contenido() {
       <div className="py-20 text-center">
         <CheckCircle2 className="mx-auto mb-4 h-14 w-14 text-teal-600" aria-hidden="true" />
         <h1 className="mb-3 text-3xl font-bold text-slate-900">¡Pago confirmado!</h1>
-        <p className="mb-8 text-slate-600">Recibirás la plantilla en tu correo tras la verificación.</p>
+        <p className="mb-2 text-slate-600">Recibirás la plantilla en tu correo tras la verificación.</p>
+        {entregaLista ? (
+          <p className="mb-8 text-sm text-teal-700">Tu entrega está lista. Revisa tu correo para descargar el producto.</p>
+        ) : (
+          <p className="mb-8 text-sm text-slate-500">Estamos preparando tu entrega...</p>
+        )}
         <Link href="/" className="rounded-xl bg-slate-900 px-8 py-3.5 font-semibold text-white hover:bg-slate-800">
           Ir al inicio
         </Link>

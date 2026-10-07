@@ -7,5 +7,19 @@
   "assets": {
     "directory": ".open-next/assets",
     "binding": "ASSETS"
-  }
+  },
+  // PENDIENTE: crear la base D1 y el bucket R2 con wrangler y reemplazar los IDs.
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "arrendadorco-orders",
+      "database_id": "REEMPLAZAR_CON_ID_DE_D1"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "R2_BUCKET",
+      "bucket_name": "arrendadorco-products"
+    }
+  ]
 }
