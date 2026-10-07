@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Menu, X } from 'lucide-react';
 
@@ -13,9 +13,19 @@ const navLinks = [
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    function onScroll() {
+      setScrolled(window.scrollY > 8);
+    }
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-gray-200 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80">
+    <header className={`sticky top-0 z-50 border-b bg-white/95 backdrop-blur transition-shadow supports-[backdrop-filter]:bg-white/80 ${scrolled ? 'border-gray-300 shadow-sm' : 'border-gray-200'}`}>
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4" aria-label="Navegación principal">
         <Link href="/" className="text-xl font-bold text-navy-700" aria-label="ArrendadorCO - Inicio">
           ArrendadorCO
