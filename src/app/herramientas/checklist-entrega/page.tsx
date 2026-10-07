@@ -2,9 +2,9 @@ import type { Metadata } from 'next';
 import ChecklistEntrega from './ChecklistEntrega';
 
 export const metadata: Metadata = {
-  title: 'Checklist de Entrega y Recepción de Inmueble | ArrendadorCO',
+  title: 'Checklist de Entrega y Devolución de Inmueble | ArrendadorCO',
   description:
-    'Completa el estado del inmueble, medidores, llaves e inventario desde tu celular y genera un PDF para guardar o compartir.',
+    'Completa gratis un checklist de entrega o devolución de inmueble, registra zonas, medidores, llaves e inventario y genera un PDF.',
 };
 
 export default function ChecklistEntregaPage() {

@@ -1,8 +1,27 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
-import { Home, ClipboardCheck, Building2 } from 'lucide-react';
+import {
+  ClipboardCheck,
+  Home,
+  MapPin,
+  Calendar,
+  Clock,
+  User,
+  Building2,
+  DoorOpen,
+  KeyRound,
+  Loader2,
+  Check,
+  CheckCircle2,
+  ArrowLeft,
+  ArrowRight,
+  AlertTriangle,
+  FileDown,
+  ArchiveRestore,
+  X,
+} from 'lucide-react';
 import { PRODUCT_CONFIG, formatPrice } from '@/lib/product';
 
 type TipoRegistro = 'entrega' | 'devolucion' | null;
@@ -24,6 +43,14 @@ interface Zona {
   observaciones: string;
 }
 
+interface Elemento {
+  id: string;
+  nombre: string;
+  cantidad: string;
+  estado: 'bueno' | 'regular' | 'malo';
+  observacion: string;
+}
+
 const ZONAS_COMUNES = [
   { id: 'cocina', nombre: 'Cocina', marcado: true },
   { id: 'sala', nombre: 'Sala', marcado: true },
@@ -33,6 +60,16 @@ const ZONAS_COMUNES = [
   { id: 'deposito', nombre: 'Depósito', marcado: false },
   { id: 'zonas-comunes', nombre: 'Zonas comunes', marcado: false },
 ];
+
+const PASOS = [
+  'Tipo',
+  'Datos',
+  'Zonas',
+  'Medidores',
+  'Llaves',
+  'Inventario',
+  'Revisar',
+] as const;
 
 function hoyISO(): string {
   const d = new Date();
@@ -79,18 +116,17 @@ export default function ChecklistEntrega() {
   const [otrosCantidad, setOtrosCantidad] = useState('0');
 
   // Inventario
-  interface Elemento {
-    id: string;
-    nombre: string;
-    cantidad: string;
-    estado: 'bueno' | 'regular' | 'malo';
-    observacion: string;
-  }
   const [elementos, setElementos] = useState<Elemento[]>([]);
   const [nuevoNombre, setNuevoNombre] = useState('');
   const [nuevoCantidad, setNuevoCantidad] = useState('1');
   const [nuevoEstado, setNuevoEstado] = useState<'bueno' | 'regular' | 'malo'>('bueno');
   const [nuevoObservacion, setNuevoObservacion] = useState('');
+
+  const [pdfGenerado, setPdfGenerado] = useState(false);
+  const [generando, setGenerando] = useState(false);
+  const [confirmandoReinicio, setConfirmandoReinicio] = useState(false);
+  const [mostrarPasos, setMostrarPasos] = useState(false);
+  const dialogoRef = useRef<HTMLDivElement>(null);
 
   const totalLlaves =
     (parseInt(llavesPuertaPrincipal, 10) || 0) +
@@ -100,29 +136,7 @@ export default function ChecklistEntrega() {
     (parseInt(controlesGaraje, 10) || 0) +
     (parseInt(otrosCantidad, 10) || 0);
 
-  function agregarElemento() {
-    if (!nuevoNombre.trim()) {
-      setError('Escribe el nombre del elemento.');
-      return;
-    }
-    setElementos((prev) => [
-      ...prev,
-      {
-        id: `${Date.now()}`,
-        nombre: nuevoNombre.trim(),
-        cantidad: nuevoCantidad || '1',
-        estado: nuevoEstado,
-        observacion: nuevoObservacion,
-      },
-    ]);
-    setNuevoNombre('');
-    setNuevoCantidad('1');
-    setNuevoEstado('bueno');
-    setNuevoObservacion('');
-    setError('');
-  }
-
-  // === Guardado de progreso en localStorage ===
+  // === Persistencia localStorage ===
   useEffect(() => {
     try {
       const guardado = window.localStorage.getItem('checklist-entrega-progreso');
@@ -151,7 +165,7 @@ export default function ChecklistEntrega() {
         /* eslint-enable react-hooks/set-state-in-effect */
       }
     } catch {
-      // Si el dato guardado está corrupto, seguimos con el formulario vacío.
+      /* ignorar datos corruptos */
     }
   }, []);
 
@@ -168,7 +182,7 @@ export default function ChecklistEntrega() {
         }),
       );
     } catch {
-      // localStorage puede no estar disponible (modo privado); no bloqueamos.
+      /* ignorar */
     }
   }, [
     paso, tipoRegistro, datos, habitaciones, banos, comunes, zonas,
@@ -178,11 +192,21 @@ export default function ChecklistEntrega() {
     elementos,
   ]);
 
-  function borrarDatos() {
+  // Cerrar diálogo con Escape
+  useEffect(() => {
+    if (!mostrarPasos) return;
+    function onKey(e: KeyboardEvent) {
+      if (e.key === 'Escape') setMostrarPasos(false);
+    }
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [mostrarPasos]);
+
+  function reiniciar() {
     try {
       window.localStorage.removeItem('checklist-entrega-progreso');
     } catch {
-      // Ignorar.
+      /* ignorar */
     }
     setPaso(1);
     setTipoRegistro(null);
@@ -205,116 +229,112 @@ export default function ChecklistEntrega() {
     setElementos([]);
     setPdfGenerado(false);
     setError('');
+    setConfirmandoReinicio(false);
   }
-
-  const [pdfGenerado, setPdfGenerado] = useState(false);
 
   function eliminarElemento(id: string) {
     setElementos((prev) => prev.filter((e) => e.id !== id));
   }
 
-  async function generarPDF() {
-    const { jsPDF } = await import('jspdf');
-    const doc = new jsPDF();
-    const margen = 15;
-    const ancho = doc.internal.pageSize.getWidth();
-    let y = 20;
-
-    const linea = (texto: string, tamano = 10, negrita = false) => {
-      doc.setFont('helvetica', negrita ? 'bold' : 'normal');
-      doc.setFontSize(tamano);
-      const lineas = doc.splitTextToSize(texto, ancho - margen * 2);
-      doc.text(lineas, margen, y);
-      y += lineas.length * (tamano * 0.5) + 2;
-      if (y > 270) {
-        doc.addPage();
-        y = 20;
-      }
-    };
-
-    linea('ArrendadorCO — Checklist de Entrega y Recepción', 14, true);
-    linea(`Tipo de registro: ${tipoRegistro === 'devolucion' ? 'Devolución' : 'Entrega inicial'}`);
-    linea('');
-
-    linea('Datos generales', 12, true);
-    linea(`Dirección: ${datos.direccion}`);
-    linea(`Ciudad: ${datos.ciudad}`);
-    linea(`Fecha: ${datos.fecha} · Hora: ${datos.hora}`);
-    linea(`Arrendador: ${datos.arrendador}`);
-    linea(`Arrendatario: ${datos.arrendatario}`);
-    linea('');
-
-    linea('Zonas', 12, true);
-    zonas.forEach((z) => {
-      linea(`${z.nombre}: ${z.estado ? z.estado : 'Sin calificar'}${z.observaciones ? ` — ${z.observaciones}` : ''}`);
-    });
-    linea('');
-
-    if (aguaLectura || energiaLectura || gasLectura) {
-      linea('Medidores', 12, true);
-      if (aguaLectura) linea(`Agua: ${aguaLectura}${aguaFecha ? ` (${aguaFecha})` : ''}`);
-      if (energiaLectura) linea(`Energía: ${energiaLectura}`);
-      if (gasLectura) linea(`Gas: ${gasLectura}`);
-      linea('');
+  function agregarElemento() {
+    if (!nuevoNombre.trim()) {
+      setError('Escribe el nombre del elemento.');
+      return;
     }
-
-    if (totalLlaves > 0) {
-      linea('Llaves y controles', 12, true);
-      linea(`Total de elementos: ${totalLlaves}`);
-      if (otrosNombre) linea(`Otros: ${otrosNombre} × ${otrosCantidad}`);
-      linea('');
-    }
-
-    if (elementos.length > 0) {
-      linea('Inventario', 12, true);
-      elementos.forEach((el) => {
-        linea(`${el.nombre} × ${el.cantidad} — ${el.estado}${el.observacion ? ` (${el.observacion})` : ''}`);
-      });
-      linea('');
-    }
-
-    linea('Firmas', 12, true);
-    linea('_______________________________');
-    linea('Arrendador');
-    linea('_______________________________');
-    linea('Arrendatario');
-    linea('');
-
-    const ahora = new Date();
-    linea(`Documento generado desde arrendadorco.com el ${ahora.toLocaleDateString('es-CO')} ${ahora.toLocaleTimeString('es-CO')}`, 8);
-    doc.setTextColor(120);
-    linea(
-      'Este documento es un registro generado a partir de la información introducida por el usuario. No constituye prueba legal automática ni soporte probatorio garantizado.',
-      8,
-    );
-    doc.setTextColor(0);
-
-    const tipo = tipoRegistro === 'devolucion' ? 'devolucion' : 'entrega';
-    doc.save(`checklist-${tipo}-${datos.fecha || hoyISO()}.pdf`);
-    setPdfGenerado(true);
+    setElementos((prev) => [
+      ...prev,
+      { id: `${Date.now()}`, nombre: nuevoNombre.trim(), cantidad: nuevoCantidad || '1', estado: nuevoEstado, observacion: nuevoObservacion },
+    ]);
+    setNuevoNombre('');
+    setNuevoCantidad('1');
+    setNuevoEstado('bueno');
+    setNuevoObservacion('');
+    setError('');
   }
 
-  const inputClase =
-    'w-full rounded-lg border border-navy-100 px-4 py-3 text-gray-900 focus:border-navy-400 focus:outline-none';
-  const botonPrimario =
-    'inline-flex min-h-[48px] w-full sm:w-auto items-center justify-center gap-2 rounded-xl bg-navy-600 px-8 py-3 font-semibold text-white hover:bg-navy-700 transition-colors';
-  const botonSecundario =
-    'inline-flex min-h-[48px] w-full sm:w-auto items-center justify-center gap-2 rounded-xl border border-navy-200 px-8 py-3 font-semibold text-navy-700 hover:bg-navy-50 transition-colors';
+  async function generarPDF() {
+    setGenerando(true);
+    try {
+      const { jsPDF } = await import('jspdf');
+      const doc = new jsPDF();
+      const margen = 15;
+      const ancho = doc.internal.pageSize.getWidth();
+      let y = 20;
+
+      const linea = (texto: string, tamano = 10, negrita = false) => {
+        doc.setFont('helvetica', negrita ? 'bold' : 'normal');
+        doc.setFontSize(tamano);
+        const lineas = doc.splitTextToSize(texto, ancho - margen * 2);
+        doc.text(lineas, margen, y);
+        y += lineas.length * (tamano * 0.5) + 2;
+        if (y > 270) {
+          doc.addPage();
+          y = 20;
+        }
+      };
+
+      linea('ArrendadorCO — Checklist de Entrega y Devolución', 14, true);
+      linea(`Tipo de registro: ${tipoRegistro === 'devolucion' ? 'Devolución' : 'Entrega inicial'}`);
+      linea('');
+      linea('Datos generales', 12, true);
+      linea(`Dirección: ${datos.direccion}`);
+      linea(`Ciudad: ${datos.ciudad}`);
+      linea(`Fecha: ${datos.fecha} · Hora: ${datos.hora}`);
+      linea(`Arrendador: ${datos.arrendador}`);
+      linea(`Arrendatario: ${datos.arrendatario}`);
+      linea('');
+      linea('Zonas', 12, true);
+      zonas.forEach((z) => linea(`${z.nombre}: ${z.estado || 'Sin calificar'}${z.observaciones ? ` — ${z.observaciones}` : ''}`));
+      linea('');
+      if (aguaLectura || energiaLectura || gasLectura) {
+        linea('Medidores', 12, true);
+        if (aguaLectura) linea(`Agua: ${aguaLectura}${aguaFecha ? ` (${aguaFecha})` : ''}`);
+        if (energiaLectura) linea(`Energía: ${energiaLectura}`);
+        if (gasLectura) linea(`Gas: ${gasLectura}`);
+        linea('');
+      }
+      if (totalLlaves > 0) {
+        linea('Llaves y controles', 12, true);
+        linea(`Total de elementos: ${totalLlaves}`);
+        if (otrosNombre) linea(`Otros: ${otrosNombre} × ${otrosCantidad}`);
+        linea('');
+      }
+      if (elementos.length > 0) {
+        linea('Inventario', 12, true);
+        elementos.forEach((el) => linea(`${el.nombre} × ${el.cantidad} — ${el.estado}${el.observacion ? ` (${el.observacion})` : ''}`));
+        linea('');
+      }
+      linea('Firmas', 12, true);
+      linea('_______________________________');
+      linea('Arrendador');
+      linea('_______________________________');
+      linea('Arrendatario');
+      linea('');
+      const ahora = new Date();
+      linea(`Documento generado desde arrendadorco.com el ${ahora.toLocaleDateString('es-CO')} ${ahora.toLocaleTimeString('es-CO')}`, 8);
+      doc.setTextColor(120);
+      linea('Este documento es un registro generado a partir de la información introducida por el usuario. No constituye prueba legal automática ni soporte probatorio garantizado.', 8);
+      doc.setTextColor(0);
+      const tipo = tipoRegistro === 'devolucion' ? 'devolucion' : 'entrega';
+      doc.save(`checklist-${tipo}-${datos.fecha || hoyISO()}.pdf`);
+      setPdfGenerado(true);
+    } finally {
+      setGenerando(false);
+    }
+  }
+
+  const inputClase = 'w-full rounded-lg border border-navy-100 bg-white px-4 py-3 text-gray-900 placeholder:text-gray-400 focus:border-navy-400 focus:outline-none focus:ring-2 focus:ring-teal-100 transition-colors';
+  const botonPrimario = 'inline-flex min-h-[48px] w-full sm:w-auto items-center justify-center gap-2 rounded-xl bg-teal-600 px-8 py-3 font-semibold text-white shadow-sm transition-all hover:-translate-y-[1px] hover:bg-teal-700 hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-gray-300 motion-reduce:transition-none motion-reduce:hover:translate-y-0';
+  const botonSecundario = 'inline-flex min-h-[48px] w-full sm:w-auto items-center justify-center gap-2 rounded-xl border border-navy-200 bg-white px-8 py-3 font-semibold text-navy-700 transition-colors hover:bg-navy-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2';
 
   function generarZonas() {
     const nuevas: Zona[] = [];
     const nHab = Math.max(0, parseInt(habitaciones, 10) || 0);
     const nBanos = Math.max(0, parseInt(banos, 10) || 0);
-    for (let i = 1; i <= nHab; i++) {
-      nuevas.push({ id: `hab-${i}`, nombre: `Habitación ${i}`, tipo: 'habitacion', estado: '', observaciones: '' });
-    }
-    for (let i = 1; i <= nBanos; i++) {
-      nuevas.push({ id: `bano-${i}`, nombre: `Baño ${i}`, tipo: 'bano', estado: '', observaciones: '' });
-    }
+    for (let i = 1; i <= nHab; i++) nuevas.push({ id: `hab-${i}`, nombre: `Habitación ${i}`, tipo: 'habitacion', estado: '', observaciones: '' });
+    for (let i = 1; i <= nBanos; i++) nuevas.push({ id: `bano-${i}`, nombre: `Baño ${i}`, tipo: 'bano', estado: '', observaciones: '' });
     ZONAS_COMUNES.forEach((z) => {
-      if (comunes[z.id]) {
-        nuevas.push({ id: z.id, nombre: z.nombre, tipo: 'comun', estado: '', observaciones: '' });
-      }
+      if (comunes[z.id]) nuevas.push({ id: z.id, nombre: z.nombre, tipo: 'comun', estado: '', observaciones: '' });
     });
     setZonas(nuevas);
   }
@@ -324,10 +344,7 @@ export default function ChecklistEntrega() {
   }
 
   function continuarPaso1() {
-    if (!tipoRegistro) {
-      setError('Elige el tipo de registro para continuar.');
-      return;
-    }
+    if (!tipoRegistro) return setError('Elige el tipo de registro para continuar.');
     setError('');
     setPaso(2);
   }
@@ -350,18 +367,79 @@ export default function ChecklistEntrega() {
     setPaso(4);
   }
 
+  const porcentaje = Math.round((paso / 7) * 100);
+  const zonasCalificadas = zonas.filter((z) => z.estado !== '').length;
+  const completo =
+    datos.direccion && datos.arrendador && zonas.length > 0 && zonasCalificadas === zonas.length;
+
   return (
-    <div className="mx-auto max-w-3xl px-4 py-12 md:py-16">
-      {/* Hero */}
-      <header className="mb-12">
+    <div className="mx-auto max-w-[1100px] px-4 py-12 md:py-16">
+      {/* HERO */}
+      <header className="mb-10">
+        <span className="mb-4 inline-block rounded-full border border-teal-200 bg-teal-50 px-3 py-1 text-xs font-semibold text-teal-700">
+          Gratis · Sin registro
+        </span>
         <h1 className="mb-4 text-3xl md:text-4xl font-bold text-navy-900">
-          Checklist de entrega y recepción de inmueble
+          Checklist de entrega y devolución de inmueble
         </h1>
         <p className="mb-4 max-w-2xl text-lg text-gray-600">
-          Completa el estado del inmueble desde tu celular y genera un PDF para guardar o compartir.
+          Documenta el estado del inmueble, registra medidores, llaves e inventario y genera un PDF para guardar o compartir.
         </p>
-        <p className="text-sm text-gray-500">Gratis · Sin registro · Funciona sin conexión</p>
+        <div className="flex flex-wrap gap-x-6 gap-y-1 text-sm text-gray-500">
+          <span>7 pasos</span>
+          <span>PDF generado en tu dispositivo</span>
+          <span>Tu progreso se guarda en este dispositivo</span>
+        </div>
+        <p className="mt-3 text-xs text-gray-400">ArrendadorCO · Herramienta gratuita</p>
       </header>
+
+      {/* STEPPER DESKTOP */}
+      <nav aria-label="Pasos del checklist" className="mb-8 hidden sm:block">
+        <ol className="flex items-center gap-2">
+          {PASOS.map((nombre, i) => {
+            const numero = (i + 1) as 1 | 2 | 3 | 4 | 5 | 6 | 7;
+            const completado = numero < paso;
+            const actual = numero === paso;
+            return (
+              <li key={nombre} className="flex flex-1 items-center gap-2">
+                <span
+                  className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-bold transition-colors ${
+                    completado ? 'bg-teal-600 text-white' : actual ? 'bg-teal-100 text-teal-700 ring-2 ring-teal-500' : 'bg-gray-100 text-gray-400'
+                  }`}
+                >
+                  {completado ? <Check className="h-4 w-4" aria-hidden="true" /> : String(numero).padStart(2, '0')}
+                </span>
+                <span className={`hidden text-xs lg:inline ${actual ? 'font-semibold text-navy-900' : completado ? 'text-teal-700' : 'text-gray-400'}`}>
+                  {nombre}
+                </span>
+                {i < PASOS.length - 1 && <span className="h-px flex-1 bg-gray-200" aria-hidden="true" />}
+              </li>
+            );
+          })}
+        </ol>
+      </nav>
+
+      {/* STEPPER MOBILE */}
+      <div className="mb-8 sm:hidden">
+        <p className="mb-2 text-sm font-semibold text-navy-900">
+          Paso {paso} de 7 · {PASOS[paso - 1]}
+        </p>
+        <button type="button" onClick={() => setMostrarPasos(true)} className="text-xs font-semibold text-teal-600 hover:underline">
+          Ver pasos
+        </button>
+      </div>
+
+      {/* PROGRESO */}
+      <div className="mb-10">
+        <div className="mb-1 flex justify-between text-xs text-gray-500">
+          <span>Paso {paso} de 7</span>
+          <span aria-live="polite">{porcentaje}%</span>
+        </div>
+        <div className="h-2 w-full overflow-hidden rounded-full bg-gray-100">
+          <div className="h-full rounded-full bg-teal-500 transition-all duration-500 motion-reduce:transition-none" style={{ width: `${porcentaje}%` }} />
+        </div>
+        <p className="mt-2 text-xs text-gray-400" aria-live="polite">✓ Guardado en este dispositivo</p>
+      </div>
 
       {error && (
         <p className="mb-6 rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-700" role="alert">
@@ -369,41 +447,57 @@ export default function ChecklistEntrega() {
         </p>
       )}
 
+      {/* Diálogo mobile de pasos */}
+      {mostrarPasos && (
+        <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/40 p-4 sm:items-center" role="dialog" aria-modal="true" aria-label="Pasos del checklist" onClick={() => setMostrarPasos(false)}>
+          <div ref={dialogoRef} className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-xl" onClick={(e) => e.stopPropagation()}>
+            <div className="mb-4 flex items-center justify-between">
+              <h2 className="text-lg font-semibold text-navy-900">Pasos</h2>
+              <button type="button" onClick={() => setMostrarPasos(false)} aria-label="Cerrar" className="rounded-lg p-1 text-gray-500 hover:bg-gray-100">
+                <X className="h-5 w-5" aria-hidden="true" />
+              </button>
+            </div>
+            <ol className="space-y-2">
+              {PASOS.map((nombre, i) => (
+                <li key={nombre} className={`flex items-center gap-3 text-sm ${i + 1 === paso ? 'font-semibold text-navy-900' : 'text-gray-500'}`}>
+                  <span className="font-mono text-xs text-teal-600">{String(i + 1).padStart(2, '0')}</span>
+                  {nombre}
+                </li>
+              ))}
+            </ol>
+          </div>
+        </div>
+      )}
+
       {/* PASO 1 */}
       {paso === 1 && (
         <section>
-          <div className="mb-4 flex items-center gap-3">
-            <ClipboardCheck className="w-6 h-6 text-navy-600" aria-hidden="true" />
+          <div className="mb-6 flex items-center gap-3">
+            <ClipboardCheck className="h-6 w-6 text-teal-600" aria-hidden="true" />
             <h2 className="text-xl font-semibold text-navy-900">¿Qué estás documentando?</h2>
           </div>
-          <div className="mb-6 grid gap-4 sm:grid-cols-2">
-            {(
-              [
-                { valor: 'entrega', titulo: 'Entrega inicial', desc: 'Cuando el arrendatario recibe el inmueble.' },
-                { valor: 'devolucion', titulo: 'Devolución', desc: 'Cuando el arrendatario devuelve el inmueble al arrendador.' },
-              ] as const
-            ).map((opcion) => (
+          <div className="mb-8 grid gap-4 sm:grid-cols-2">
+            {([
+              { valor: 'entrega', titulo: 'Entrega inicial', desc: 'Cuando el arrendatario recibe el inmueble.' },
+              { valor: 'devolucion', titulo: 'Devolución', desc: 'Cuando el arrendatario entrega el inmueble al arrendador.' },
+            ] as const).map((opcion) => (
               <label
                 key={opcion.valor}
-                className={`cursor-pointer rounded-xl border p-6 shadow-sm transition-colors ${
-                  tipoRegistro === opcion.valor ? 'border-navy-400 bg-navy-50' : 'border-navy-100 bg-white'
+                className={`cursor-pointer rounded-2xl border-2 p-6 transition-all ${
+                  tipoRegistro === opcion.valor ? 'border-teal-500 bg-teal-50 shadow-sm' : 'border-slate-200 bg-white hover:border-slate-300'
                 }`}
               >
-                <input
-                  type="radio"
-                  name="tipoRegistro"
-                  value={opcion.valor}
-                  checked={tipoRegistro === opcion.valor}
-                  onChange={() => setTipoRegistro(opcion.valor)}
-                  className="sr-only"
-                />
-                <span className="mb-1 block text-lg font-semibold text-navy-900">{opcion.titulo}</span>
-                <span className="text-sm text-gray-600">{opcion.desc}</span>
+                <input type="radio" name="tipoRegistro" value={opcion.valor} checked={tipoRegistro === opcion.valor} onChange={() => setTipoRegistro(opcion.valor)} className="sr-only" />
+                <div className="flex items-start justify-between">
+                  <span className="text-lg font-semibold text-navy-900">{opcion.titulo}</span>
+                  {tipoRegistro === opcion.valor && <CheckCircle2 className="h-5 w-5 text-teal-600" aria-hidden="true" />}
+                </div>
+                <span className="mt-1 block text-sm text-gray-600">{opcion.desc}</span>
               </label>
             ))}
           </div>
           <button type="button" onClick={continuarPaso1} className={botonPrimario}>
-            Continuar
+            Continuar <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </button>
         </section>
       )}
@@ -411,227 +505,209 @@ export default function ChecklistEntrega() {
       {/* PASO 2 */}
       {paso === 2 && (
         <section>
-          <div className="mb-4 flex items-center gap-3">
-            <Home className="w-6 h-6 text-navy-600" aria-hidden="true" />
-            <h2 className="text-xl font-semibold text-navy-900">Datos generales</h2>
+          <div className="mb-6 flex items-center gap-3">
+            <Home className="h-6 w-6 text-teal-600" aria-hidden="true" />
+            <div>
+              <h2 className="text-xl font-semibold text-navy-900">Datos del inmueble</h2>
+              <p className="text-sm text-gray-500">Información básica de la inspección.</p>
+            </div>
           </div>
-          <div className="mb-6 grid gap-4 sm:grid-cols-2">
-            <label className="block">
-              <span className="mb-1 block text-sm font-medium text-gray-700">Dirección del inmueble</span>
-              <input type="text" value={datos.direccion} onChange={(e) => setDatos({ ...datos, direccion: e.target.value })} className={inputClase} />
-            </label>
-            <label className="block">
-              <span className="mb-1 block text-sm font-medium text-gray-700">Ciudad</span>
-              <input type="text" value={datos.ciudad} onChange={(e) => setDatos({ ...datos, ciudad: e.target.value })} className={inputClase} />
-            </label>
-            <label className="block">
-              <span className="mb-1 block text-sm font-medium text-gray-700">Fecha</span>
-              <input type="date" value={datos.fecha} onChange={(e) => setDatos({ ...datos, fecha: e.target.value })} className={inputClase} />
-            </label>
-            <label className="block">
-              <span className="mb-1 block text-sm font-medium text-gray-700">Hora</span>
-              <input type="time" value={datos.hora} onChange={(e) => setDatos({ ...datos, hora: e.target.value })} className={inputClase} />
-            </label>
-            <label className="block">
-              <span className="mb-1 block text-sm font-medium text-gray-700">Nombre del arrendador</span>
-              <input type="text" value={datos.arrendador} onChange={(e) => setDatos({ ...datos, arrendador: e.target.value })} className={inputClase} />
-            </label>
-            <label className="block">
-              <span className="mb-1 block text-sm font-medium text-gray-700">Nombre del arrendatario</span>
-              <input type="text" value={datos.arrendatario} onChange={(e) => setDatos({ ...datos, arrendatario: e.target.value })} className={inputClase} />
-            </label>
+          <div className="mb-8 grid gap-4 sm:grid-cols-2">
+            {[
+              { icon: MapPin, label: 'Dirección', value: datos.direccion, key: 'direccion', type: 'text' },
+              { icon: Building2, label: 'Ciudad', value: datos.ciudad, key: 'ciudad', type: 'text' },
+              { icon: Calendar, label: 'Fecha', value: datos.fecha, key: 'fecha', type: 'date' },
+              { icon: Clock, label: 'Hora', value: datos.hora, key: 'hora', type: 'time' },
+              { icon: User, label: 'Arrendador', value: datos.arrendador, key: 'arrendador', type: 'text' },
+              { icon: User, label: 'Arrendatario', value: datos.arrendatario, key: 'arrendatario', type: 'text' },
+            ].map((campo) => (
+              <label key={campo.key} className="block">
+                <span className="mb-1.5 flex items-center gap-1.5 text-sm font-medium text-gray-700">
+                  <campo.icon className="h-4 w-4 text-teal-600" aria-hidden="true" />
+                  {campo.label}
+                </span>
+                <input type={campo.type} value={campo.value} onChange={(e) => setDatos({ ...datos, [campo.key]: e.target.value })} className={inputClase} />
+              </label>
+            ))}
           </div>
-          <div className="flex flex-col-reverse gap-3 sm:flex-row">
-            <button type="button" onClick={() => setPaso(1)} className={botonSecundario}>Volver</button>
-            <button type="button" onClick={continuarPaso2} className={botonPrimario}>Continuar</button>
-          </div>
+          <NavButtons
+            onBack={() => setPaso(1)}
+            onNext={continuarPaso2}
+            labelBack="Atrás"
+            labelNext="Continuar"
+            botonPrimario={botonPrimario}
+            botonSecundario={botonSecundario}
+          />
         </section>
       )}
 
       {/* PASO 3 */}
       {paso === 3 && (
         <section>
-          <div className="mb-4 flex items-center gap-3">
-            <Building2 className="w-6 h-6 text-navy-600" aria-hidden="true" />
-            <h2 className="text-xl font-semibold text-navy-900">Zonas del inmueble</h2>
-          </div>
-
-          <div className="mb-6 grid gap-4 sm:grid-cols-2">
+          <h2 className="mb-6 text-xl font-semibold text-navy-900">¿Qué espacios quieres revisar?</h2>
+          <div className="mb-8 grid gap-4 sm:grid-cols-2">
             <label className="block">
-              <span className="mb-1 block text-sm font-medium text-gray-700">¿Cuántas habitaciones quieres revisar?</span>
+              <span className="mb-1.5 block text-sm font-medium text-gray-700">Habitaciones</span>
               <input type="number" min="0" value={habitaciones} onChange={(e) => setHabitaciones(e.target.value)} className={inputClase} />
             </label>
             <label className="block">
-              <span className="mb-1 block text-sm font-medium text-gray-700">¿Cuántos baños?</span>
+              <span className="mb-1.5 block text-sm font-medium text-gray-700">Baños</span>
               <input type="number" min="0" value={banos} onChange={(e) => setBanos(e.target.value)} className={inputClase} />
             </label>
           </div>
 
-          <fieldset className="mb-6">
-            <legend className="mb-2 text-sm font-medium text-gray-700">Zonas comunes a incluir</legend>
-            <div className="grid gap-2 sm:grid-cols-2">
-              {ZONAS_COMUNES.map((z) => (
-                <label key={z.id} className="inline-flex items-center gap-2 text-sm text-gray-700">
-                  <input type="checkbox" checked={!!comunes[z.id]} onChange={(e) => setComunes({ ...comunes, [z.id]: e.target.checked })} className="h-4 w-4 rounded border-navy-200 text-navy-600" />
-                  {z.nombre}
-                </label>
-              ))}
-            </div>
-          </fieldset>
+          <h3 className="mb-3 text-sm font-semibold text-gray-700">Zonas comunes</h3>
+          <div className="mb-8 grid grid-cols-2 gap-2 sm:grid-cols-4">
+            {ZONAS_COMUNES.map((z) => (
+              <button
+                key={z.id}
+                type="button"
+                onClick={() => setComunes({ ...comunes, [z.id]: !comunes[z.id] })}
+                aria-pressed={!!comunes[z.id]}
+                className={`rounded-xl border px-3 py-2.5 text-sm transition-colors ${
+                  comunes[z.id] ? 'border-teal-500 bg-teal-50 text-teal-800 font-semibold' : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'
+                }`}
+              >
+                {z.nombre}
+              </button>
+            ))}
+          </div>
 
           <button type="button" onClick={generarZonas} className={botonSecundario}>
             Generar zonas
           </button>
 
           {zonas.length > 0 && (
-            <div className="mt-8 space-y-4">
-              {zonas.map((zona) => (
-                <article key={zona.id} className="rounded-xl border border-navy-100 bg-white p-6 shadow-sm">
-                  <h3 className="mb-3 text-lg font-semibold text-navy-900">{zona.nombre}</h3>
-                  <div className="mb-3 flex flex-wrap gap-4">
-                    {(['bueno', 'regular', 'malo'] as const).map((estado) => (
-                      <label key={estado} className="inline-flex items-center gap-2 text-sm text-gray-700">
-                        <input
-                          type="radio"
-                          name={`estado-${zona.id}`}
-                          value={estado}
-                          checked={zona.estado === estado}
-                          onChange={() => actualizarZona(zona.id, { estado })}
-                          className="h-4 w-4 border-navy-200 text-navy-600"
-                        />
-                        {estado === 'bueno' ? 'Bueno' : estado === 'regular' ? 'Regular' : 'Malo'}
-                      </label>
-                    ))}
-                  </div>
-                  <textarea
-                    rows={2}
-                    value={zona.observaciones}
-                    onChange={(e) => actualizarZona(zona.id, { observaciones: e.target.value })}
-                    placeholder="Observaciones"
-                    className={inputClase}
-                  />
-                </article>
-              ))}
+            <div className="mt-8">
+              <h3 className="mb-4 text-lg font-semibold text-navy-900">Revisión de zonas</h3>
+              <div className="space-y-4">
+                {zonas.map((zona) => (
+                  <article key={zona.id} className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+                    <h4 className="mb-3 font-semibold text-navy-900">{zona.nombre}</h4>
+                    <div className="mb-3 flex flex-wrap gap-2">
+                      {(['bueno', 'regular', 'malo'] as const).map((estado) => (
+                        <label key={estado} className={`inline-flex cursor-pointer items-center gap-1.5 rounded-full border px-4 py-1.5 text-sm transition-colors ${
+                          zona.estado === estado
+                            ? estado === 'bueno' ? 'border-teal-500 bg-teal-50 text-teal-800 font-semibold'
+                              : estado === 'regular' ? 'border-amber-400 bg-amber-50 text-amber-800 font-semibold'
+                              : 'border-red-400 bg-red-50 text-red-800 font-semibold'
+                            : 'border-slate-200 text-slate-600 hover:border-slate-300'
+                        }`}>
+                          <input type="radio" name={`estado-${zona.id}`} value={estado} checked={zona.estado === estado} onChange={() => actualizarZona(zona.id, { estado })} className="sr-only" />
+                          {estado === 'bueno' ? '✓ Bueno' : estado === 'regular' ? '! Regular' : '× Malo'}
+                        </label>
+                      ))}
+                    </div>
+                    <textarea
+                      rows={2}
+                      value={zona.observaciones}
+                      onChange={(e) => actualizarZona(zona.id, { observaciones: e.target.value })}
+                      placeholder="Observaciones"
+                      className={inputClase}
+                    />
+                  </article>
+                ))}
+              </div>
             </div>
           )}
 
-          <div className="mt-8 flex flex-col-reverse gap-3 sm:flex-row">
-            <button type="button" onClick={() => setPaso(2)} className={botonSecundario}>Volver</button>
-            <button type="button" onClick={continuarPaso3} className={botonPrimario}>Continuar</button>
-          </div>
+          <NavButtons
+            onBack={() => setPaso(2)}
+            onNext={continuarPaso3}
+            labelBack="Atrás"
+            labelNext="Continuar"
+            botonPrimario={botonPrimario}
+            botonSecundario={botonSecundario}
+          />
         </section>
       )}
 
-      {/* PASO 4: Medidores y servicios */}
+      {/* PASO 4 */}
       {paso === 4 && (
         <section>
-          <h2 className="mb-4 text-xl font-semibold text-navy-900">Lecturas de medidores</h2>
-          <p className="mb-6 text-gray-600">Todos los campos son opcionales. Si un servicio no aplica, déjalo vacío.</p>
-          <div className="mb-6 grid gap-4 sm:grid-cols-2">
-            <label className="block">
-              <span className="mb-1 block text-sm font-medium text-gray-700">Agua: lectura</span>
-              <input type="text" inputMode="numeric" value={aguaLectura} onChange={(e) => setAguaLectura(e.target.value)} className={inputClase} />
-            </label>
-            <label className="block">
-              <span className="mb-1 block text-sm font-medium text-gray-700">Fecha/hora de lectura del agua (opcional)</span>
-              <input type="datetime-local" value={aguaFecha} onChange={(e) => setAguaFecha(e.target.value)} className={inputClase} />
-            </label>
-            <label className="block">
-              <span className="mb-1 block text-sm font-medium text-gray-700">Energía: lectura</span>
-              <input type="text" inputMode="numeric" value={energiaLectura} onChange={(e) => setEnergiaLectura(e.target.value)} className={inputClase} />
-            </label>
-            <label className="block">
-              <span className="mb-1 block text-sm font-medium text-gray-700">Gas: lectura</span>
-              <input type="text" inputMode="numeric" value={gasLectura} onChange={(e) => setGasLectura(e.target.value)} className={inputClase} />
-            </label>
+          <h2 className="mb-6 text-xl font-semibold text-navy-900">Lecturas de medidores</h2>
+          <div className="mb-8 grid gap-4 sm:grid-cols-3">
+            {[
+              { nombre: 'Agua', value: aguaLectura, set: setAguaLectura, extra: aguaFecha, setExtra: setAguaFecha },
+              { nombre: 'Energía', value: energiaLectura, set: setEnergiaLectura },
+              { nombre: 'Gas', value: gasLectura, set: setGasLectura },
+            ].map((m) => (
+              <div key={m.nombre} className="rounded-xl border border-slate-200 bg-white p-5">
+                <h3 className="mb-3 text-xs font-bold uppercase tracking-wider text-slate-500">{m.nombre}</h3>
+                <input type="text" inputMode="numeric" value={m.value} onChange={(e) => m.set(e.target.value)} placeholder="Lectura" className={inputClase} />
+                {m.setExtra && (
+                  <input type="datetime-local" value={m.extra} onChange={(e) => m.setExtra?.(e.target.value)} aria-label="Fecha de lectura del agua" className={`${inputClase} mt-2`} />
+                )}
+                <p className="mt-2 text-xs text-slate-400">Campo opcional.</p>
+              </div>
+            ))}
           </div>
-          <div className="flex flex-col-reverse gap-3 sm:flex-row">
-            <button type="button" onClick={() => setPaso(3)} className={botonSecundario}>Volver</button>
-            <button type="button" onClick={() => setPaso(5)} className={botonPrimario}>Continuar</button>
-          </div>
+          <NavButtons onBack={() => setPaso(3)} onNext={() => setPaso(5)} labelBack="Atrás" labelNext="Continuar" botonPrimario={botonPrimario} botonSecundario={botonSecundario} />
         </section>
       )}
 
-      {/* PASO 5: Llaves y controles */}
+      {/* PASO 5 */}
       {paso === 5 && (
         <section>
-          <h2 className="mb-4 text-xl font-semibold text-navy-900">Llaves y controles entregados</h2>
-          <div className="mb-6 grid gap-4 sm:grid-cols-2">
+          <h2 className="mb-6 text-xl font-semibold text-navy-900">Llaves y controles entregados</h2>
+          <div className="mb-8 space-y-3">
             {[
-              { label: 'Puerta principal', value: llavesPuertaPrincipal, set: setLlavesPuertaPrincipal },
-              { label: 'Puerta de habitaciones', value: llavesHabitaciones, set: setLlavesHabitaciones },
-              { label: 'Buzón', value: llavesBuzon, set: setLlavesBuzon },
-              { label: 'Parqueadero', value: llavesParqueadero, set: setLlavesParqueadero },
-              { label: 'Control de garaje', value: controlesGaraje, set: setControlesGaraje },
+              { icon: DoorOpen, label: 'Puerta principal', value: llavesPuertaPrincipal, set: setLlavesPuertaPrincipal },
+              { icon: KeyRound, label: 'Puertas de habitaciones', value: llavesHabitaciones, set: setLlavesHabitaciones },
+              { icon: KeyRound, label: 'Buzón', value: llavesBuzon, set: setLlavesBuzon },
+              { icon: DoorOpen, label: 'Parqueadero', value: llavesParqueadero, set: setLlavesParqueadero },
+              { icon: KeyRound, label: 'Control de garaje', value: controlesGaraje, set: setControlesGaraje },
             ].map((item) => (
-              <label key={item.label} className="block">
-                <span className="mb-1 block text-sm font-medium text-gray-700">{item.label}</span>
-                <input type="number" min="0" value={item.value} onChange={(e) => item.set(e.target.value)} className={inputClase} />
-              </label>
+              <div key={item.label} className="flex items-center gap-4 rounded-xl border border-slate-200 bg-white p-4">
+                <item.icon className="h-5 w-5 text-teal-600" aria-hidden="true" />
+                <span className="flex-1 text-sm font-medium text-slate-700">{item.label}</span>
+                <input type="number" min="0" value={item.value} onChange={(e) => item.set(e.target.value)} className="w-24 rounded-lg border border-navy-100 px-3 py-2 text-center" />
+              </div>
             ))}
-            <label className="block">
-              <span className="mb-1 block text-sm font-medium text-gray-700">Otros (nombre)</span>
-              <input type="text" value={otrosNombre} onChange={(e) => setOtrosNombre(e.target.value)} placeholder="Ej: llave de depósito" className={inputClase} />
-            </label>
-            <label className="block">
-              <span className="mb-1 block text-sm font-medium text-gray-700">Otros (cantidad)</span>
-              <input type="number" min="0" value={otrosCantidad} onChange={(e) => setOtrosCantidad(e.target.value)} className={inputClase} />
-            </label>
+            <div className="grid gap-3 sm:grid-cols-2">
+              <input type="text" value={otrosNombre} onChange={(e) => setOtrosNombre(e.target.value)} placeholder="Otros (nombre)" className={inputClase} />
+              <input type="number" min="0" value={otrosCantidad} onChange={(e) => setOtrosCantidad(e.target.value)} placeholder="Otros (cantidad)" className={inputClase} />
+            </div>
           </div>
-          <p className="mb-6 text-lg font-semibold text-navy-900">Total de elementos: {totalLlaves}</p>
-          <div className="flex flex-col-reverse gap-3 sm:flex-row">
-            <button type="button" onClick={() => setPaso(4)} className={botonSecundario}>Volver</button>
-            <button type="button" onClick={() => setPaso(6)} className={botonPrimario}>Continuar</button>
+          <div className="mb-8 rounded-xl bg-teal-50 p-5">
+            <p className="text-sm font-medium text-teal-800">Total entregado</p>
+            <p className="text-3xl font-bold text-teal-700">{totalLlaves} <span className="text-base font-medium">elementos</span></p>
           </div>
+          <NavButtons onBack={() => setPaso(4)} onNext={() => setPaso(6)} labelBack="Atrás" labelNext="Continuar" botonPrimario={botonPrimario} botonSecundario={botonSecundario} />
         </section>
       )}
 
-      {/* PASO 6: Inventario */}
+      {/* PASO 6 */}
       {paso === 6 && (
         <section>
-          <h2 className="mb-4 text-xl font-semibold text-navy-900">Inventario de elementos</h2>
-          <p className="mb-6 text-gray-600">
-            Si el inmueble incluye muebles o electrodomésticos, regístralos aquí. Si no, puedes dejar esta sección vacía.
-          </p>
-          <div className="mb-6 rounded-xl border border-navy-100 bg-white p-6 shadow-sm">
+          <h2 className="mb-6 text-xl font-semibold text-navy-900">Inventario de elementos</h2>
+          <div className="mb-8 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
             <div className="grid gap-4 sm:grid-cols-2">
-              <label className="block">
-                <span className="mb-1 block text-sm font-medium text-gray-700">Nombre</span>
-                <input type="text" value={nuevoNombre} onChange={(e) => setNuevoNombre(e.target.value)} placeholder="Nevera" className={inputClase} />
-              </label>
-              <label className="block">
-                <span className="mb-1 block text-sm font-medium text-gray-700">Cantidad</span>
-                <input type="number" min="1" value={nuevoCantidad} onChange={(e) => setNuevoCantidad(e.target.value)} className={inputClase} />
-              </label>
+              <input type="text" value={nuevoNombre} onChange={(e) => setNuevoNombre(e.target.value)} placeholder="Nombre (ej: Nevera)" className={inputClase} />
+              <input type="number" min="1" value={nuevoCantidad} onChange={(e) => setNuevoCantidad(e.target.value)} placeholder="Cantidad" className={inputClase} />
             </div>
-            <fieldset className="mt-4">
-              <legend className="mb-2 text-sm font-medium text-gray-700">Estado</legend>
-              <div className="flex gap-4">
-                {(['bueno', 'regular', 'malo'] as const).map((estado) => (
-                  <label key={estado} className="inline-flex items-center gap-2 text-sm text-gray-700">
-                    <input type="radio" name="nuevo-estado" value={estado} checked={nuevoEstado === estado} onChange={() => setNuevoEstado(estado)} className="h-4 w-4 border-navy-200 text-navy-600" />
-                    {estado === 'bueno' ? 'Bueno' : estado === 'regular' ? 'Regular' : 'Malo'}
-                  </label>
-                ))}
-              </div>
-            </fieldset>
-            <label className="mt-4 block">
-              <span className="mb-1 block text-sm font-medium text-gray-700">Observación</span>
-              <input type="text" value={nuevoObservacion} onChange={(e) => setNuevoObservacion(e.target.value)} className={inputClase} />
-            </label>
+            <div className="mt-4 flex flex-wrap gap-3">
+              {(['bueno', 'regular', 'malo'] as const).map((estado) => (
+                <label key={estado} className={`inline-flex cursor-pointer items-center gap-1.5 rounded-full border px-4 py-1.5 text-sm ${nuevoEstado === estado ? 'border-teal-500 bg-teal-50 text-teal-800' : 'border-slate-200 text-slate-600'}`}>
+                  <input type="radio" name="nuevo-estado" value={estado} checked={nuevoEstado === estado} onChange={() => setNuevoEstado(estado)} className="sr-only" />
+                  {estado === 'bueno' ? 'Bueno' : estado === 'regular' ? 'Regular' : 'Malo'}
+                </label>
+              ))}
+            </div>
+            <input type="text" value={nuevoObservacion} onChange={(e) => setNuevoObservacion(e.target.value)} placeholder="Observación" className={`${inputClase} mt-4`} />
             <button type="button" onClick={agregarElemento} className={`${botonSecundario} mt-4`}>
-              Agregar elemento
+              + Agregar elemento
             </button>
           </div>
 
           {elementos.length > 0 && (
-            <div className="mb-6 space-y-3">
+            <div className="mb-8 space-y-3">
               {elementos.map((el) => (
-                <article key={el.id} className="flex items-start justify-between rounded-xl border border-navy-100 bg-white p-4 shadow-sm">
+                <article key={el.id} className="flex items-start justify-between rounded-xl border border-slate-200 bg-white p-4 shadow-sm animate-in fade-in duration-300 motion-reduce:animate-none">
                   <div>
-                    <h3 className="font-semibold text-navy-900">{el.nombre} × {el.cantidad}</h3>
-                    <p className="text-sm text-gray-600 capitalize">{el.estado}</p>
-                    {el.observacion && <p className="text-sm text-gray-500">{el.observacion}</p>}
+                    <h3 className="font-semibold text-navy-900">{el.nombre} · {el.cantidad} unidad(es)</h3>
+                    <p className="text-sm capitalize text-slate-600">Estado: {el.estado}</p>
+                    {el.observacion && <p className="text-sm text-slate-500">{el.observacion}</p>}
                   </div>
                   <button type="button" onClick={() => eliminarElemento(el.id)} className="text-sm font-semibold text-red-600 hover:underline">
                     Eliminar
@@ -640,59 +716,93 @@ export default function ChecklistEntrega() {
               ))}
             </div>
           )}
-
-          <div className="flex flex-col-reverse gap-3 sm:flex-row">
-            <button type="button" onClick={() => setPaso(5)} className={botonSecundario}>Volver</button>
-            <button type="button" onClick={() => setPaso(7)} className={botonPrimario}>Continuar</button>
-          </div>
+          <NavButtons onBack={() => setPaso(5)} onNext={() => setPaso(7)} labelBack="Atrás" labelNext="Continuar" botonPrimario={botonPrimario} botonSecundario={botonSecundario} />
         </section>
       )}
 
-      {/* PASO 7: Revisión final */}
+      {/* PASO 7 */}
       {paso === 7 && (
         <section>
-          <h2 className="mb-4 text-xl font-semibold text-navy-900">Revisa antes de generar el documento</h2>
-          <ul className="mb-6 space-y-2 text-gray-700">
-            <li>Datos generales: {datos.direccion && datos.arrendador ? '✅ Completos' : '❌ Faltan datos'}</li>
-            <li>
-              Zonas revisadas: {zonas.filter((z) => z.estado !== '').length} de {zonas.length} con estado asignado
-            </li>
-            <li>Medidores: {aguaLectura || energiaLectura || gasLectura ? '✅ Registrados' : '⚠️ No registrados'}</li>
-            <li>Llaves: {totalLlaves > 0 ? `✅ ${totalLlaves} registrados` : '⚠️ No registradas'}</li>
-            <li>Inventario: {elementos.length > 0 ? `✅ ${elementos.length} elementos` : 'Sin elementos'}</li>
-          </ul>
-          <p className="mb-6 text-sm text-gray-500">Algunos campos están vacíos. Puedes continuar de todas formas.</p>
+          <h2 className="mb-6 text-2xl font-bold text-navy-900">Revisa antes de generar el PDF</h2>
+          <div
+            className={`mb-6 inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-semibold ${
+              completo ? 'bg-teal-50 text-teal-700 border border-teal-200' : 'bg-amber-50 text-amber-700 border border-amber-200'
+            }`}
+          >
+            {completo ? <CheckCircle2 className="h-4 w-4" aria-hidden="true" /> : <AlertTriangle className="h-4 w-4" aria-hidden="true" />}
+            {completo ? 'Checklist completo' : 'Checklist parcialmente completo'}
+          </div>
 
-          <div className="mb-6 rounded-xl border-l-4 border-amber-400 bg-amber-50 p-5">
+          <ul className="mb-8 grid gap-3 sm:grid-cols-2">
+            <li className="rounded-xl border border-slate-200 p-4">
+              <p className="text-xs text-slate-500">Datos generales</p>
+              <p className="font-semibold text-navy-900">{datos.direccion ? 'Completos' : 'Faltan datos'}</p>
+            </li>
+            <li className="rounded-xl border border-slate-200 p-4">
+              <p className="text-xs text-slate-500">Zonas</p>
+              <p className="font-semibold text-navy-900">{zonasCalificadas} de {zonas.length} calificadas</p>
+            </li>
+            <li className="rounded-xl border border-slate-200 p-4">
+              <p className="text-xs text-slate-500">Medidores</p>
+              <p className="font-semibold text-navy-900">{aguaLectura || energiaLectura || gasLectura ? 'Registrados' : 'No registrados'}</p>
+            </li>
+            <li className="rounded-xl border border-slate-200 p-4">
+              <p className="text-xs text-slate-500">Llaves</p>
+              <p className="font-semibold text-navy-900">{totalLlaves} llaves/controles</p>
+            </li>
+            <li className="rounded-xl border border-slate-200 p-4">
+              <p className="text-xs text-slate-500">Inventario</p>
+              <p className="font-semibold text-navy-900">{elementos.length} elementos</p>
+            </li>
+          </ul>
+
+          <div className="mb-8 rounded-xl border-l-4 border-amber-400 bg-amber-50 p-5">
             <p className="text-amber-800">
               Este documento es un registro generado a partir de la información que tú introduces. No constituye prueba legal automática ni soporte probatorio garantizado. Para tu caso particular, consulta con un profesional.
             </p>
           </div>
 
-          <div className="mb-6 flex flex-wrap gap-3">
-            <button type="button" onClick={borrarDatos} className="text-sm font-semibold text-red-600 hover:underline self-center">
-              Borrar datos
-            </button>
+          <div className="mb-8">
+            {confirmandoReinicio ? (
+              <div className="rounded-xl border border-red-200 bg-red-50 p-5">
+                <p className="mb-4 text-sm text-red-800">Esto eliminará el progreso guardado en este dispositivo.</p>
+                <div className="flex gap-3">
+                  <button type="button" onClick={() => setConfirmandoReinicio(false)} className={`${botonSecundario} flex-1 sm:flex-none`}>Cancelar</button>
+                  <button type="button" onClick={reiniciar} className="inline-flex min-h-[48px] flex-1 sm:flex-none items-center justify-center gap-2 rounded-xl bg-red-600 px-6 py-3 font-semibold text-white hover:bg-red-700">Sí, reiniciar</button>
+                </div>
+              </div>
+            ) : (
+              <button type="button" onClick={() => setConfirmandoReinicio(true)} className="text-sm font-semibold text-red-600 hover:underline">
+                Reiniciar checklist
+              </button>
+            )}
           </div>
 
-          <div className="flex flex-col-reverse gap-3 sm:flex-row">
-            <button type="button" onClick={() => setPaso(6)} className={botonSecundario}>Volver</button>
-            <button type="button" onClick={generarPDF} className={botonPrimario}>Generar PDF</button>
-          </div>
+          {!pdfGenerado && (
+            <NavButtons onBack={() => setPaso(6)} onNext={generarPDF} labelBack="Atrás" labelNext={generando ? 'Generando...' : 'Generar PDF'} botonPrimario={botonPrimario} botonSecundario={botonSecundario} disabledNext={generando} />
+          )}
+
+          {generando && (
+            <p className="mt-4 flex items-center gap-2 text-sm text-teal-700" role="status">
+              <Loader2 className="h-4 w-4 animate-spin motion-reduce:animate-none" aria-hidden="true" />
+              Generando documento...
+            </p>
+          )}
 
           {pdfGenerado && (
             <div className="mt-8 space-y-6">
-              <div className="rounded-xl border border-green-200 bg-green-50 p-6">
-                <p className="mb-2 font-semibold text-green-800">PDF generado.</p>
-                <p className="mb-4 text-sm text-green-800">
-                  Guarda este PDF en un lugar seguro. No se almacena en nuestros servidores.
+              <div className="rounded-2xl border border-teal-200 bg-teal-50 p-8 text-center">
+                <CheckCircle2 className="mx-auto mb-3 h-12 w-12 text-teal-600 animate-in zoom-in duration-300 motion-reduce:animate-none" aria-hidden="true" />
+                <h3 className="mb-2 text-xl font-semibold text-navy-900">PDF generado correctamente</h3>
+                <p className="mb-6 text-sm text-slate-600">
+                  El documento se creó en tu dispositivo. Puedes descargarlo y guardarlo donde prefieras.
                 </p>
-                <div className="flex flex-wrap gap-4">
-                  <button type="button" onClick={generarPDF} className="rounded-lg border border-navy-200 px-4 py-2 text-sm font-semibold text-navy-700 hover:bg-navy-50 transition-colors">
-                    Descargar PDF
+                <div className="flex flex-col justify-center gap-3 sm:flex-row">
+                  <button type="button" onClick={generarPDF} className={botonPrimario}>
+                    <FileDown className="h-4 w-4" aria-hidden="true" /> Descargar PDF
                   </button>
-                  <button type="button" onClick={borrarDatos} className="rounded-lg border border-navy-200 px-4 py-2 text-sm font-semibold text-navy-700 hover:bg-navy-50 transition-colors">
-                    Volver al inicio
+                  <button type="button" onClick={reiniciar} className={botonSecundario}>
+                    <ArchiveRestore className="h-4 w-4" aria-hidden="true" /> Crear nuevo checklist
                   </button>
                 </div>
               </div>
@@ -712,6 +822,35 @@ export default function ChecklistEntrega() {
           )}
         </section>
       )}
+    </div>
+  );
+}
+
+function NavButtons({
+  onBack,
+  onNext,
+  labelBack,
+  labelNext,
+  botonPrimario,
+  botonSecundario,
+  disabledNext,
+}: {
+  onBack: () => void;
+  onNext: () => void;
+  labelBack: string;
+  labelNext: string;
+  botonPrimario: string;
+  botonSecundario: string;
+  disabledNext?: boolean;
+}) {
+  return (
+    <div className="flex flex-col-reverse gap-3 sm:mt-8 sm:flex-row">
+      <button type="button" onClick={onBack} className={botonSecundario}>
+        <ArrowLeft className="h-4 w-4" aria-hidden="true" /> {labelBack}
+      </button>
+      <button type="button" onClick={onNext} disabled={disabledNext} className={botonPrimario}>
+        {labelNext} <ArrowRight className="h-4 w-4" aria-hidden="true" />
+      </button>
     </div>
   );
 }
