@@ -17,11 +17,11 @@ import {
 } from 'lucide-react';
 import NewsletterCTA from '@/components/NewsletterCTA';
 import { PRODUCT_CONFIG, formatPrice } from '@/lib/product';
-import { getAllPosts } from '@/lib/blog';
+import { getAllPosts, isValidSlug } from '@/lib/blog';
 import { Reveal, ScrollProgress, StickyProductCta } from '@/components/home/Motion';
 
 export default function Home() {
-  const posts = getAllPosts().slice(0, 4);
+  const posts = getAllPosts().filter((p) => isValidSlug(p.slug)).slice(0, 4);
   const featuredPost = posts[0];
   const secondaryPosts = posts.slice(1, 4);
 

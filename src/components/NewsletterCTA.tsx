@@ -70,8 +70,26 @@ export default function NewsletterCTA({
         },
       });
 
+      let payload: { success?: boolean | string; error?: string; message?: string } | null = null;
+      try {
+        payload = await res.json();
+      } catch {
+        payload = null;
+      }
+
       if (!res.ok) {
         throw new Error('Error del servidor al registrar suscripción.');
+      }
+
+      if (payload) {
+        if (payload.error) {
+          throw new Error(payload.message || payload.error || 'No se pudo completar la suscripción.');
+        }
+        if (payload.success !== undefined && payload.success !== true && payload.success !== 'true') {
+          throw new Error(payload.message || 'No se pudo completar la suscripción.');
+        }
+      } else {
+        throw new Error('El proveedor no confirmó la suscripción. Intenta nuevamente.');
       }
 
       setStatus('success');

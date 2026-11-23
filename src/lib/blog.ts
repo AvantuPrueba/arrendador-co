@@ -9,6 +9,19 @@ import matter from 'gray-matter';
 
 const postsDirectory = path.join(process.cwd(), 'content', 'blog');
 
+/** Formato permitido para slugs: solo minúsculas, dígitos y guiones, sin path traversal ni caracteres peligrosos. */
+export const SLUG_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+
+export function isValidSlug(slug: string): boolean {
+  return typeof slug === 'string' && SLUG_PATTERN.test(slug);
+}
+
+function assertValidSlug(slug: string): void {
+  if (!isValidSlug(slug)) {
+    throw new Error(`Slug inválido o no permitido: "${slug}"`);
+  }
+}
+
 export interface PostMeta {
   slug: string;
   title: string;
@@ -55,6 +68,7 @@ export function getAllPosts(): PostMeta[] {
 
   const posts = fileNames.map((fileName) => {
     const slug = fileName.replace(/\.md$/, '');
+    assertValidSlug(slug);
     const fullPath = path.join(postsDirectory, fileName);
     const fileContents = fs.readFileSync(fullPath, 'utf8');
     const { data } = matter(fileContents);
@@ -99,10 +113,12 @@ export function getAllPostSlugs(): string[] {
   return fs
     .readdirSync(postsDirectory)
     .filter((f) => f.endsWith('.md'))
-    .map((f) => f.replace(/\.md$/, ''));
+    .map((f) => f.replace(/\.md$/, ''))
+    .filter((slug) => isValidSlug(slug));
 }
 
 export async function getPostBySlug(slug: string): Promise<Post> {
+  assertValidSlug(slug);
   const slugs = getAllPostSlugs();
   if (!slugs.includes(slug)) {
     throw new Error(`Artículo no encontrado: ${slug}`);
