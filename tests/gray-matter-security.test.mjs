@@ -10,34 +10,34 @@ test('YAML frontmatter parses correctly', () => {
   assert.strictEqual(yaml.content.trim(), 'contenido');
 });
 
-test('---js frontmatter does not execute', () => {
+test('---js frontmatter is explicitly rejected', () => {
   let executed = false;
   globalThis.__gm_js_test = () => { executed = true; };
-  const parsed = matter('---js\n__gm_js_test()\n---\ncontenido');
+  assert.throws(() => {
+    matter('---js\n__gm_js_test()\n---\ncontenido');
+  }, /JavaScript frontmatter is not supported/);
   assert.strictEqual(executed, false, 'js engine must not execute');
   delete globalThis.__gm_js_test;
 });
 
-test('---javascript frontmatter does not execute', () => {
+test('---javascript frontmatter is explicitly rejected', () => {
   let executed = false;
   globalThis.__gm_javascript_test = () => { executed = true; };
-  const parsed = matter('---javascript\n__gm_javascript_test()\n---\ncontenido');
+  assert.throws(() => {
+    matter('---javascript\n__gm_javascript_test()\n---\ncontenido');
+  }, /JavaScript frontmatter is not supported/);
   assert.strictEqual(executed, false, 'javascript engine must not execute');
   delete globalThis.__gm_javascript_test;
 });
 
-test('malicious JS frontmatter produces no side effects', () => {
+test('malicious JS frontmatter is rejected without side effects', () => {
   const before = Object.keys(globalThis).length;
-  try {
+  assert.throws(() => {
     matter('---js\nprocess.exit(1)\n---\ncontenido');
-  } catch (e) {
-    // Expected: might throw or silently return empty
-  }
-  try {
+  }, /JavaScript frontmatter is not supported/);
+  assert.throws(() => {
     matter('---javascript\nrequire("fs").writeFileSync("/tmp/pwned","x")\n---\ncontenido');
-  } catch (e) {
-    // Expected
-  }
+  }, /JavaScript frontmatter is not supported/);
   const after = Object.keys(globalThis).length;
   assert.ok(after - before < 5, 'no significant global side effects');
 });

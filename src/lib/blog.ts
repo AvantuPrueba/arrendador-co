@@ -4,8 +4,14 @@ import matter from 'gray-matter';
 
 /** Seguridad: deshabilitar motor JS de gray-matter (CVE-2026-78847).
  *  Evita ejecución de código si un archivo .md contiene frontmatter tipo ---js o ---javascript. */
-(matter as unknown as { engines: Record<string, () => object> }).engines.javascript = function() { return {}; };
-(matter as unknown as { engines: Record<string, () => object> }).engines.js = function() { return {}; };
+(matter as unknown as { engines: Record<string, { parse: () => never; stringify: () => never }> }).engines.javascript = {
+  parse: function() { throw new Error('JavaScript frontmatter is not supported (CVE-2026-78847)'); },
+  stringify: function() { throw new Error('JavaScript frontmatter is not supported'); },
+};
+(matter as unknown as { engines: Record<string, { parse: () => never; stringify: () => never }> }).engines.js = {
+  parse: function() { throw new Error('JavaScript frontmatter is not supported (CVE-2026-78847)'); },
+  stringify: function() { throw new Error('JavaScript frontmatter is not supported'); },
+};
 
 const postsDirectory = path.join(process.cwd(), 'content', 'blog');
 
