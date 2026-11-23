@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { isValidSlug, SLUG_PATTERN } from '../src/lib/blog.ts';
+import { isValidSlug, SLUG_PATTERN, blogPostHref } from '../src/lib/blog.ts';
 
 test('valid slugs are accepted', () => {
   const valid = [
@@ -72,4 +72,16 @@ test('generated links are always relative under /blog/', () => {
     assert.ok(href.startsWith('/blog/'), `link should be under /blog/: ${href}`);
     assert.ok(!href.includes(':'), `link should not contain colon: ${href}`);
   }
+});
+
+test('blogPostHref returns null for invalid slugs', () => {
+  for (const s of ['', 'javascript:alert(1)', '../', '<script>', 'a b', 'A-B']) {
+    assert.strictEqual(blogPostHref(s), null, `should return null for: ${s}`);
+  }
+});
+
+test('blogPostHref returns valid relative path for valid slugs', () => {
+  const href = blogPostHref('guia-contrato-arrendamiento-colombia');
+  assert.strictEqual(href, '/blog/guia-contrato-arrendamiento-colombia');
+  assert.ok(href.startsWith('/blog/'));
 });

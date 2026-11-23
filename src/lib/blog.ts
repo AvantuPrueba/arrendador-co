@@ -16,6 +16,17 @@ export function isValidSlug(slug: string): boolean {
   return typeof slug === 'string' && SLUG_PATTERN.test(slug);
 }
 
+/**
+ * Construye de forma segura la ruta relativa de un artículo del blog.
+ * Acepta únicamente slugs que pasen la validación estricta.
+ * Rechaza cualquier entrada inválida devolviendo null.
+ * Codifica el segmento de ruta para mayor seguridad.
+ */
+export function blogPostHref(slug: string): string | null {
+  if (!isValidSlug(slug)) return null;
+  return `/blog/${encodeURIComponent(slug)}`;
+}
+
 function assertValidSlug(slug: string): void {
   if (!isValidSlug(slug)) {
     throw new Error(`Slug inválido o no permitido: "${slug}"`);

@@ -17,7 +17,7 @@ import {
 } from 'lucide-react';
 import NewsletterCTA from '@/components/NewsletterCTA';
 import { PRODUCT_CONFIG, formatPrice } from '@/lib/product';
-import { getAllPosts, isValidSlug } from '@/lib/blog';
+import { getAllPosts, isValidSlug, blogPostHref } from '@/lib/blog';
 import { Reveal, ScrollProgress, StickyProductCta } from '@/components/home/Motion';
 
 export default function Home() {
@@ -785,7 +785,7 @@ export default function Home() {
               <div className="lg:col-span-7">
                 <Reveal>
                   <Link
-                    href={`/blog/${featuredPost.slug}`}
+                    href={blogPostHref(featuredPost.slug)!}
                     className="group flex h-full flex-col justify-between rounded-2xl border border-charcoal/10 bg-surface p-8 transition-all hover:bg-ivory hover:shadow-lg"
                   >
                     <div>
@@ -819,7 +819,7 @@ export default function Home() {
               {secondaryPosts.map((post, i) => (
                 <Reveal key={post.slug} delay={i * 70}>
                   <Link
-                    href={`/blog/${post.slug}`}
+                    href={blogPostHref(post.slug)!}
                     className="group block rounded-xl border border-charcoal/10 border-l-[3px] border-l-transparent bg-white p-5 transition-all hover:border-l-bronze hover:bg-surface hover:shadow-md"
                   >
                     <div className="flex items-center justify-between text-xs font-mono text-muted">
