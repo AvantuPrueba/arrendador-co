@@ -40,7 +40,7 @@ export default function Home() {
               <Reveal>
                 <div className="mb-4 inline-flex items-center gap-2">
                   <span className="font-mono text-xs uppercase tracking-widest text-bronze font-medium">
-                    GESTIÓN INMOBILIARIA · COLOMBIA · 2025
+                    GESTIÓN INMOBILIARIA · COLOMBIA · 2026
                   </span>
                 </div>
               </Reveal>
@@ -83,7 +83,7 @@ export default function Home() {
                 <div className="mt-8 flex items-center gap-2 border-t border-charcoal/10 pt-4">
                   <span className="h-1.5 w-1.5 rounded-full bg-bronze" />
                   <p className="font-mono text-xs text-muted">
-                    Ley 820 de 2003 · Vivienda urbana · Actualizado 2025
+                    Ley 820 de 2003 · Vivienda urbana · Actualizado 2026
                   </p>
                 </div>
               </Reveal>
@@ -96,8 +96,8 @@ export default function Home() {
                   {/* Layer 1: Forest Green Background Panel */}
                   <div className="relative overflow-hidden rounded-3xl bg-green-deep p-6 sm:p-8 min-h-[490px] shadow-2xl flex flex-col justify-between">
                     
-                    {/* Layer 2: Architectural Photography with dark overlay */}
-                    <div className="relative h-64 w-full overflow-hidden rounded-2xl">
+                    {/* Layer 2: Architectural Photography with dark overlay & fallback background */}
+                    <div className="relative h-64 w-full overflow-hidden rounded-2xl bg-green-mid/50">
                       <Image
                         src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1000&q=80"
                         alt="Arquitectura residencial contemporánea en Colombia"
@@ -109,11 +109,16 @@ export default function Home() {
                       <div className="absolute inset-0 bg-gradient-to-t from-green-deep via-green-deep/40 to-transparent" />
                     </div>
 
-                    {/* Layer 4: Floating Mini Card (Upper-right) */}
-                    <div className="absolute top-8 right-4 sm:right-6 z-20 w-44 rounded-xl border border-charcoal/10 bg-white p-3.5 shadow-xl rotate-[1.5deg] animate-float-delayed">
-                      <span className="block font-mono text-[10px] uppercase tracking-wider text-muted font-medium">
-                        CANON MENSUAL
-                      </span>
+                    {/* Layer 4: Floating Mini Card (Illustrative Demo - Upper-right) */}
+                    <div className="absolute top-6 right-3 sm:top-8 sm:right-6 z-20 w-44 rounded-xl border border-charcoal/10 bg-white p-3.5 shadow-xl rotate-[1.5deg] animate-float-delayed">
+                      <div className="mb-1 flex items-center justify-between">
+                        <span className="font-mono text-[9px] uppercase tracking-wider text-muted font-medium">
+                          CANON MENSUAL
+                        </span>
+                        <span className="rounded bg-ivory px-1 py-0.5 font-mono text-[8px] font-semibold text-bronze uppercase">
+                          Demo
+                        </span>
+                      </div>
                       <p className="mt-0.5 text-sm font-semibold text-charcoal">
                         $1.800.000 COP
                       </p>
@@ -121,7 +126,7 @@ export default function Home() {
                         <div className="h-full w-full bg-green-deep" />
                       </div>
                       <span className="mt-1 block font-mono text-[9px] text-green-mid font-medium">
-                        Al día · Oct 2026
+                        Al día · Estado simulado
                       </span>
                     </div>
 

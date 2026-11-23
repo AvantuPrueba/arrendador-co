@@ -36,6 +36,30 @@ export default function Navbar() {
     };
   }, [isOpen]);
 
+  // Close mobile menu on Escape key press
+  useEffect(() => {
+    function onKeyDown(e: KeyboardEvent) {
+      if (e.key === 'Escape') {
+        setIsOpen(false);
+      }
+    }
+    if (isOpen) {
+      window.addEventListener('keydown', onKeyDown);
+      return () => window.removeEventListener('keydown', onKeyDown);
+    }
+  }, [isOpen]);
+
+  // Close mobile menu on resize to desktop breakpoint
+  useEffect(() => {
+    function onResize() {
+      if (window.innerWidth >= 768) {
+        setIsOpen(false);
+      }
+    }
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
+
   return (
     <header
       className={`sticky top-0 z-50 transition-all duration-300 ${
@@ -51,7 +75,7 @@ export default function Navbar() {
         {/* Wordmark logo */}
         <Link
           href="/"
-          className="group flex items-baseline tracking-tight"
+          className="group flex items-baseline tracking-tight focus-visible:ring-2 focus-visible:ring-green-deep rounded-sm"
           aria-label="ArrendadorCO - Inicio"
         >
           <span className="font-display text-2xl font-normal text-green-deep">
@@ -68,7 +92,7 @@ export default function Navbar() {
             <li key={link.href} role="none">
               <Link
                 href={link.href}
-                className="group relative py-1 text-sm font-medium tracking-wide text-charcoal transition-colors hover:text-green-deep"
+                className="group relative py-1 text-sm font-medium tracking-wide text-charcoal transition-colors hover:text-green-deep focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-green-deep rounded-sm"
                 role="menuitem"
               >
                 {link.label}
@@ -82,37 +106,40 @@ export default function Navbar() {
         <div className="hidden items-center gap-4 md:flex">
           <Link
             href="/tienda"
-            className="rounded-lg bg-green-deep px-5 py-2.5 text-sm font-medium text-white transition-all duration-150 hover:bg-green-mid hover:scale-[1.02] active:scale-[0.98]"
+            className="rounded-lg bg-green-deep px-5 py-2.5 text-sm font-medium text-white transition-all duration-150 hover:bg-green-mid hover:scale-[1.02] active:scale-[0.98] focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-green-deep"
           >
             Ver plantilla
           </Link>
         </div>
 
-        {/* Mobile menu button */}
+        {/* Mobile menu toggle button */}
         <button
-          className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-lg p-2 text-charcoal hover:bg-black/5 md:hidden"
+          type="button"
+          className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-lg p-2 text-charcoal hover:bg-black/5 md:hidden focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-green-deep"
           onClick={() => setIsOpen(!isOpen)}
           aria-expanded={isOpen}
-          aria-controls="mobile-menu"
-          aria-label={isOpen ? 'Cerrar menú' : 'Abrir menú'}
+          aria-controls="mobile-navigation-dialog"
+          aria-label={isOpen ? 'Cerrar menú de navegación' : 'Abrir menú de navegación'}
         >
-          {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          {isOpen ? <X className="h-6 w-6" aria-hidden="true" /> : <Menu className="h-6 w-6" aria-hidden="true" />}
         </button>
       </nav>
 
       {/* Full-height mobile overlay menu */}
       {isOpen && (
         <div
-          id="mobile-menu"
-          className="fixed inset-x-0 top-[65px] bottom-0 z-50 flex flex-col justify-between bg-ivory px-6 py-8 md:hidden animate-slide-down border-t border-charcoal/10 overflow-y-auto"
-          role="navigation"
+          id="mobile-navigation-dialog"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Menú de navegación principal móvil"
+          className="fixed inset-x-0 top-full bottom-0 z-50 flex flex-col justify-between bg-ivory px-6 py-8 md:hidden animate-slide-down border-t border-charcoal/10 overflow-y-auto min-h-[calc(100vh-65px)]"
         >
-          <ul className="space-y-4" role="menubar">
+          <ul className="space-y-3" role="menubar">
             {navLinks.map((link) => (
               <li key={link.href} role="none">
                 <Link
                   href={link.href}
-                  className="block rounded-lg px-4 py-3 text-lg font-medium text-charcoal hover:bg-surface hover:text-green-deep transition-colors"
+                  className="block rounded-lg px-4 py-3.5 text-lg font-medium text-charcoal hover:bg-surface hover:text-green-deep transition-colors focus-visible:ring-2 focus-visible:ring-green-deep"
                   role="menuitem"
                   onClick={() => setIsOpen(false)}
                 >
@@ -125,7 +152,7 @@ export default function Navbar() {
           <div className="pt-6 border-t border-charcoal/10 space-y-4">
             <Link
               href="/tienda"
-              className="block w-full rounded-lg bg-green-deep px-6 py-3.5 text-center text-base font-medium text-white hover:bg-green-mid transition-colors shadow-sm"
+              className="block w-full rounded-lg bg-green-deep px-6 py-3.5 text-center text-base font-medium text-white hover:bg-green-mid transition-colors shadow-sm focus-visible:ring-2 focus-visible:ring-green-deep"
               role="menuitem"
               onClick={() => setIsOpen(false)}
             >

@@ -8,7 +8,7 @@ export const LEGAL_CONFIG = {
   taxId: '[PENDIENTE: CÉDULA]',
   city: '[PENDIENTE: CIUDAD]',
   address: '[PENDIENTE: DIRECCIÓN COMERCIAL]',
-  officialEmail: '[PENDIENTE: CORREO OFICIAL]',
+  officialEmail: 'hola@arrendador.co',
   phone: '[PENDIENTE: TELÉFONO]',
   website: 'https://arrendador.co',
   jurisdiction: 'Colombia',

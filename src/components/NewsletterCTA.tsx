@@ -6,8 +6,19 @@ import Link from 'next/link';
 import { PRODUCT_CONFIG } from '@/lib/product';
 import { CheckCircle2 } from 'lucide-react';
 
-/** Endpoint de FormSubmit para newsletter. */
-const FORMSUBMIT_NEWSLETTER_URL = 'https://formsubmit.co/spaceyisusshop@gmail.com';
+/**
+ * Endpoint de FormSubmit para newsletter corporativo.
+ *
+ * NOTA DE ACTIVACIÓN FORMSUBMIT:
+ * FormSubmit requiere una activación por única vez. En el primer envío a este correo,
+ * FormSubmit enviará un mensaje de confirmación a hola@arrendador.co con un botón
+ * de "Activate Form". Una vez confirmado, todas las suscripciones llegarán directamente.
+ * Se permite sobreescribir mediante la variable de entorno NEXT_PUBLIC_NEWSLETTER_ENDPOINT.
+ */
+const CORPORATE_NEWSLETTER_EMAIL = 'hola@arrendador.co';
+const FORMSUBMIT_NEWSLETTER_URL =
+  process.env.NEXT_PUBLIC_NEWSLETTER_ENDPOINT ||
+  `https://formsubmit.co/${CORPORATE_NEWSLETTER_EMAIL}`;
 
 type Status = 'idle' | 'submitting' | 'success' | 'error';
 
@@ -19,6 +30,11 @@ export default function NewsletterCTA({
   const [consent, setConsent] = useState(false);
   const [status, setStatus] = useState<Status>('idle');
   const [error, setError] = useState<string | null>(null);
+
+  // Generate unique IDs for accessibility across multiple instances on the same page
+  const inputId = `newsletter-email-${source}`;
+  const consentId = `newsletter-consent-${source}`;
+  const errorId = `newsletter-error-${source}`;
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -44,15 +60,18 @@ export default function NewsletterCTA({
       formData.append('consent', 'true');
       formData.append('_subject', 'Nuevo suscriptor - ArrendadorCO');
       formData.append('_captcha', 'false');
-      formData.append('_next', 'https://tudominio.com/gracias');
+      formData.append('_template', 'table');
 
       const res = await fetch(FORMSUBMIT_NEWSLETTER_URL, {
         method: 'POST',
         body: formData,
+        headers: {
+          Accept: 'application/json',
+        },
       });
 
       if (!res.ok) {
-        throw new Error('Error del servidor');
+        throw new Error('Error del servidor al registrar suscripción.');
       }
 
       setStatus('success');
@@ -60,15 +79,23 @@ export default function NewsletterCTA({
       setConsent(false);
     } catch (err) {
       setStatus('error');
-      setError(err instanceof Error ? err.message : 'No se pudo suscribir. Intenta de nuevo.');
+      setError(
+        err instanceof Error
+          ? err.message
+          : 'No se pudo completar la suscripción. Intenta nuevamente.',
+      );
     }
   }
 
   if (status === 'success') {
     return (
-      <div className="rounded-xl border border-green-mid/20 bg-green-deep/5 p-6 text-center" role="status">
+      <div
+        className="rounded-xl border border-green-mid/20 bg-green-deep/5 p-6 text-center"
+        role="status"
+        aria-live="polite"
+      >
         <div className="mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-green-deep text-white">
-          <CheckCircle2 className="h-5 w-5" />
+          <CheckCircle2 className="h-5 w-5" aria-hidden="true" />
         </div>
         <p className="font-display text-lg text-green-deep">¡Te has suscrito con éxito!</p>
         <p className="mt-1 text-sm text-muted">
@@ -79,7 +106,13 @@ export default function NewsletterCTA({
   }
 
   return (
-    <div className={hideHeader ? 'w-full' : 'my-8 rounded-2xl border border-charcoal/10 bg-surface p-6 sm:p-8'}>
+    <div
+      className={
+        hideHeader
+          ? 'w-full'
+          : 'my-8 rounded-2xl border border-charcoal/10 bg-surface p-6 sm:p-8'
+      }
+    >
       {!hideHeader && (
         <div className="mb-6">
           <span className="font-mono text-xs uppercase tracking-wider text-bronze">
@@ -96,11 +129,11 @@ export default function NewsletterCTA({
 
       <form onSubmit={handleSubmit} className="space-y-4" noValidate>
         <div className="flex flex-col gap-3 sm:flex-row">
-          <label htmlFor={`newsletter-email-${source}`} className="sr-only">
+          <label htmlFor={inputId} className="sr-only">
             Tu correo electrónico
           </label>
           <input
-            id={`newsletter-email-${source}`}
+            id={inputId}
             name="email"
             type="email"
             inputMode="email"
@@ -108,10 +141,13 @@ export default function NewsletterCTA({
             required
             placeholder="tu@correo.com"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              if (error) setError(null);
+            }}
             disabled={status === 'submitting'}
             aria-invalid={error ? true : undefined}
-            aria-describedby={error ? `newsletter-error-${source}` : undefined}
+            aria-describedby={error ? errorId : undefined}
             className="flex-1 rounded-lg border border-charcoal/25 bg-ivory px-4 py-3 text-sm text-charcoal placeholder:text-muted/60 transition-colors focus:border-green-deep focus:outline-none focus:ring-1 focus:ring-green-deep disabled:bg-black/5"
           />
           <button
@@ -126,18 +162,18 @@ export default function NewsletterCTA({
         <div className="flex items-start gap-2.5">
           <input
             type="checkbox"
-            id={`newsletter-consent-${source}`}
+            id={consentId}
             name="consent"
             required
             checked={consent}
-            onChange={(e) => setConsent(e.target.checked)}
+            onChange={(e) => {
+              setConsent(e.target.checked);
+              if (error) setError(null);
+            }}
             disabled={status === 'submitting'}
             className="mt-0.5 h-4 w-4 rounded border-charcoal/30 text-green-deep focus:ring-green-deep"
           />
-          <label
-            htmlFor={`newsletter-consent-${source}`}
-            className="text-xs leading-relaxed text-muted"
-          >
+          <label htmlFor={consentId} className="text-xs leading-relaxed text-muted">
             Acepto la{' '}
             <Link
               href={PRODUCT_CONFIG.privacyPolicyHref}
@@ -150,7 +186,7 @@ export default function NewsletterCTA({
         </div>
 
         {error && (
-          <p id={`newsletter-error-${source}`} role="alert" className="text-xs text-terracotta">
+          <p id={errorId} role="alert" className="text-xs text-terracotta">
             {error}
           </p>
         )}

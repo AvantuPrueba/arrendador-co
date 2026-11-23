@@ -1,7 +1,29 @@
 @import 'tailwindcss';
 
 @theme {
-  /* ── New palette ── */
+  /* ── Preserved backward-compatible theme tokens (used in 29+ internal routes) ── */
+  --color-navy-50: #f0f4f8;
+  --color-navy-100: #d9e2ec;
+  --color-navy-200: #bcccdc;
+  --color-navy-300: #9fb3c8;
+  --color-navy-400: #829ab1;
+  --color-navy-500: #627d98;
+  --color-navy-600: #486581;
+  --color-navy-700: #334e68;
+  --color-navy-800: #243b53;
+  --color-navy-900: #102a43;
+  --color-navy-950: #0c1e33;
+
+  --color-teal-50: #f0fdfa;
+  --color-teal-100: #ccfbf1;
+  --color-teal-200: #99f6e4;
+  --color-teal-300: #5eead4;
+  --color-teal-400: #2dd4bf;
+  --color-teal-500: #14b8a6;
+  --color-teal-600: #0d9488;
+  --color-teal-700: #0f766e;
+
+  /* ── Editorial design system tokens ── */
   --color-ivory: #F3F0E8;
   --color-surface: #FAF8F3;
   --color-green-deep: #183C32;
@@ -11,13 +33,13 @@
   --color-charcoal: #292D29;
   --color-muted: #76776F;
 
-  /* ── Font stacks (consumed via var() and Tailwind utilities) ── */
+  /* ── Font stacks (consumed via var() and Tailwind font-* utilities) ── */
   --font-display: 'DM Serif Display', serif;
   --font-body: 'Inter', system-ui, sans-serif;
   --font-mono: 'IBM Plex Mono', monospace;
 }
 
-/* ── Base layer ── */
+/* ── Base layer (Preserves semantic hierarchy across internal pages) ── */
 @layer base {
   body {
     font-family: var(--font-body);
@@ -26,21 +48,21 @@
     @apply leading-relaxed antialiased;
   }
 
+  /* Base typography preserves expected weights and sizes for standard pages,
+     while editorial display headings use .font-display */
   h1 {
-    font-family: var(--font-display);
+    @apply text-3xl font-bold text-gray-900 md:text-4xl;
     color: var(--color-charcoal);
-    @apply text-4xl font-normal md:text-5xl;
   }
 
   h2 {
-    font-family: var(--font-display);
+    @apply text-2xl font-semibold text-gray-900 md:text-3xl;
     color: var(--color-charcoal);
-    @apply text-3xl font-normal md:text-4xl;
   }
 
   h3 {
-    color: var(--color-charcoal);
     @apply text-xl font-semibold;
+    color: var(--color-charcoal);
   }
 
   p {
@@ -49,7 +71,7 @@
   }
 }
 
-/* ── Utility animations ── */
+/* ── Utility animations & helpers ── */
 @layer utilities {
   .animate-slide-down {
     animation: slideDown 0.2s ease-out;
@@ -87,7 +109,7 @@
     .animate-float,
     .animate-float-delayed,
     .animate-slide-down {
-      animation: none;
+      animation: none !important;
     }
     html {
       scroll-behavior: auto;
@@ -95,7 +117,7 @@
   }
 }
 
-/* ── Prose styles (for blog/guide pages) ── */
+/* ── Prose styles (for blog/guide markdown articles) ── */
 .prose h2 {
   @apply mt-8 mb-4;
 }
@@ -125,8 +147,8 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Focus visible for accessibility */
+/* Accessible focus visible ring across brand elements */
 :focus-visible {
-  outline: 2px solid var(--color-green-deep);
+  outline: 2px solid var(--color-green-deep, #183C32);
   outline-offset: 2px;
 }
