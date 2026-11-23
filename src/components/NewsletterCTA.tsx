@@ -4,6 +4,7 @@ import { useState, FormEvent } from 'react';
 import { isValidEmail, normalizeEmail } from '@/lib/email';
 import Link from 'next/link';
 import { PRODUCT_CONFIG } from '@/lib/product';
+import { CheckCircle2 } from 'lucide-react';
 
 /** Endpoint de FormSubmit para newsletter. */
 const FORMSUBMIT_NEWSLETTER_URL = 'https://formsubmit.co/spaceyisusshop@gmail.com';
@@ -12,7 +13,8 @@ type Status = 'idle' | 'submitting' | 'success' | 'error';
 
 export default function NewsletterCTA({
   source = 'newsletter-footer',
-}: { source?: string } = {}) {
+  hideHeader = false,
+}: { source?: string; hideHeader?: boolean } = {}) {
   const [email, setEmail] = useState('');
   const [consent, setConsent] = useState(false);
   const [status, setStatus] = useState<Status>('idle');
@@ -64,24 +66,35 @@ export default function NewsletterCTA({
 
   if (status === 'success') {
     return (
-      <div className="my-8 rounded-lg bg-green-50 p-6 text-center" role="status">
-        <p className="font-semibold text-green-700">¡Te has suscrito correctamente!</p>
-        <p className="mt-1 text-sm text-green-600">
-          Recibirás nuestras guías prácticas en tu correo.
+      <div className="rounded-xl border border-green-mid/20 bg-green-deep/5 p-6 text-center" role="status">
+        <div className="mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-green-deep text-white">
+          <CheckCircle2 className="h-5 w-5" />
+        </div>
+        <p className="font-display text-lg text-green-deep">¡Te has suscrito con éxito!</p>
+        <p className="mt-1 text-sm text-muted">
+          Recibirás nuestras guías y herramientas para arrendadores en tu correo.
         </p>
       </div>
     );
   }
 
   return (
-    <div className="my-8 rounded-lg bg-gray-100 p-6">
-      <h4 className="mb-2 text-lg font-semibold text-gray-800">
-        📬 Recibe guías prácticas en tu correo
-      </h4>
-      <p className="mb-4 text-sm text-gray-600">
-        Suscríbete y recibe consejos semanales para arrendadores en Colombia.
-      </p>
-      <form onSubmit={handleSubmit} className="space-y-3" noValidate>
+    <div className={hideHeader ? 'w-full' : 'my-8 rounded-2xl border border-charcoal/10 bg-surface p-6 sm:p-8'}>
+      {!hideHeader && (
+        <div className="mb-6">
+          <span className="font-mono text-xs uppercase tracking-wider text-bronze">
+            RECURSOS PARA ARRENDADORES
+          </span>
+          <h4 className="mt-1 font-display text-2xl text-charcoal">
+            Recibe guías prácticas en tu correo
+          </h4>
+          <p className="mt-1 text-sm text-muted">
+            Consejos clave y herramientas actualizadas según la Ley 820. Sin spam.
+          </p>
+        </div>
+      )}
+
+      <form onSubmit={handleSubmit} className="space-y-4" noValidate>
         <div className="flex flex-col gap-3 sm:flex-row">
           <label htmlFor={`newsletter-email-${source}`} className="sr-only">
             Tu correo electrónico
@@ -93,24 +106,24 @@ export default function NewsletterCTA({
             inputMode="email"
             autoComplete="email"
             required
-            placeholder="tu@email.com"
+            placeholder="tu@correo.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             disabled={status === 'submitting'}
             aria-invalid={error ? true : undefined}
-            aria-describedby={error ? 'newsletter-error' : undefined}
-            className="flex-1 rounded-md border border-gray-300 px-4 py-2.5 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 disabled:bg-gray-50"
+            aria-describedby={error ? `newsletter-error-${source}` : undefined}
+            className="flex-1 rounded-lg border border-charcoal/25 bg-ivory px-4 py-3 text-sm text-charcoal placeholder:text-muted/60 transition-colors focus:border-green-deep focus:outline-none focus:ring-1 focus:ring-green-deep disabled:bg-black/5"
           />
           <button
             type="submit"
             disabled={status === 'submitting'}
-            className="rounded-md bg-blue-600 px-6 py-2.5 text-sm font-medium text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-gray-400"
+            className="min-h-[44px] rounded-lg bg-bronze px-6 py-3 text-sm font-medium text-white transition-all hover:bg-[#A37B48] hover:scale-[1.01] active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-50"
           >
             {status === 'submitting' ? 'Suscribiendo…' : 'Suscribirme'}
           </button>
         </div>
 
-        <div className="flex items-start gap-2">
+        <div className="flex items-start gap-2.5">
           <input
             type="checkbox"
             id={`newsletter-consent-${source}`}
@@ -119,16 +132,16 @@ export default function NewsletterCTA({
             checked={consent}
             onChange={(e) => setConsent(e.target.checked)}
             disabled={status === 'submitting'}
-            className="mt-1 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+            className="mt-0.5 h-4 w-4 rounded border-charcoal/30 text-green-deep focus:ring-green-deep"
           />
           <label
             htmlFor={`newsletter-consent-${source}`}
-            className="text-xs text-gray-600"
+            className="text-xs leading-relaxed text-muted"
           >
             Acepto la{' '}
             <Link
               href={PRODUCT_CONFIG.privacyPolicyHref}
-              className="underline hover:text-blue-700"
+              className="text-charcoal underline underline-offset-2 hover:text-green-deep"
             >
               política de tratamiento de datos
             </Link>
@@ -137,7 +150,7 @@ export default function NewsletterCTA({
         </div>
 
         {error && (
-          <p id="newsletter-error" role="alert" className="text-sm text-red-600">
+          <p id={`newsletter-error-${source}`} role="alert" className="text-xs text-terracotta">
             {error}
           </p>
         )}
