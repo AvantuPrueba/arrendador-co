@@ -73,7 +73,35 @@ export default function Navbar() {
         );
         first?.focus();
       });
-      return () => window.cancelAnimationFrame(id);
+
+      // Constrain Tab / Shift+Tab inside the dialog while it is open.
+      function trapFocus(e: KeyboardEvent) {
+        if (e.key !== 'Tab') return;
+        const focusable = menuRef.current
+          ? Array.from(
+              menuRef.current.querySelectorAll<HTMLElement>(
+                'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])',
+              ),
+            )
+          : [];
+        if (focusable.length === 0) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey) {
+          if (document.activeElement === first || document.activeElement === toggleRef.current) {
+            e.preventDefault();
+            last.focus();
+          }
+        } else if (document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+      window.addEventListener('keydown', trapFocus);
+      return () => {
+        window.cancelAnimationFrame(id);
+        window.removeEventListener('keydown', trapFocus);
+      };
     }
     if (wasOpenRef.current) {
       wasOpenRef.current = false;
