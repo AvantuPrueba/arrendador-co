@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { Menu, X } from 'lucide-react';
 
@@ -14,6 +14,9 @@ const navLinks = [
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const toggleRef = useRef<HTMLButtonElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const wasOpenRef = useRef(false);
 
   useEffect(() => {
     function onScroll() {
@@ -59,6 +62,24 @@ export default function Navbar() {
     window.addEventListener('resize', onResize);
     return () => window.removeEventListener('resize', onResize);
   }, []);
+
+  // Focus management for the mobile dialog
+  useEffect(() => {
+    if (isOpen) {
+      wasOpenRef.current = true;
+      const id = window.requestAnimationFrame(() => {
+        const first = menuRef.current?.querySelector<HTMLElement>(
+          'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])',
+        );
+        first?.focus();
+      });
+      return () => window.cancelAnimationFrame(id);
+    }
+    if (wasOpenRef.current) {
+      wasOpenRef.current = false;
+      toggleRef.current?.focus();
+    }
+  }, [isOpen]);
 
   return (
     <header
@@ -114,6 +135,7 @@ export default function Navbar() {
 
         {/* Mobile menu toggle button */}
         <button
+          ref={toggleRef}
           type="button"
           className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-lg p-2 text-charcoal hover:bg-black/5 md:hidden focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-green-deep"
           onClick={() => setIsOpen(!isOpen)}
@@ -128,11 +150,12 @@ export default function Navbar() {
       {/* Full-height mobile overlay menu */}
       {isOpen && (
         <div
+          ref={menuRef}
           id="mobile-navigation-dialog"
           role="dialog"
           aria-modal="true"
           aria-label="Menú de navegación principal móvil"
-          className="fixed inset-x-0 top-full bottom-0 z-50 flex flex-col justify-between bg-ivory px-6 py-8 md:hidden animate-slide-down border-t border-charcoal/10 overflow-y-auto min-h-[calc(100vh-65px)]"
+          className="fixed inset-x-0 top-[72px] bottom-0 z-50 flex flex-col justify-between bg-ivory px-6 py-8 md:hidden animate-slide-down border-t border-charcoal/10 overflow-y-auto"
         >
           <ul className="space-y-3" role="menubar">
             {navLinks.map((link) => (
