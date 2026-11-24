@@ -9,6 +9,19 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async headers() {
+    return [
+      {
+        source: '/(.*)',
+        headers: [
+          {
+            key: 'Link',
+            value: '</llms.txt>; rel="describedby"; type="text/markdown"',
+          },
+        ],
+      },
+    ];
+  },
 };
 
 export default nextConfig;

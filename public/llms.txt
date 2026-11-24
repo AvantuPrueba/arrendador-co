@@ -1,0 +1,34 @@
+# ArrendadorCO
+
+> Recursos digitales prácticos para propietarios de vivienda urbana en Colombia. La información se basa en la Ley 820 de 2003 y la normativa de vivienda vigente. Este sitio contiene contenido informativo y educativo; no constituye asesoría legal ni representación jurídica.
+
+## Producto
+
+- [Plantilla de Contrato de Arrendamiento](https://arrendador.co/tienda): Plantilla editable de contrato de arrendamiento de vivienda urbana basada en la Ley 820 de 2003. Precio: $45.000 COP. Formato .docx editable y compatible con Google Docs. Incluye guía de personalización en PDF.
+
+## Guías
+
+- [Guías de contratos](https://arrendador.co/guias/contratos): Elementos obligatorios, cláusulas recomendadas y errores comunes en contratos de arrendamiento en Colombia.
+- [Guías de actas](https://arrendador.co/guias/actas): Acta de entrega y recepción de arrendamiento: checklist, pasos y ejemplos para documentar el estado del inmueble.
+- [Guías de morosos](https://arrendador.co/guias/morosos): Rutas de conciliación, cartas de cobro preventivo y causales de terminación para manejo de inquilinos morosos.
+- [Guías de fiscalidad](https://arrendador.co/guias/fiscalidad): Información fiscal relacionada con el arrendamiento de vivienda urbana en Colombia.
+- [Índice de guías](https://arrendador.co/guias): Listado general de guías prácticas para arrendadores.
+
+## Herramientas
+
+- [Reajuste de canon](https://arrendador.co/herramientas/reajuste-canon): Calcula el nuevo valor legal del arriendo según la inflación acumulada (IPC DANE).
+- [Rentabilidad real](https://arrendador.co/herramientas/rentabilidad): Calcula el retorno neto después de vacancia, predial, administración e impuestos.
+- [Checklist de entrega](https://arrendador.co/herramientas/checklist-entrega): Genera el acta de inventario con estado de paredes, llaves y lectura de medidores.
+
+## Blog
+
+- [Acta de entrega de arrendamiento en Colombia](https://arrendador.co/blog/acta-entrega-recepcion-arrendamiento-colombia): Guía práctica para crear un acta de entrega y recepción de inmueble con checklist, pasos y ejemplos.
+
+## Información institucional
+
+- [Sobre nosotros](https://arrendador.co/sobre-nosotros): Información sobre ArrendadorCO y su propósito editorial.
+- [Términos y condiciones](https://arrendador.co/terminos-y-condiciones): Reglas generales de uso de la plataforma y productos digitales.
+- [Política de datos](https://arrendador.co/politica-de-datos): Política de tratamiento de datos personales.
+- [Aviso legal](https://arrendador.co/aviso-legal): Información legal del sitio web.
+- [Derecho de retracto](https://arrendador.co/retracto-y-devoluciones): Procedimiento de retracto y devoluciones.
+- [Contacto](https://arrendador.co/contacto): Formulario de contacto y preguntas frecuentes.
