@@ -4,10 +4,40 @@ import matter from 'gray-matter';
 
 /** Seguridad: deshabilitar motor JS de gray-matter (CVE-2026-78847).
  *  Evita ejecución de código si un archivo .md contiene frontmatter tipo ---js o ---javascript. */
-(matter as unknown as { engines: Record<string, () => object> }).engines.javascript = function() { return {}; };
-(matter as unknown as { engines: Record<string, () => object> }).engines.js = function() { return {}; };
+(matter as unknown as { engines: Record<string, { parse: () => never; stringify: () => never }> }).engines.javascript = {
+  parse: function() { throw new Error('JavaScript frontmatter is not supported (CVE-2026-78847)'); },
+  stringify: function() { throw new Error('JavaScript frontmatter is not supported'); },
+};
+(matter as unknown as { engines: Record<string, { parse: () => never; stringify: () => never }> }).engines.js = {
+  parse: function() { throw new Error('JavaScript frontmatter is not supported (CVE-2026-78847)'); },
+  stringify: function() { throw new Error('JavaScript frontmatter is not supported'); },
+};
 
 const postsDirectory = path.join(process.cwd(), 'content', 'blog');
+
+/** Formato permitido para slugs: solo minúsculas, dígitos y guiones, sin path traversal ni caracteres peligrosos. */
+export const SLUG_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+
+export function isValidSlug(slug: string): boolean {
+  return typeof slug === 'string' && SLUG_PATTERN.test(slug);
+}
+
+/**
+ * Construye de forma segura la ruta relativa de un artículo del blog.
+ * Acepta únicamente slugs que pasen la validación estricta.
+ * Rechaza cualquier entrada inválida devolviendo null.
+ * Codifica el segmento de ruta para mayor seguridad.
+ */
+export function blogPostHref(slug: string): string | null {
+  if (!isValidSlug(slug)) return null;
+  return `/blog/${encodeURIComponent(slug)}`;
+}
+
+function assertValidSlug(slug: string): void {
+  if (!isValidSlug(slug)) {
+    throw new Error(`Slug inválido o no permitido: "${slug}"`);
+  }
+}
 
 export interface PostMeta {
   slug: string;
@@ -55,6 +85,7 @@ export function getAllPosts(): PostMeta[] {
 
   const posts = fileNames.map((fileName) => {
     const slug = fileName.replace(/\.md$/, '');
+    assertValidSlug(slug);
     const fullPath = path.join(postsDirectory, fileName);
     const fileContents = fs.readFileSync(fullPath, 'utf8');
     const { data } = matter(fileContents);
@@ -99,10 +130,18 @@ export function getAllPostSlugs(): string[] {
   return fs
     .readdirSync(postsDirectory)
     .filter((f) => f.endsWith('.md'))
-    .map((f) => f.replace(/\.md$/, ''));
+    .map((f) => f.replace(/\.md$/, ''))
+    .filter((slug) => isValidSlug(slug))
+    .filter((slug) => {
+      const fullPath = path.join(postsDirectory, `${slug}.md`);
+      const fileContents = fs.readFileSync(fullPath, 'utf8');
+      const { data } = matter(fileContents);
+      return data.draft !== true;
+    });
 }
 
 export async function getPostBySlug(slug: string): Promise<Post> {
+  assertValidSlug(slug);
   const slugs = getAllPostSlugs();
   if (!slugs.includes(slug)) {
     throw new Error(`Artículo no encontrado: ${slug}`);
@@ -122,9 +161,10 @@ export async function getPostBySlug(slug: string): Promise<Post> {
     validatedUpdated = validateDate(data.updated, 'updated', slug);
   }
 
-  // Si es borrador, solo permitir acceso si se solicita explícitamente
-  // (en producción esto se controlaría con autenticación/preview mode)
-  const isDraft = data.draft === true;
+  // Rechazar borradores por defecto: solo accesibles mediante mecanismo explícito y seguro
+  if (data.draft === true) {
+    throw new Error(`Artículo "${slug}" es un borrador y no está publicado.`);
+  }
 
   return {
     slug,
@@ -140,7 +180,7 @@ export async function getPostBySlug(slug: string): Promise<Post> {
     featured: data.featured,
     canonical: data.canonical,
     legalReviewDate: data.legalReviewDate,
-    draft: isDraft,
+    draft: false,
     content,
   };
 }

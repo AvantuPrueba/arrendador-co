@@ -22,5 +22,22 @@
 			"binding": "R2_BUCKET",
 			"bucket_name": "arrendadorco-products"
 		}
-	]
+	],
+	"previews": {
+		"d1_databases": [
+			{
+				"binding": "DB",
+				"database_id": "84be3701-f377-4e63-a1ae-04910a25bc30"
+			}
+		],
+		"r2_buckets": [
+			{
+				"binding": "R2_BUCKET",
+				"bucket_name": "arrendadorco-preview-products"
+			}
+		],
+		"vars": {
+			"ENVIRONMENT": "preview"
+		}
+	}
 }

@@ -6,7 +6,7 @@ import { isValidEmail, normalizeEmail } from '@/lib/email';
 import { PRODUCT_CONFIG } from '@/lib/product';
 
 export const SUPPORT_EMAIL =
-  process.env.NEXT_PUBLIC_SUPPORT_EMAIL || 'spaceyisusshop@gmail.com';
+  process.env.NEXT_PUBLIC_SUPPORT_EMAIL || 'hola@arrendador.co';
 
 type Status = 'idle' | 'submitting' | 'sent';
 
