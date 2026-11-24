@@ -29,9 +29,9 @@
   --color-green-deep: #183C32;
   --color-green-mid: #315B49;
   --color-terracotta: #B7654A;
-  --color-bronze: #B99763;
+  --color-bronze: #7A5A33;
   --color-charcoal: #292D29;
-  --color-muted: #76776F;
+  --color-muted: #5C5D62;
 
   /* ── Font stacks (consumed via var() and Tailwind font-* utilities) ── */
   --font-display: 'DM Serif Display', serif;

@@ -131,7 +131,13 @@ export function getAllPostSlugs(): string[] {
     .readdirSync(postsDirectory)
     .filter((f) => f.endsWith('.md'))
     .map((f) => f.replace(/\.md$/, ''))
-    .filter((slug) => isValidSlug(slug));
+    .filter((slug) => isValidSlug(slug))
+    .filter((slug) => {
+      const fullPath = path.join(postsDirectory, `${slug}.md`);
+      const fileContents = fs.readFileSync(fullPath, 'utf8');
+      const { data } = matter(fileContents);
+      return data.draft !== true;
+    });
 }
 
 export async function getPostBySlug(slug: string): Promise<Post> {
@@ -155,9 +161,10 @@ export async function getPostBySlug(slug: string): Promise<Post> {
     validatedUpdated = validateDate(data.updated, 'updated', slug);
   }
 
-  // Si es borrador, solo permitir acceso si se solicita explícitamente
-  // (en producción esto se controlaría con autenticación/preview mode)
-  const isDraft = data.draft === true;
+  // Rechazar borradores por defecto: solo accesibles mediante mecanismo explícito y seguro
+  if (data.draft === true) {
+    throw new Error(`Artículo "${slug}" es un borrador y no está publicado.`);
+  }
 
   return {
     slug,
@@ -173,7 +180,7 @@ export async function getPostBySlug(slug: string): Promise<Post> {
     featured: data.featured,
     canonical: data.canonical,
     legalReviewDate: data.legalReviewDate,
-    draft: isDraft,
+    draft: false,
     content,
   };
 }

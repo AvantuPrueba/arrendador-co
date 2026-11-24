@@ -1,5 +1,7 @@
 import Link from 'next/link';
 
+const CURRENT_YEAR = new Date().getFullYear();
+
 export default function Footer() {
   return (
     <footer className="border-t-2 border-bronze/30 bg-charcoal text-white/80">
@@ -115,7 +117,7 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-white/60">
           <p>
-            © 2026 ArrendadorCO. Contenido informativo. No constituye asesoría legal ni financiera.
+            © {CURRENT_YEAR} ArrendadorCO. Contenido informativo. No constituye asesoría legal ni financiera.
           </p>
           <div className="flex items-center gap-4">
             <Link href="/politica-de-datos" className="hover:text-white transition-colors">

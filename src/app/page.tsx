@@ -784,61 +784,71 @@ export default function Home() {
             {featuredPost && (
               <div className="lg:col-span-7">
                 <Reveal>
-                  <Link
-                    href={blogPostHref(featuredPost.slug)!}
-                    className="group flex h-full flex-col justify-between rounded-2xl border border-charcoal/10 bg-surface p-8 transition-all hover:bg-ivory hover:shadow-lg"
-                  >
-                    <div>
-                      <div className="flex items-center justify-between">
-                        <span className="font-mono text-xs uppercase tracking-wider text-bronze font-semibold">
-                          {featuredPost.category || 'CONTRATOS'}
-                        </span>
-                        <time className="font-mono text-xs text-muted">{featuredPost.date}</time>
-                      </div>
+                  {(() => {
+                    const href = blogPostHref(featuredPost.slug);
+                    if (!href) return null;
+                    return (
+                      <Link
+                        href={href}
+                        className="group flex h-full flex-col justify-between rounded-2xl border border-charcoal/10 bg-surface p-8 transition-all hover:bg-ivory hover:shadow-lg"
+                      >
+                        <div>
+                          <div className="flex items-center justify-between">
+                            <span className="font-mono text-xs uppercase tracking-wider text-bronze font-semibold">
+                              {featuredPost.category || 'CONTRATOS'}
+                            </span>
+                            <time className="font-mono text-xs text-muted">{featuredPost.date}</time>
+                          </div>
 
-                      <h3 className="mt-4 font-display text-2xl sm:text-3xl text-charcoal font-normal group-hover:text-green-deep transition-colors leading-snug">
-                        {featuredPost.title}
-                      </h3>
+                          <h3 className="mt-4 font-display text-2xl sm:text-3xl text-charcoal font-normal group-hover:text-green-deep transition-colors leading-snug">
+                            {featuredPost.title}
+                          </h3>
 
-                      <p className="mt-3 text-base text-muted line-clamp-3 leading-relaxed">
-                        {featuredPost.excerpt}
-                      </p>
-                    </div>
+                          <p className="mt-3 text-base text-muted line-clamp-3 leading-relaxed">
+                            {featuredPost.excerpt}
+                          </p>
+                        </div>
 
-                    <div className="mt-6 flex items-center gap-2 font-mono text-xs font-semibold text-green-deep">
-                      Leer guía completa
-                      <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                    </div>
-                  </Link>
+                        <div className="mt-6 flex items-center gap-2 font-mono text-xs font-semibold text-green-deep">
+                          Leer guía completa
+                          <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                        </div>
+                      </Link>
+                    );
+                  })()}
                 </Reveal>
               </div>
             )}
 
             {/* Secondary Articles (40% -> col-span-5) */}
             <div className="lg:col-span-5 flex flex-col gap-4 justify-between">
-              {secondaryPosts.map((post, i) => (
-                <Reveal key={post.slug} delay={i * 70}>
-                  <Link
-                    href={blogPostHref(post.slug)!}
-                    className="group block rounded-xl border border-charcoal/10 border-l-[3px] border-l-transparent bg-white p-5 transition-all hover:border-l-bronze hover:bg-surface hover:shadow-md"
-                  >
-                    <div className="flex items-center justify-between text-xs font-mono text-muted">
-                      <span className="text-bronze font-medium uppercase">
-                        {post.category || 'GUÍA'}
+              {secondaryPosts.map((post, i) => {
+                const href = blogPostHref(post.slug);
+                if (!href) return null;
+                return (
+                  <Reveal key={post.slug} delay={i * 70}>
+                    <Link
+                      href={href}
+                      className="group block rounded-xl border border-charcoal/10 border-l-[3px] border-l-transparent bg-white p-5 transition-all hover:border-l-bronze hover:bg-surface hover:shadow-md"
+                    >
+                      <div className="flex items-center justify-between text-xs font-mono text-muted">
+                        <span className="text-bronze font-medium uppercase">
+                          {post.category || 'GUÍA'}
+                        </span>
+                        <time>{post.date}</time>
+                      </div>
+
+                      <h4 className="mt-2 text-base font-semibold text-charcoal group-hover:text-green-deep transition-colors line-clamp-2">
+                        {post.title}
+                      </h4>
+
+                      <span className="mt-3 inline-flex items-center gap-1 font-mono text-xs text-green-deep font-medium">
+                        Leer artículo →
                       </span>
-                      <time>{post.date}</time>
-                    </div>
-
-                    <h4 className="mt-2 text-base font-semibold text-charcoal group-hover:text-green-deep transition-colors line-clamp-2">
-                      {post.title}
-                    </h4>
-
-                    <span className="mt-3 inline-flex items-center gap-1 font-mono text-xs text-green-deep font-medium">
-                      Leer artículo →
-                    </span>
-                  </Link>
-                </Reveal>
-              ))}
+                    </Link>
+                  </Reveal>
+                );
+              })}
             </div>
 
           </div>

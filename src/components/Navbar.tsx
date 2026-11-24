@@ -136,13 +136,12 @@ export default function Navbar() {
         </Link>
 
         {/* Desktop nav items */}
-        <ul className="hidden items-center gap-8 md:flex" role="menubar">
+        <ul className="hidden items-center gap-8 md:flex">
           {navLinks.map((link) => (
-            <li key={link.href} role="none">
+            <li key={link.href}>
               <Link
                 href={link.href}
                 className="group relative py-1 text-sm font-medium tracking-wide text-charcoal transition-colors hover:text-green-deep focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-green-deep rounded-sm"
-                role="menuitem"
               >
                 {link.label}
                 <span className="absolute bottom-0 left-0 h-[2px] w-0 bg-green-deep transition-all duration-200 group-hover:w-full" />
@@ -185,13 +184,12 @@ export default function Navbar() {
           aria-label="Menú de navegación principal móvil"
           className="fixed inset-x-0 top-[72px] bottom-0 z-50 flex flex-col justify-between bg-ivory px-6 py-8 md:hidden animate-slide-down border-t border-charcoal/10 overflow-y-auto"
         >
-          <ul className="space-y-3" role="menubar">
+          <ul className="space-y-3">
             {navLinks.map((link) => (
-              <li key={link.href} role="none">
+              <li key={link.href}>
                 <Link
                   href={link.href}
                   className="block rounded-lg px-4 py-3.5 text-lg font-medium text-charcoal hover:bg-surface hover:text-green-deep transition-colors focus-visible:ring-2 focus-visible:ring-green-deep"
-                  role="menuitem"
                   onClick={() => setIsOpen(false)}
                 >
                   {link.label}
@@ -204,7 +202,6 @@ export default function Navbar() {
             <Link
               href="/tienda"
               className="block w-full rounded-lg bg-green-deep px-6 py-3.5 text-center text-base font-medium text-white hover:bg-green-mid transition-colors shadow-sm focus-visible:ring-2 focus-visible:ring-green-deep"
-              role="menuitem"
               onClick={() => setIsOpen(false)}
             >
               Ver plantilla de contrato
