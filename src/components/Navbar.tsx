@@ -16,6 +16,7 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const toggleRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
+  const desktopNavRef = useRef<HTMLUListElement>(null);
   const wasOpenRef = useRef(false);
 
   useEffect(() => {
@@ -105,7 +106,11 @@ export default function Navbar() {
     }
     if (wasOpenRef.current) {
       wasOpenRef.current = false;
-      toggleRef.current?.focus();
+      if (window.innerWidth >= 768) {
+        desktopNavRef.current?.querySelector<HTMLElement>('a[href]')?.focus();
+      } else {
+        toggleRef.current?.focus();
+      }
     }
   }, [isOpen]);
 
@@ -136,7 +141,7 @@ export default function Navbar() {
         </Link>
 
         {/* Desktop nav items */}
-        <ul className="hidden items-center gap-8 md:flex">
+        <ul ref={desktopNavRef} className="hidden items-center gap-8 md:flex">
           {navLinks.map((link) => (
             <li key={link.href}>
               <Link

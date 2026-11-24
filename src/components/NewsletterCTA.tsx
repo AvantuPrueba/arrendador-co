@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, FormEvent } from 'react';
+import { useId, useState, FormEvent } from 'react';
 import { isValidEmail, normalizeEmail } from '@/lib/email';
 import Link from 'next/link';
 import { PRODUCT_CONFIG } from '@/lib/product';
@@ -31,10 +31,12 @@ export default function NewsletterCTA({
   const [status, setStatus] = useState<Status>('idle');
   const [error, setError] = useState<string | null>(null);
 
-  // Generate unique IDs for accessibility across multiple instances on the same page
-  const inputId = `newsletter-email-${source}`;
-  const consentId = `newsletter-consent-${source}`;
-  const errorId = `newsletter-error-${source}`;
+  // useId keeps labels and error descriptions unique even when two instances
+  // share the same source value on one page.
+  const instanceId = useId().replace(/:/g, '');
+  const inputId = `newsletter-email-${instanceId}`;
+  const consentId = `newsletter-consent-${instanceId}`;
+  const errorId = `newsletter-error-${instanceId}`;
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
