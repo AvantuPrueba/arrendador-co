@@ -1,5 +1,3 @@
-export const dynamicParams = false;
-
 import type { Metadata } from 'next';
 import { getPostBySlug, getAllPostSlugs } from '@/lib/blog';
 import { notFound } from 'next/navigation';
@@ -8,6 +6,8 @@ import rehypeSanitize from 'rehype-sanitize';
 import ProductCTA from '@/components/ProductCTA';
 import NewsletterCTA from '@/components/NewsletterCTA';
 import AffiliateBox from '@/components/AffiliateBox';
+import JsonLd from '@/components/JsonLd';
+import { absoluteUrl, ORGANIZATION_ID, WEBSITE_ID } from '@/lib/seo';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -30,6 +30,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         type: 'article',
         publishedTime: post.date,
       },
+      alternates: { canonical: post.canonical || `/blog/${post.slug}` },
     };
   } catch {
     return { title: 'Artículo no encontrado' };
@@ -45,8 +46,27 @@ export default async function BlogPost({ params }: Props) {
     notFound();
   }
 
+  const articleUrl = absoluteUrl(`/blog/${post.slug}`);
+  const articleJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    '@id': `${articleUrl}#article`,
+    headline: post.title,
+    description: post.description || post.excerpt,
+    datePublished: post.date,
+    ...(post.updated ? { dateModified: post.updated } : {}),
+    author: { '@id': ORGANIZATION_ID },
+    publisher: { '@id': ORGANIZATION_ID },
+    mainEntityOfPage: { '@type': 'WebPage', '@id': articleUrl },
+    isPartOf: { '@id': WEBSITE_ID },
+    url: articleUrl,
+    inLanguage: 'es-CO',
+  };
+
   return (
-    <article className="mx-auto max-w-3xl px-4 py-12">
+    <>
+      <JsonLd data={articleJsonLd} />
+      <article className="mx-auto max-w-3xl px-4 py-12">
       <header className="mb-8">
         <h1 className="mb-3">{post.title}</h1>
         <div className="flex items-center gap-4 text-sm text-gray-500">
@@ -76,6 +96,7 @@ export default async function BlogPost({ params }: Props) {
 
       <ProductCTA />
       <NewsletterCTA />
-    </article>
+      </article>
+    </>
   );
 }

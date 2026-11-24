@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   title: 'Impuestos y Obligaciones Tributarias del Arrendador en Colombia | ArrendadorCO',
   description: 'Guía para pequeños arrendadores en Colombia sobre renta, predial, IVA, facturación y documentación tributaria. Enfocada en personas naturales con arrendamiento de vivienda urbana.',
   alternates: {
-    canonical: 'https://arrendadorco.netlify.app/guias/fiscalidad',
+    canonical: '/guias/fiscalidad',
   },
   openGraph: {
     title: 'Impuestos y Obligaciones Tributarias del Arrendador en Colombia',

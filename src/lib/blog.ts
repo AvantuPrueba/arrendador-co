@@ -1,6 +1,5 @@
-import fs from 'fs';
-import path from 'path';
 import matter from 'gray-matter';
+import { BLOG_POSTS } from './blog-data.generated.js';
 
 /** Seguridad: deshabilitar motor JS de gray-matter (CVE-2026-78847).
  *  Evita ejecución de código si un archivo .md contiene frontmatter tipo ---js o ---javascript. */
@@ -12,8 +11,6 @@ import matter from 'gray-matter';
   parse: function() { throw new Error('JavaScript frontmatter is not supported (CVE-2026-78847)'); },
   stringify: function() { throw new Error('JavaScript frontmatter is not supported'); },
 };
-
-const postsDirectory = path.join(process.cwd(), 'content', 'blog');
 
 /** Formato permitido para slugs: solo minúsculas, dígitos y guiones, sin path traversal ni caracteres peligrosos. */
 export const SLUG_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
@@ -79,16 +76,9 @@ function validateDate(date: string, field: string, slug: string): string {
 }
 
 export function getAllPosts(): PostMeta[] {
-  if (!fs.existsSync(postsDirectory)) return [];
-
-  const fileNames = fs.readdirSync(postsDirectory).filter((f) => f.endsWith('.md'));
-
-  const posts = fileNames.map((fileName) => {
-    const slug = fileName.replace(/\.md$/, '');
+  const posts = BLOG_POSTS.map((data) => {
+    const slug = data.slug;
     assertValidSlug(slug);
-    const fullPath = path.join(postsDirectory, fileName);
-    const fileContents = fs.readFileSync(fullPath, 'utf8');
-    const { data } = matter(fileContents);
 
     // date es OBLIGATORIO: si falta, el build debe fallar
     if (!data.date) {
@@ -126,61 +116,41 @@ export function getAllPosts(): PostMeta[] {
 }
 
 export function getAllPostSlugs(): string[] {
-  if (!fs.existsSync(postsDirectory)) return [];
-  return fs
-    .readdirSync(postsDirectory)
-    .filter((f) => f.endsWith('.md'))
-    .map((f) => f.replace(/\.md$/, ''))
-    .filter((slug) => isValidSlug(slug))
-    .filter((slug) => {
-      const fullPath = path.join(postsDirectory, `${slug}.md`);
-      const fileContents = fs.readFileSync(fullPath, 'utf8');
-      const { data } = matter(fileContents);
-      return data.draft !== true;
-    });
+  return getAllPosts().map((post) => post.slug);
 }
 
 export async function getPostBySlug(slug: string): Promise<Post> {
   assertValidSlug(slug);
-  const slugs = getAllPostSlugs();
-  if (!slugs.includes(slug)) {
+  const post = BLOG_POSTS.find((candidate) => candidate.slug === slug);
+  if (!post || post.draft === true) {
     throw new Error(`Artículo no encontrado: ${slug}`);
   }
 
-  const fullPath = path.join(postsDirectory, `${slug}.md`);
-  const fileContents = fs.readFileSync(fullPath, 'utf8');
-  const { data, content } = matter(fileContents);
-
-  if (!data.date) {
+  if (!post.date) {
     throw new Error(`Artículo "${slug}": falta campo obligatorio "date" en frontmatter`);
   }
 
-  const validatedDate = validateDate(data.date, 'date', slug);
-  let validatedUpdated = data.updated;
-  if (data.updated) {
-    validatedUpdated = validateDate(data.updated, 'updated', slug);
-  }
-
-  // Rechazar borradores por defecto: solo accesibles mediante mecanismo explícito y seguro
-  if (data.draft === true) {
-    throw new Error(`Artículo "${slug}" es un borrador y no está publicado.`);
+  const validatedDate = validateDate(post.date, 'date', slug);
+  let validatedUpdated = post.updated;
+  if (post.updated) {
+    validatedUpdated = validateDate(post.updated, 'updated', slug);
   }
 
   return {
     slug,
-    title: data.title || 'Sin título',
+    title: post.title || 'Sin título',
     date: validatedDate,
     updated: validatedUpdated,
-    author: data.author || 'ArrendadorCO',
-    excerpt: data.excerpt || '',
-    description: data.description || '',
-    category: data.category,
-    tags: data.tags,
-    sources: data.sources,
-    featured: data.featured,
-    canonical: data.canonical,
-    legalReviewDate: data.legalReviewDate,
+    author: post.author || 'ArrendadorCO',
+    excerpt: post.excerpt || '',
+    description: post.description || '',
+    category: post.category,
+    tags: post.tags,
+    sources: post.sources,
+    featured: post.featured,
+    canonical: post.canonical,
+    legalReviewDate: post.legalReviewDate,
     draft: false,
-    content,
+    content: post.content,
   };
 }

@@ -19,13 +19,13 @@ export function MobileBuyBar() {
   if (!visible) return null;
 
   return (
-    <div className="fixed bottom-0 inset-x-0 z-40 border-t border-slate-200 bg-white/95 p-3 backdrop-blur md:hidden">
+    <div className="fixed inset-x-0 bottom-0 z-40 border-t border-charcoal/10 bg-white/95 p-3 backdrop-blur md:hidden">
       <Link
         href="#compra"
-        className="flex items-center justify-between rounded-xl bg-slate-900 px-5 py-3 font-semibold text-white"
+        className="flex items-center justify-between rounded-xl bg-green-deep px-5 py-3 font-semibold text-white"
       >
         <span>{PRODUCT_CONFIG.name.split(' ')[0]} · {formatPrice()}</span>
-        <span className="rounded-lg bg-teal-600 px-4 py-1.5 text-sm">Comprar</span>
+        <span className="rounded-lg bg-bronze px-4 py-1.5 text-sm">Comprar</span>
       </Link>
     </div>
   );
