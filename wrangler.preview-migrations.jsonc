@@ -1,0 +1,12 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "arrendador-co-preview-migrations",
+  "d1_databases": [
+    {
+      "binding": "PREVIEW_DB",
+      "database_name": "arrendadorco-preview",
+      "database_id": "84be3701-f377-4e63-a1ae-04910a25bc30",
+      "migrations_dir": "migrations"
+    }
+  ]
+}
