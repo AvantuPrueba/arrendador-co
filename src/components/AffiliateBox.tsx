@@ -16,11 +16,19 @@ function isPendingHref(href: string): boolean {
   return href.trim().startsWith(PENDING_PREFIX);
 }
 
+/**
+ * Botón activo de afiliado. Usa bronze-hover (#5E4525) como fondo para
+ * garantizar al menos 4.5:1 de contraste con texto blanco.
+ */
 const BUTTON_CLASS =
-  'inline-block rounded-md bg-blue-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-700';
+  'rounded-lg bg-[#5E4525] px-6 py-3 font-semibold text-white transition-all hover:bg-[#4A3A1D]';
 
+/**
+ * Estado deshabilitado (pendiente). Fondo bronce muy sutil y texto bronce
+ * oscuro para mantener legibilidad sin parecer un botón activo.
+ */
 const DISABLED_BUTTON_CLASS =
-  'inline-block rounded-md bg-gray-300 px-5 py-2.5 text-sm font-medium text-gray-500 cursor-not-allowed';
+  'rounded-lg bg-bronze/10 px-6 py-3 font-semibold text-[#5E4525] cursor-not-allowed';
 
 /**
  * Caja de promoción de un partner afiliado.
@@ -35,7 +43,7 @@ export default function AffiliateBox({ title, description, ctaText, ctaHref }: A
   const cta: ReactNode = pending ? (
     <span className={DISABLED_BUTTON_CLASS}>
       {ctaText}
-      <span className="ml-2 text-xs font-normal">(enlace pendiente)</span>
+      <span className="ml-2 text-xs font-normal text-[#5E4525]">(enlace pendiente)</span>
     </span>
   ) : (
     <a
@@ -49,11 +57,11 @@ export default function AffiliateBox({ title, description, ctaText, ctaHref }: A
   );
 
   return (
-    <div className="my-8 rounded-lg border-2 border-blue-100 bg-blue-50/50 p-6">
-      <h4 className="mb-2 text-lg font-semibold text-blue-800">{title}</h4>
-      <p className="mb-4 text-sm text-gray-700">{description}</p>
+    <div className="my-8 rounded-2xl border border-charcoal/10 bg-surface p-6">
+      <h4 className="mb-2 font-semibold text-lg text-[#5E4525]">{title}</h4>
+      <p className="mb-4 text-sm text-muted">{description}</p>
       {cta}
-      <p className="mt-3 text-xs italic text-gray-500">
+      <p className="mt-3 text-xs italic text-muted">
         {pending
           ? 'Esta sección se activará cuando tengamos partners confirmados.'
           : 'Este enlace es afiliado y puede generar una comisión.'}
