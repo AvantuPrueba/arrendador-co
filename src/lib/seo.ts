@@ -22,6 +22,10 @@ export const organizationJsonLd = {
   url: `${SITE_URL}/`,
   description: ORGANIZATION_DESCRIPTION,
   email: ORGANIZATION_EMAIL,
+  areaServed: {
+    '@type': 'Country',
+    name: 'Colombia',
+  },
 } as const;
 
 export const websiteJsonLd = {

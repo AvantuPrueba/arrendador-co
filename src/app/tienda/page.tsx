@@ -43,15 +43,32 @@ export default function Tienda() {
     },
   };
 
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Inicio',
+        item: absoluteUrl('/'),
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Plantilla de contrato',
+      },
+    ],
+  } as const;
+
   return (
     <>
       <JsonLd data={productJsonLd} />
+      <JsonLd data={breadcrumbJsonLd} />
       <div className="mx-auto max-w-6xl px-4 py-10 md:py-14">
       {/* Breadcrumb */}
       <nav className="mb-8 flex items-center gap-2 text-[13px] text-muted" aria-label="Breadcrumb">
         <Link href="/" className="transition-colors hover:text-green-mid">Inicio</Link>
-        <span aria-hidden="true">→</span>
-        <Link href="/tienda" className="transition-colors hover:text-green-mid">Tienda</Link>
         <span aria-hidden="true">→</span>
         <span className="text-charcoal">Plantilla de contrato</span>
       </nav>
