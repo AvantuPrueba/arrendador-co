@@ -1,10 +1,25 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import NewsletterCTA from '@/components/NewsletterCTA';
+import { baseOpenGraph, baseTwitter } from '@/lib/metadata';
 
 export const metadata: Metadata = {
   title: 'Acta de Entrega de Inmueble en Arriendo Colombia | ArrendadorCO',
   description: 'Aprende qué revisar y documentar al entregar o recibir un inmueble en arriendo en Colombia. Incluye checklist práctico y recomendaciones de documentación.',
+  openGraph: {
+    ...baseOpenGraph(),
+    title: 'Acta de Entrega de Inmueble en Arriendo Colombia | ArrendadorCO',
+    description: 'Aprende qué revisar y documentar al entregar o recibir un inmueble en arriendo en Colombia. Incluye checklist práctico y recomendaciones de documentación.',
+    type: 'website',
+    locale: 'es_CO',
+    url: 'https://arrendador.co/guias/actas',
+    siteName: 'ArrendadorCO',
+  },
+  twitter: {
+    ...baseTwitter(),
+    title: 'Acta de Entrega de Inmueble en Arriendo Colombia | ArrendadorCO',
+    description: 'Aprende qué revisar y documentar al entregar o recibir un inmueble en arriendo en Colombia. Incluye checklist práctico y recomendaciones de documentación.',
+  },
 };
 
 export default function ActasGuia() {

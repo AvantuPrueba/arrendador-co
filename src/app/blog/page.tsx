@@ -4,11 +4,26 @@ import { getAllPosts } from '@/lib/blog';
 import ArticleCard from '@/components/ArticleCard';
 import { PRODUCT_CONFIG, formatPrice } from '@/lib/product';
 import { ArrowRight } from 'lucide-react';
+import { baseOpenGraph, baseTwitter } from '@/lib/metadata';
 
 export const metadata: Metadata = {
   title: 'Blog para Arrendadores en Colombia | ArrendadorCO',
   description: 'Guías y artículos prácticos para pequeños arrendadores en Colombia sobre contratos, entrega de inmuebles, morosidad y gestión del arriendo.',
   alternates: { canonical: '/blog' },
+  openGraph: {
+    ...baseOpenGraph(),
+    title: 'Blog para Arrendadores en Colombia | ArrendadorCO',
+    description: 'Guías y artículos prácticos para pequeños arrendadores en Colombia sobre contratos, entrega de inmuebles, morosidad y gestión del arriendo.',
+    type: 'website',
+    locale: 'es_CO',
+    url: 'https://arrendador.co/blog',
+    siteName: 'ArrendadorCO',
+  },
+  twitter: {
+    ...baseTwitter(),
+    title: 'Blog para Arrendadores en Colombia | ArrendadorCO',
+    description: 'Guías y artículos prácticos para pequeños arrendadores en Colombia sobre contratos, entrega de inmuebles, morosidad y gestión del arriendo.',
+  },
 };
 
 export default function BlogPage() {

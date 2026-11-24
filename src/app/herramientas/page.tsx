@@ -6,10 +6,25 @@ import {
   ClipboardCheck,
   ArrowRight,
 } from 'lucide-react';
+import { baseOpenGraph, baseTwitter } from '@/lib/metadata';
 
 export const metadata: Metadata = {
   title: 'Herramientas para Arrendadores en Colombia | ArrendadorCO',
   description: 'Próximas calculadoras y utilidades para pequeños arrendadores en Colombia: reajuste del canon, rentabilidad y gestión de inmuebles.',
+  openGraph: {
+    ...baseOpenGraph(),
+    title: 'Herramientas para Arrendadores en Colombia | ArrendadorCO',
+    description: 'Próximas calculadoras y utilidades para pequeños arrendadores en Colombia: reajuste del canon, rentabilidad y gestión de inmuebles.',
+    type: 'website',
+    locale: 'es_CO',
+    url: 'https://arrendador.co/herramientas',
+    siteName: 'ArrendadorCO',
+  },
+  twitter: {
+    ...baseTwitter(),
+    title: 'Herramientas para Arrendadores en Colombia | ArrendadorCO',
+    description: 'Próximas calculadoras y utilidades para pequeños arrendadores en Colombia: reajuste del canon, rentabilidad y gestión de inmuebles.',
+  },
 };
 
 const upcomingTools = [

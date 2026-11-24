@@ -3,6 +3,7 @@ import { DM_Serif_Display, Inter, IBM_Plex_Mono } from 'next/font/google';
 import './globals.css';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import { baseOpenGraph, baseTwitter } from '@/lib/metadata';
 
 const dmSerif = DM_Serif_Display({
   weight: '400',
@@ -33,10 +34,13 @@ export const metadata: Metadata = {
   description:
     'Información práctica sobre contratos de arriendo, actas de entrega y manejo de inquilinos morosos en Colombia.',
   openGraph: {
-    type: 'website',
-    locale: 'es_CO',
-    url: 'https://arrendador.co',
-    siteName: 'ArrendadorCO',
+    ...baseOpenGraph(),
+    title: 'ArrendadorCO - Guía para Arrendadores en Colombia',
+    description:
+      'Información práctica sobre contratos de arriendo, actas de entrega y manejo de inquilinos morosos en Colombia.',
+  },
+  twitter: {
+    ...baseTwitter(),
     title: 'ArrendadorCO - Guía para Arrendadores en Colombia',
     description:
       'Información práctica sobre contratos de arriendo, actas de entrega y manejo de inquilinos morosos en Colombia.',
