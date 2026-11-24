@@ -22,8 +22,8 @@ import { Reveal, ScrollProgress, StickyProductCta } from '@/components/home/Moti
 
 export default function Home() {
   const posts = getAllPosts().filter((p) => isValidSlug(p.slug)).slice(0, 4);
-  const featuredPost = posts[0];
-  const secondaryPosts = posts.slice(1, 4);
+  const featuredPost = posts.find((post) => post.featured === true) ?? posts[0];
+  const secondaryPosts = posts.filter((post) => post.slug !== featuredPost?.slug).slice(0, 3);
 
   return (
     <>
@@ -31,7 +31,7 @@ export default function Home() {
       <StickyProductCta />
 
       {/* ── 1. HERO SECTION ── */}
-      <section className="relative overflow-hidden bg-white pt-8 pb-16 md:pt-14 md:pb-24 border-b border-charcoal/5">
+      <section className="relative overflow-hidden bg-ivory pt-8 pb-16 md:pt-14 md:pb-24 border-b border-charcoal/5">
         <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">
           <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-8">
             
@@ -205,7 +205,7 @@ export default function Home() {
                 >
                   <div>
                     <div className="flex items-center justify-between">
-                      <span className="font-mono text-sm uppercase tracking-wider text-bronze font-medium">
+                      <span className="font-mono text-sm uppercase tracking-wider text-bright-bronze font-medium">
                         01 · RECOMENDADO
                       </span>
                       <ScrollText className="h-8 w-8 text-white/90 transition-transform group-hover:scale-110" />
@@ -642,7 +642,7 @@ export default function Home() {
                     href="/tienda"
                     className="flex w-full items-center justify-center gap-2 rounded-lg bg-green-deep px-8 py-3.5 text-base font-medium text-white transition-all hover:bg-green-mid hover:scale-[1.01] active:scale-[0.99] shadow-md"
                   >
-                    <Lock className="h-4 w-4 text-bronze" />
+                    <Lock className="h-4 w-4 text-bright-bronze" />
                     Comprar plantilla — {formatPrice()}
                   </Link>
 
@@ -876,7 +876,7 @@ export default function Home() {
             
             {/* Pillar 1 */}
             <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-xs">
-              <BookOpen className="h-7 w-7 text-bronze mb-4" />
+              <BookOpen className="h-7 w-7 text-bright-bronze mb-4" />
               <h3 className="font-display text-xl text-white font-normal mb-2">
                 Normativa colombiana
               </h3>
@@ -887,7 +887,7 @@ export default function Home() {
 
             {/* Pillar 2 */}
             <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-xs">
-              <Link2 className="h-7 w-7 text-bronze mb-4" />
+              <Link2 className="h-7 w-7 text-bright-bronze mb-4" />
               <h3 className="font-display text-xl text-white font-normal mb-2">
                 Fuentes verificables
               </h3>
@@ -898,7 +898,7 @@ export default function Home() {
 
             {/* Pillar 3 */}
             <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-xs">
-              <Scale className="h-7 w-7 text-bronze mb-4" />
+              <Scale className="h-7 w-7 text-bright-bronze mb-4" />
               <h3 className="font-display text-xl text-white font-normal mb-2">
                 Contenido informativo
               </h3>
@@ -909,7 +909,7 @@ export default function Home() {
 
             {/* Pillar 4 */}
             <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-xs">
-              <MapPin className="h-7 w-7 text-bronze mb-4" />
+              <MapPin className="h-7 w-7 text-bright-bronze mb-4" />
               <h3 className="font-display text-xl text-white font-normal mb-2">
                 Hecho para Colombia
               </h3>

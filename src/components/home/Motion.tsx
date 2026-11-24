@@ -102,7 +102,7 @@ export function StickyProductCta() {
         className="flex items-center justify-between rounded-lg bg-green-deep px-5 py-3 font-medium text-white shadow-md active:bg-green-mid"
       >
         <span className="text-sm truncate mr-2">{PRODUCT_CONFIG_NAME}</span>
-        <span className="font-mono text-xs font-semibold text-bronze shrink-0">{PRODUCT_PRICE}</span>
+        <span className="font-mono text-xs font-semibold text-bright-bronze shrink-0">{PRODUCT_PRICE}</span>
       </Link>
     </div>
   );

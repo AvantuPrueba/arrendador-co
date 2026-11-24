@@ -168,7 +168,7 @@ export default function NewsletterCTA({
             disabled={status === 'submitting'}
             aria-invalid={error ? true : undefined}
             aria-describedby={error ? errorId : undefined}
-            className="flex-1 rounded-lg border border-charcoal/25 bg-ivory px-4 py-3 text-sm text-charcoal placeholder:text-muted/60 transition-colors focus:border-green-deep focus:outline-none focus:ring-1 focus:ring-green-deep disabled:bg-black/5"
+            className="flex-1 rounded-lg border border-charcoal/25 bg-ivory px-4 py-3 text-sm text-charcoal placeholder:text-muted transition-colors focus:border-green-deep focus:outline-none focus:ring-1 focus:ring-green-deep disabled:bg-black/5"
           />
           <button
             type="submit"
