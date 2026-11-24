@@ -8,6 +8,7 @@ import { ArrowRight } from 'lucide-react';
 export const metadata: Metadata = {
   title: 'Blog para Arrendadores en Colombia | ArrendadorCO',
   description: 'Guías y artículos prácticos para pequeños arrendadores en Colombia sobre contratos, entrega de inmuebles, morosidad y gestión del arriendo.',
+  alternates: { canonical: '/blog' },
 };
 
 export default function BlogPage() {

@@ -10,6 +10,10 @@ export const PRODUCT_CONFIG = {
   /** Nombre comercial del producto. */
   name: 'Plantilla de Contrato de Arrendamiento',
 
+  /** Descripción visible y reutilizable para metadatos y datos estructurados. */
+  description:
+    'Una plantilla editable para organizar y adaptar tu contrato de arrendamiento en Colombia.',
+
   /** Identificador interno (slug, claves de BD, etc.). */
   id: 'plantilla-contrato-arrendamiento',
 

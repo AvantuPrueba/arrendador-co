@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import type { Metadata } from 'next';
 import {
   FileText,
   ClipboardCheck,
@@ -16,9 +17,16 @@ import {
   ScrollText,
 } from 'lucide-react';
 import NewsletterCTA from '@/components/NewsletterCTA';
+import JsonLd from '@/components/JsonLd';
 import { PRODUCT_CONFIG, formatPrice } from '@/lib/product';
 import { getAllPosts, isValidSlug, blogPostHref } from '@/lib/blog';
 import { Reveal, ScrollProgress, StickyProductCta } from '@/components/home/Motion';
+import { homeJsonLd } from '@/lib/seo';
+
+export const metadata: Metadata = {
+  alternates: { canonical: '/' },
+  openGraph: { url: '/' },
+};
 
 export default function Home() {
   const posts = getAllPosts().filter((p) => isValidSlug(p.slug)).slice(0, 4);
@@ -27,6 +35,7 @@ export default function Home() {
 
   return (
     <>
+      <JsonLd data={homeJsonLd} />
       <ScrollProgress />
       <StickyProductCta />
 
