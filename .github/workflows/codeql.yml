@@ -47,10 +47,8 @@ jobs:
           build-mode: none
         - language: javascript-typescript
           build-mode: none
-        - language: python
-          build-mode: none
-        # Ruby eliminado: no existe código fuente .rb propio en este repositorio.
-        # Se conserva actions, javascript-typescript y python.
+        # Ruby y Python eliminados: no existe código fuente propio de esos lenguajes.
+        # Se conserva actions y javascript-typescript.
         # CodeQL soporta los siguientes valores para 'language': 'actions', 'c-cpp', 'csharp', 'go', 'java-kotlin', 'javascript-typescript', 'python', 'ruby', 'rust', 'swift'
         # Use `c-cpp` para analizar código escrito en C, C++ o ambos
         # Use 'java-kotlin' para analizar código escrito en Java, Kotlin o ambos
