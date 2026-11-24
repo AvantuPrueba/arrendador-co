@@ -171,7 +171,7 @@ export default function NewsletterCTA({
           <button
             type="submit"
             disabled={status === 'submitting'}
-            className="min-h-[44px] rounded-lg bg-bronze px-6 py-3 text-sm font-medium text-white transition-all hover:bg-[#A37B48] hover:scale-[1.01] active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-50"
+            className="min-h-[44px] rounded-lg bg-bronze px-6 py-3 text-sm font-medium text-white transition-all hover:bg-[#5E4525] hover:scale-[1.01] active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-50"
           >
             {status === 'submitting' ? 'Suscribiendo…' : 'Suscribirme'}
           </button>

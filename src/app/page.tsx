@@ -218,7 +218,7 @@ export default function Home() {
                       garantías exigibles y qué errores anulan tu contrato en un proceso judicial.
                     </p>
                   </div>
-                  <div className="mt-8 flex items-center gap-2 font-mono text-sm text-bronze font-medium">
+                  <div className="mt-8 flex items-center gap-2 font-mono text-sm text-bright-bronze font-medium">
                     Explorar guías de contratos
                     <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1.5" />
                   </div>
@@ -434,7 +434,7 @@ export default function Home() {
           
           <div className="mb-12 flex flex-col md:flex-row md:items-end md:justify-between gap-4">
             <div>
-              <span className="font-mono text-xs uppercase tracking-widest text-bronze font-medium">
+              <span className="font-mono text-xs uppercase tracking-widest text-bright-bronze font-medium">
                 HERRAMIENTAS GRATUITAS
               </span>
               <h2 className="mt-2 font-display text-3xl sm:text-4xl text-white font-normal">
@@ -443,7 +443,7 @@ export default function Home() {
             </div>
             <Link
               href="/herramientas"
-              className="inline-flex items-center gap-1.5 font-mono text-xs text-bronze hover:text-white transition-colors"
+              className="inline-flex items-center gap-1.5 font-mono text-xs text-bright-bronze hover:text-white transition-colors"
             >
               Ver todas las herramientas
               <ArrowRight className="h-4 w-4" />
@@ -861,7 +861,7 @@ export default function Home() {
         <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">
           
           <div className="mb-14 text-center">
-            <span className="font-mono text-xs uppercase tracking-widest text-bronze font-medium">
+            <span className="font-mono text-xs uppercase tracking-widest text-bright-bronze font-medium">
               RIGOR Y TRANSPARENCIA
             </span>
             <h2 className="mt-2 font-display text-3xl sm:text-4xl text-white font-normal">
@@ -1005,7 +1005,7 @@ export default function Home() {
             {/* Action 3: Primary Highlighted */}
             <Link
               href="/tienda"
-              className="flex flex-col items-center justify-center rounded-xl bg-bronze p-6 text-white transition-all hover:scale-[1.03] hover:bg-[#A37B48] shadow-lg ring-2 ring-bronze/50"
+              className="flex flex-col items-center justify-center rounded-xl bg-bronze p-6 text-white transition-all hover:scale-[1.03] hover:bg-[#5E4525] shadow-lg ring-2 ring-bronze/50"
             >
               <Lock className="h-6 w-6 text-white mb-2" />
               <span className="font-semibold text-base">Comprar plantilla</span>

@@ -13,7 +13,7 @@ export default function Footer() {
               <span className="font-display text-2xl font-normal text-white">
                 Arrendador
               </span>
-              <span className="ml-0.5 font-mono text-xs font-semibold tracking-wider text-bronze uppercase">
+              <span className="ml-0.5 font-mono text-xs font-semibold tracking-wider text-bright-bronze uppercase">
                 CO
               </span>
             </Link>
@@ -27,7 +27,7 @@ export default function Footer() {
 
           {/* Navegación */}
           <nav aria-label="Navegación del sitio">
-            <h4 className="font-mono text-xs uppercase tracking-wider text-bronze mb-4 font-medium">
+            <h4 className="font-mono text-xs uppercase tracking-wider text-bright-bronze mb-4 font-medium">
               Navegación
             </h4>
             <ul className="space-y-2.5 text-sm">
@@ -56,7 +56,7 @@ export default function Footer() {
 
           {/* Legal */}
           <nav aria-label="Información legal">
-            <h4 className="font-mono text-xs uppercase tracking-wider text-bronze mb-4 font-medium">
+            <h4 className="font-mono text-xs uppercase tracking-wider text-bright-bronze mb-4 font-medium">
               Legal
             </h4>
             <ul className="space-y-2.5 text-sm">
@@ -85,13 +85,13 @@ export default function Footer() {
 
           {/* Contacto & Autoridad */}
           <div>
-            <h4 className="font-mono text-xs uppercase tracking-wider text-bronze mb-4 font-medium">
+            <h4 className="font-mono text-xs uppercase tracking-wider text-bright-bronze mb-4 font-medium">
               Contacto y Vigilancia
             </h4>
             <ul className="space-y-3 text-sm text-white/70">
               <li className="flex flex-col">
                 <span className="text-xs text-white/50">Correo de atención:</span>
-                <a href="mailto:hola@arrendador.co" className="text-bronze hover:underline font-mono text-xs mt-0.5">
+                <a href="mailto:hola@arrendador.co" className="text-bright-bronze hover:underline font-mono text-xs mt-0.5">
                   hola@arrendador.co
                 </a>
               </li>
