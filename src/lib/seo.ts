@@ -1,4 +1,7 @@
-export const SITE_URL = 'https://arrendador.co';
+import { SITE_URL } from '@/lib/site-url';
+
+export { absoluteUrl, SITE_URL } from '@/lib/site-url';
+
 export const ORGANIZATION_ID = `${SITE_URL}/#organization`;
 export const WEBSITE_ID = `${SITE_URL}/#website`;
 
@@ -41,7 +44,3 @@ export const homeJsonLd = {
   '@context': 'https://schema.org',
   '@graph': [organizationJsonLd, websiteJsonLd],
 } as const;
-
-export function absoluteUrl(pathname: string): string {
-  return new URL(pathname, `${SITE_URL}/`).toString();
-}

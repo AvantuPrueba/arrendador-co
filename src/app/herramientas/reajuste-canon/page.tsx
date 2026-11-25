@@ -3,6 +3,7 @@ import CalculadoraCanon from './calculadora';
 
 export const metadata: Metadata = {
   title: 'Calculadora de Reajuste del Canon de Arrendamiento',
+  alternates: { canonical: '/herramientas/reajuste-canon' },
   description:
     'Calcula cuándo puedes reajustar el canon de arrendamiento en Colombia y cuánto representa el incremento según el IPC aplicable.',
 };

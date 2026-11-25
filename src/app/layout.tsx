@@ -5,6 +5,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import CookieConsent from '@/components/CookieConsent';
 import { baseOpenGraph, baseTwitter } from '@/lib/metadata';
+import { SITE_URL } from '@/lib/site-url';
 
 const dmSerif = DM_Serif_Display({
   weight: '400',
@@ -27,7 +28,7 @@ const ibmPlexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://arrendador.co'),
+  metadataBase: new URL(SITE_URL),
   title: {
     default: 'ArrendadorCO - Guía para Arrendadores en Colombia',
     template: '%s | ArrendadorCO',

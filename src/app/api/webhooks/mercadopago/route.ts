@@ -1,5 +1,6 @@
 import { getCloudflareContext } from '@opennextjs/cloudflare';
 import { PRODUCT_CONFIG } from '@/lib/product';
+import { absoluteUrl } from '@/lib/seo';
 import {
   findOrderByPaymentId,
   upsertPaidOrder,
@@ -152,7 +153,7 @@ export async function POST(request: Request) {
 
     const expiresAt = new Date(Date.now() + 48 * 3600 * 1000).toISOString();
 
-    const downloadUrl = `https://arrendador-co.albertovargasarias5.workers.dev/api/download/${token}`;
+    const downloadUrl = absoluteUrl(`/api/download/${token}`);
 
     const emailResult = await fetch('https://api.resend.com/emails', {
       method: 'POST',

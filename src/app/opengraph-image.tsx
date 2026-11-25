@@ -2,7 +2,7 @@
  * src/app/opengraph-image.tsx — Imagen Open Graph dinámica para ArrendadorCO
  *
  * Generada con ImageResponse de Next.js (next/og).
- * Se sirve automáticamente en https://arrendador.co/opengraph-image
+ * Se sirve automáticamente en la ruta /opengraph-image del dominio configurado.
  * Dimensiones: 1200 × 630 px (estándar OG)
  *
  * Paleta editorial ArrendadorCO:

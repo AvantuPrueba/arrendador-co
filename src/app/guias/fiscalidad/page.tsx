@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { FileText, Building2, Receipt, FileCheck, Calculator, Wallet, Home, Wrench, Landmark, AlertCircle, CalendarX, FolderX, Building, FileX, Store, Globe, Users, Briefcase, Info } from 'lucide-react';
 import { TAX_YEAR_CONFIG, uvtToCop } from '@/lib/tax-config';
 import { baseOpenGraph, baseTwitter } from '@/lib/metadata';
+import { absoluteUrl } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'Impuestos y Obligaciones Tributarias del Arrendador en Colombia',
@@ -16,7 +17,7 @@ export const metadata: Metadata = {
     description: 'Guía práctica sobre renta, predial, IVA y facturación para pequeños arrendadores en Colombia.',
     type: 'article',
     locale: 'es_CO',
-    url: 'https://arrendador.co/guias/fiscalidad',
+    url: absoluteUrl('/guias/fiscalidad'),
     siteName: 'ArrendadorCO',
   },
   twitter: {

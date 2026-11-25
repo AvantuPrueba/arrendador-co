@@ -2,9 +2,11 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import NewsletterCTA from '@/components/NewsletterCTA';
 import { baseOpenGraph, baseTwitter } from '@/lib/metadata';
+import { absoluteUrl } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'Acta de Entrega de Inmueble en Arriendo Colombia',
+  alternates: { canonical: '/guias/actas' },
   description: 'Aprende qué revisar y documentar al entregar o recibir un inmueble en arriendo en Colombia. Incluye checklist práctico y recomendaciones de documentación.',
   openGraph: {
     ...baseOpenGraph(),
@@ -12,7 +14,7 @@ export const metadata: Metadata = {
     description: 'Aprende qué revisar y documentar al entregar o recibir un inmueble en arriendo en Colombia. Incluye checklist práctico y recomendaciones de documentación.',
     type: 'website',
     locale: 'es_CO',
-    url: 'https://arrendador.co/guias/actas',
+    url: absoluteUrl('/guias/actas'),
     siteName: 'ArrendadorCO',
   },
   twitter: {

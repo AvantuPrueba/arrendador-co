@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Sobre Nosotros',
+  alternates: { canonical: '/sobre-nosotros' },
   description: 'Conoce al equipo detrás de ArrendadorCO y nuestra misión de ayudar a pequeños arrendadores en Colombia.',
 };
 

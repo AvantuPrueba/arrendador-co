@@ -3,6 +3,7 @@ import ContactForm from './ContactForm';
 
 export const metadata: Metadata = {
   title: 'Contacto / FAQ',
+  alternates: { canonical: '/contacto' },
   description: 'Preguntas frecuentes y formulario de contacto de ArrendadorCO.',
 };
 

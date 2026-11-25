@@ -3,6 +3,7 @@ import ChecklistEntrega from './ChecklistEntrega';
 
 export const metadata: Metadata = {
   title: 'Checklist de Entrega y Devolución de Inmueble',
+  alternates: { canonical: '/herramientas/checklist-entrega' },
   description:
     'Completa gratis un checklist de entrega o devolución de inmueble, registra zonas, medidores, llaves e inventario y genera un PDF.',
 };

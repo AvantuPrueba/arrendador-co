@@ -5,6 +5,7 @@ import ArticleCard from '@/components/ArticleCard';
 import { PRODUCT_CONFIG, formatPrice } from '@/lib/product';
 import { ArrowRight } from 'lucide-react';
 import { baseOpenGraph, baseTwitter } from '@/lib/metadata';
+import { absoluteUrl } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'Blog para Arrendadores en Colombia',
@@ -16,7 +17,7 @@ export const metadata: Metadata = {
     description: 'Guías y artículos prácticos para pequeños arrendadores en Colombia sobre contratos, entrega de inmuebles, morosidad y gestión del arriendo.',
     type: 'website',
     locale: 'es_CO',
-    url: 'https://arrendador.co/blog',
+    url: absoluteUrl('/blog'),
     siteName: 'ArrendadorCO',
   },
   twitter: {

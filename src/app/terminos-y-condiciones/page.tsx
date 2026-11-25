@@ -7,6 +7,7 @@ import { LEGAL_CONFIG } from '@/lib/legal-config';
 
 export const metadata: Metadata = {
   title: 'Términos y Condiciones',
+  alternates: { canonical: '/terminos-y-condiciones' },
   description:
     'Términos y condiciones de uso de la plataforma y productos digitales de ArrendadorCO.',
 };
@@ -36,7 +37,7 @@ export default function TerminosYCondiciones() {
       current="/terminos-y-condiciones"
     >
       <LegalSection number="01" title="Información General y Titularidad" id="info-general">
-        <p>El sitio web accesible a través de arrendador.co es operado por:</p>
+        <p>El sitio web de ArrendadorCO es operado por:</p>
         <div className="rounded-xl border border-slate-200 bg-slate-50 p-6">
           <ul className="space-y-1">
             <li>Marca comercial: {LEGAL_CONFIG.brandName}</li>

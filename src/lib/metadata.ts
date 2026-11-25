@@ -1,12 +1,15 @@
 /**
- * src/lib/metadata.ts — Configuración compartida de metadatos sociales (Open Graph + Twitter Cards)
+ * Configuración compartida de metadatos sociales (Open Graph + Twitter Cards)
  *
- * Constantes reutilizables para evitar duplicación entre páginas.
- * No modifica metadataBase (definido en src/app/layout.tsx).
+ * La URL pública se obtiene de la única fuente de verdad en `site-url.ts`.
+ * No modifica metadataBase (definido en src/app/layout.tsx a partir de SITE_URL).
  */
 
+import { SITE_URL } from '@/lib/site-url';
+
+export { SITE_URL } from '@/lib/site-url';
+
 export const SITE_NAME = 'ArrendadorCO';
-export const SITE_URL = 'https://arrendador.co';
 export const OG_LOCALE = 'es_CO';
 export const OG_TYPE_WEBSITE = 'website';
 export const OG_TYPE_ARTICLE = 'article';
@@ -17,10 +20,7 @@ export const OG_IMAGE_WIDTH = 1200;
 export const OG_IMAGE_HEIGHT = 630;
 export const OG_IMAGE_ALT = 'ArrendadorCO — Guías, herramientas y contratos para arrendadores en Colombia';
 
-/**
- * Construye el objeto openGraph base con los campos comunes.
- * Cada página puede extenderlo con sus propios valores.
- */
+/** Construye el objeto openGraph base con los campos comunes. */
 export function baseOpenGraph(overrides: Record<string, unknown> = {}): Record<string, unknown> {
   return {
     type: OG_TYPE_WEBSITE,
@@ -38,9 +38,7 @@ export function baseOpenGraph(overrides: Record<string, unknown> = {}): Record<s
   };
 }
 
-/**
- * Construye el objeto twitter base con los campos comunes.
- */
+/** Construye el objeto twitter base con los campos comunes. */
 export function baseTwitter(overrides: Record<string, unknown> = {}): Record<string, unknown> {
   return {
     card: TWITTER_CARD,

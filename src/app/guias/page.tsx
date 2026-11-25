@@ -8,9 +8,11 @@ import {
   ArrowRight,
 } from 'lucide-react';
 import { baseOpenGraph, baseTwitter } from '@/lib/metadata';
+import { absoluteUrl } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'Guías para Arrendadores en Colombia',
+  alternates: { canonical: '/guias' },
   description: 'Guías prácticas para pequeños arrendadores en Colombia sobre contratos, entrega de inmuebles, morosidad y fiscalidad.',
   openGraph: {
     ...baseOpenGraph(),
@@ -18,7 +20,7 @@ export const metadata: Metadata = {
     description: 'Guías prácticas para pequeños arrendadores en Colombia sobre contratos, entrega de inmuebles, morosidad y fiscalidad.',
     type: 'website',
     locale: 'es_CO',
-    url: 'https://arrendador.co/guias',
+    url: absoluteUrl('/guias'),
     siteName: 'ArrendadorCO',
   },
   twitter: {

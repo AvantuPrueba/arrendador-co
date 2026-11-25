@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     description: PRODUCT_CONFIG.description,
     type: 'website',
     locale: 'es_CO',
-    url: 'https://arrendador.co/tienda',
+    url: absoluteUrl('/tienda'),
     siteName: 'ArrendadorCO',
   },
   twitter: {
