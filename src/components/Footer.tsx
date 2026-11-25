@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import ConsentPreferencesButton from './ConsentPreferencesButton';
 
 const CURRENT_YEAR = new Date().getFullYear();
 
@@ -127,6 +128,8 @@ export default function Footer() {
             <Link href="/terminos-y-condiciones" className="hover:text-white transition-colors">
               Términos
             </Link>
+            <span className="text-white/20">·</span>
+            <ConsentPreferencesButton />
           </div>
         </div>
       </div>
