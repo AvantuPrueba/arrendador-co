@@ -58,158 +58,97 @@ export default function Home() {
       <ScrollProgress />
       <StickyProductCta />
 
-      {/* ── 1. HERO SECTION ── */}
-      <section className="relative overflow-hidden bg-ivory pt-8 pb-16 md:pt-14 md:pb-24 border-b border-charcoal/5">
+      {/* ── 1. HERO — Colombian Property Editorial / Quiet Luxury ── */}
+      <section className="relative overflow-hidden bg-ivory pt-24 pb-12 sm:pt-28 md:pb-16 lg:pt-32 lg:pb-20">
         <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">
-          <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-8">
-            
-            {/* LEFT COLUMN: Editorial copy (55% -> col-span-7) */}
-            <div className="lg:col-span-7 lg:pr-8">
-              <Reveal>
-                <div className="mb-4 inline-flex items-center gap-2">
-                  <span className="font-mono text-xs uppercase tracking-widest text-bronze font-medium">
-                    GESTIÓN INMOBILIARIA · COLOMBIA · 2026
-                  </span>
-                </div>
-              </Reveal>
+          {/* Editorial masthead */}
+          <div className="mb-10 flex items-center gap-4 border-b border-charcoal/15 pb-4 md:mb-14">
+            <span className="h-2 w-2 bg-bronze" aria-hidden="true" />
+            <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-muted sm:text-xs">
+              Dossier 01 · Gestión inmobiliaria · Colombia · 2026
+            </span>
+            <span className="ml-auto hidden h-px w-24 bg-charcoal/20 sm:block" aria-hidden="true" />
+          </div>
 
-              <Reveal delay={80}>
-                <h1 className="mb-6 font-display text-4xl sm:text-5xl lg:text-[62px] leading-[1.08] text-charcoal font-normal tracking-tight">
-                  Arrendar con <span className="italic font-normal">confianza</span>. Administrar con{' '}
-                  <span className="text-green-deep underline decoration-bronze/40 underline-offset-8">
-                    claridad
-                  </span>
-                  .
-                </h1>
-              </Reveal>
+          <div className="grid gap-10 lg:grid-cols-12 lg:items-end lg:gap-10">
+            {/* Editorial copy */}
+            <div className="lg:col-span-7 lg:pb-6">
+              <h1 className="max-w-3xl font-display text-[clamp(2.9rem,7.2vw,6.2rem)] leading-[0.94] tracking-[-0.02em] text-charcoal">
+                Arrendar con <em className="italic text-green-deep">confianza</em>.
+                <br className="hidden sm:block" />
+                Administrar con{' '}
+                <span className="relative inline-block whitespace-nowrap text-green-deep">
+                  claridad.
+                  <span className="absolute -bottom-1 left-0 h-px w-full bg-bronze/60" aria-hidden="true" />
+                </span>
+              </h1>
 
-              <Reveal delay={160}>
-                <p className="mb-8 max-w-xl text-lg leading-relaxed text-muted">
-                  Guías prácticas, herramientas financieras y plantillas jurídicas diseñadas
-                  específicamente para propietarios de vivienda urbana en Colombia.
-                </p>
-              </Reveal>
+              <p className="mt-7 max-w-xl text-base leading-relaxed text-muted sm:text-lg">
+                Guías prácticas, herramientas financieras y plantillas jurídicas diseñadas
+                específicamente para propietarios de vivienda urbana en Colombia.
+              </p>
 
-              <Reveal delay={240}>
-                <div className="flex flex-col gap-3.5 sm:flex-row sm:items-center">
-                  <Link
-                    href="/herramientas"
-                    className="inline-flex min-h-[48px] items-center justify-center rounded-lg bg-green-deep px-7 py-3 text-sm font-medium text-white transition-all hover:bg-green-mid hover:scale-[1.02] active:scale-[0.98] shadow-sm"
-                  >
-                    Explorar herramientas
-                  </Link>
-                  <Link
-                    href="/tienda"
-                    className="inline-flex min-h-[48px] items-center justify-center rounded-lg border border-charcoal/30 bg-transparent px-7 py-3 text-sm font-medium text-charcoal transition-all hover:bg-surface hover:border-charcoal hover:scale-[1.02] active:scale-[0.98]"
-                  >
-                    Ver plantilla de contrato
-                  </Link>
-                </div>
-              </Reveal>
+              <div className="mt-9 flex flex-col items-start gap-5 sm:flex-row sm:items-center sm:gap-8">
+                <Link
+                  href="/herramientas"
+                  className="group inline-flex min-h-[52px] items-center gap-3 bg-green-deep px-7 py-3.5 text-sm font-medium text-white transition-colors hover:bg-green-mid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-deep"
+                >
+                  Explorar herramientas
+                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1 motion-reduce:transition-none" aria-hidden="true" />
+                </Link>
+                <Link
+                  href="/tienda"
+                  className="group inline-flex items-center gap-2 border-b border-charcoal/30 pb-1 text-sm font-medium text-charcoal transition-colors hover:border-bronze hover:text-bronze focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-deep"
+                >
+                  Ver plantilla de contrato
+                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1 motion-reduce:transition-none" aria-hidden="true" />
+                </Link>
+              </div>
 
-              <Reveal delay={320}>
-                <div className="mt-8 flex items-center gap-2 border-t border-charcoal/10 pt-4">
-                  <span className="h-1.5 w-1.5 rounded-full bg-bronze" />
-                  <p className="font-mono text-xs text-muted">
-                    Ley 820 de 2003 · Vivienda urbana · Actualizado 2026
-                  </p>
-                </div>
-              </Reveal>
+              <div className="mt-10 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-charcoal/15 pt-4 font-mono text-[10px] uppercase tracking-wider text-muted sm:text-xs">
+                <span>Ley 820 de 2003</span>
+                <span className="h-1 w-1 bg-bronze" aria-hidden="true" />
+                <span>Vivienda urbana</span>
+                <span className="h-1 w-1 bg-bronze" aria-hidden="true" />
+                <span>Actualizado 2026</span>
+              </div>
             </div>
 
-            {/* RIGHT COLUMN: Layered visual composition (45% -> col-span-5) */}
+            {/* Editorial photograph with architectural notation */}
             <div className="lg:col-span-5">
-              <Reveal delay={150}>
-                <div className="relative mx-auto w-full max-w-md lg:max-w-none">
-                  {/* Layer 1: Forest Green Background Panel */}
-                  <div className="relative overflow-hidden rounded-3xl bg-green-deep p-6 sm:p-8 min-h-[490px] shadow-2xl flex flex-col justify-between">
-                    
-                    {/* Layer 2: Architectural Photography with dark overlay & fallback background */}
-                    <div className="relative h-64 w-full overflow-hidden rounded-2xl bg-green-mid/50">
-                      <Image
-                        src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1000&q=80"
-                        alt="Arquitectura residencial contemporánea en Colombia"
-                        fill
-                        priority
-                        sizes="(max-width: 768px) 100vw, 450px"
-                        className="object-cover transition-transform duration-700 hover:scale-105"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-green-deep via-green-deep/40 to-transparent" />
-                    </div>
-
-                    {/* Layer 4: Floating Mini Card (Illustrative Demo - Upper-right) */}
-                    <div className="absolute top-6 right-3 sm:top-8 sm:right-6 z-20 w-44 rounded-xl border border-charcoal/10 bg-white p-3.5 shadow-xl rotate-[1.5deg] animate-float-delayed">
-                      <div className="mb-1 flex items-center justify-between">
-                        <span className="font-mono text-[9px] uppercase tracking-wider text-muted font-medium">
-                          CANON MENSUAL
-                        </span>
-                        <span className="rounded bg-ivory px-1 py-0.5 font-mono text-[8px] font-semibold text-bronze uppercase">
-                          Demo
-                        </span>
-                      </div>
-                      <p className="mt-0.5 text-sm font-semibold text-charcoal">
-                        $1.800.000 COP
-                      </p>
-                      <div className="mt-2 h-1.5 w-full rounded-full bg-green-deep/15 overflow-hidden">
-                        <div className="h-full w-full bg-green-deep" />
-                      </div>
-                      <span className="mt-1 block font-mono text-[9px] text-green-mid font-medium">
-                        Al día · Estado simulado
-                      </span>
-                    </div>
-
-                    {/* Layer 3: Floating Document Card (Lower-left) */}
-                    <div className="relative z-30 mt-4 -mb-2 w-full max-w-[320px] rounded-xl border border-charcoal/10 bg-white p-4 shadow-2xl -rotate-2 animate-float">
-                      <div className="mb-2 flex items-center justify-between border-b border-charcoal/10 pb-2">
-                        <div>
-                          <p className="font-display text-xs text-green-deep tracking-wide font-normal">
-                            CONTRATO DE ARRENDAMIENTO
-                          </p>
-                          <p className="font-mono text-[9px] text-muted">
-                            Vivienda Urbana · Ley 820 · v1.0.0
-                          </p>
-                        </div>
-                        <span className="rounded-md bg-green-deep/10 px-1.5 py-0.5 font-mono text-[9px] font-medium text-green-deep">
-                          Revisado ✓
-                        </span>
-                      </div>
-
-                      {/* Simulated text lines */}
-                      <div className="space-y-1.5 my-2.5">
-                        <div className="h-1.5 w-[90%] rounded-full bg-charcoal/15" />
-                        <div className="h-1.5 w-[75%] rounded-full bg-charcoal/15" />
-                        <div className="h-1.5 w-[85%] rounded-full bg-charcoal/15" />
-                        <div className="h-1.5 w-[60%] rounded-full bg-bronze/35" />
-                      </div>
-
-                      <div className="flex items-center justify-between pt-1 border-t border-charcoal/5">
-                        <span className="font-mono text-[9px] text-muted">Cláusulas esenciales</span>
-                        <span className="font-mono text-[9px] text-bronze font-medium">Ley 820</span>
-                      </div>
-                    </div>
-
-                    {/* Layer 5: Decorative details */}
-                    <div className="mt-4 flex items-center justify-between border-t border-white/10 pt-3 text-white/70">
-                      <span className="font-mono text-[10px] text-white/80">
-                        Inmueble protegido ✓
-                      </span>
-                      {/* 3x6 Dot Grid in Bronze */}
-                      <div className="grid grid-cols-6 gap-1 opacity-40" aria-hidden="true">
-                        {[...Array(18)].map((_, i) => (
-                          <div key={i} className="h-1 w-1 rounded-full bg-bronze" />
-                        ))}
-                      </div>
-                    </div>
-
-                  </div>
-                </div>
-              </Reveal>
+              <figure className="relative aspect-[4/3] overflow-hidden bg-green-deep sm:aspect-[5/4] lg:aspect-[3/4]">
+                <Image
+                  src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1400&q=85"
+                  alt="Fachada residencial contemporánea en Colombia con luz natural cálida"
+                  fill
+                  priority
+                  sizes="(max-width: 1024px) 100vw, 40vw"
+                  className="object-cover saturate-[0.7] sepia-[0.1] contrast-[1.06]"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-green-deep/55 via-transparent to-transparent" aria-hidden="true" />
+                <svg
+                  className="absolute inset-0 h-full w-full"
+                  viewBox="0 0 400 500"
+                  preserveAspectRatio="none"
+                  fill="none"
+                  aria-hidden="true"
+                >
+                  <path d="M40 0V500 M360 0V500 M0 120H400 M0 360H400" stroke="white" strokeOpacity="0.16" strokeWidth="1" />
+                  <rect x="72" y="150" width="256" height="170" stroke="white" strokeOpacity="0.32" strokeWidth="1" />
+                  <path d="M72 150L328 320 M328 150L72 320" stroke="white" strokeOpacity="0.18" strokeWidth="1" />
+                  <circle cx="328" cy="150" r="4" fill="#C4A978" />
+                </svg>
+                <figcaption className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 bg-gradient-to-t from-green-deep/85 to-transparent px-5 pb-5 pt-16 text-white">
+                  <span className="font-display text-3xl leading-none">01</span>
+                  <span className="max-w-[12rem] text-right font-mono text-[10px] uppercase leading-relaxed tracking-wider text-white/85">
+                    Guías · herramientas · plantillas
+                  </span>
+                </figcaption>
+              </figure>
             </div>
-
           </div>
         </div>
       </section>
-
       {/* ── 2. PROBLEM-SOLVING SECTION (Warm Ivory Background) ── */}
       <section className="bg-ivory py-16 md:py-24 border-b border-charcoal/5">
         <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">
@@ -525,9 +464,14 @@ export default function Home() {
                 <div>
                   <div className="mb-4 flex items-center justify-between">
                     <PieChart className="h-7 w-7 text-green-deep" />
-                    <span className="rounded-md bg-ivory px-2 py-0.5 font-mono text-[10px] text-muted font-medium">
-                      Comparativa anual
-                    </span>
+                    <div className="flex items-center gap-2">
+                      <span className="rounded-md bg-ivory px-2 py-0.5 font-mono text-[10px] text-muted font-medium">
+                        Comparativa anual
+                      </span>
+                      <span className="rounded bg-ivory px-1 py-0.5 font-mono text-[8px] font-semibold text-bronze uppercase">
+                        Demo
+                      </span>
+                    </div>
                   </div>
                   <h3 className="font-display text-xl text-charcoal font-normal">
                     Rentabilidad real
