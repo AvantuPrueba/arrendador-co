@@ -22,7 +22,7 @@ const SECTIONS = [
   { id: 'conservacion', label: 'Conservación de Datos' },
   { id: 'derechos', label: 'Derechos del Titular' },
   { id: 'transferencias', label: 'Transferencias a Terceros' },
-  { id: 'cookies', label: 'Cookies y Analítica' },
+  { id: 'cookies', label: 'Cookies y Almacenamiento Local' },
   { id: 'vigencia', label: 'Vigencia y Cambios' },
   { id: 'contacto', label: 'Contacto' },
 ];
@@ -93,7 +93,7 @@ export default function PoliticaClient() {
           {[
             { icon: Database, title: 'Qué recopilamos', text: 'Datos de contacto, facturación y navegación.' },
             { icon: Target, title: 'Para qué', text: 'Newsletter, consultas y procesamiento de compras.' },
-            { icon: Share2, title: 'Con quién', text: 'Solo Mercado Pago y Cloudflare, según el caso.' },
+            { icon: Share2, title: 'Con quién', text: 'Mercado Pago, FormSubmit, Resend, Cloudflare y Unsplash, según el caso.' },
             { icon: ShieldCheck, title: 'Tus derechos', text: 'Consultar, actualizar, rectificar y suprimir.' },
           ].map((card) => (
             <div key={card.title} className="rounded-xl border border-slate-200 bg-slate-50 p-5">
@@ -214,14 +214,48 @@ export default function PoliticaClient() {
             </Section>
 
             <Section id="transferencias" number="07" title="Transferencias a Terceros" active={active === 'transferencias'}>
-              <ul className="list-disc pl-6 space-y-1 text-slate-600">
-                <li>Mercado Pago (procesador de pagos) — para procesar compras.</li>
-                <li>Cloudflare (hosting y analytics) — para servir el sitio.</li>
+              <ul className="list-disc pl-6 space-y-2 text-slate-600">
+                <li>Mercado Pago: procesamiento y verificación de pagos; recibe el correo y los datos de la compra.</li>
+                <li>FormSubmit: envío de mensajes de contacto y suscripciones al newsletter; recibe nombre, correo y mensaje.</li>
+                <li>Resend: envío del correo de entrega del producto; recibe el correo del comprador.</li>
+                <li>Cloudflare (Workers, D1 y R2): hosting, tabla de órdenes y almacenamiento del archivo del producto; D1 guarda el correo del comprador.</li>
+                <li>Unsplash: imagen decorativa de la portada, obtenida por el servidor del sitio y servida desde nuestro propio dominio.</li>
               </ul>
+              <p className="mt-3 text-sm text-slate-500">
+                Algunos proveedores pueden procesar información fuera de Colombia. La transferencia
+                internacional de datos personales se rige por el artículo 26 de la Ley 1581 de 2012.
+              </p>
             </Section>
 
-            <Section id="cookies" number="08" title="Cookies y Analítica" active={active === 'cookies'}>
-              <p className="text-slate-600">Usamos cookies técnicas y analíticas para optimizar la experiencia de navegación.</p>
+            <Section id="cookies" number="08" title="Cookies y Almacenamiento Local" active={active === 'cookies'}>
+              <p className="text-slate-600">
+                Este sitio no instala cookies de analítica, publicidad ni seguimiento. No usamos
+                Google Analytics, Meta Pixel, Hotjar ni servicios similares.
+              </p>
+              <ul className="mt-3 list-disc pl-6 space-y-2 text-slate-600">
+                <li>
+                  <strong className="text-slate-900">Preferencias de privacidad:</strong> el
+                  almacenamiento local del navegador guarda, bajo la clave{' '}
+                  <code className="font-mono">arrendadorco-consent</code>, tu elección, un
+                  identificador aleatorio, la fecha y la versión del aviso. Duración: 180 días;
+                  después ese registro deja de ser válido y el aviso vuelve a mostrarse. No contiene
+                  datos personales, no se envía a ningún servidor y no se usa ninguna cookie.
+                </li>
+                <li>
+                  <strong className="text-slate-900">Checklist de entrega:</strong> si usas esa
+                  herramienta, el progreso se guarda en{' '}
+                  <code className="font-mono">localStorage</code> de tu navegador bajo la clave{' '}
+                  <code className="font-mono">checklist-entrega-progreso</code>. Puede incluir el
+                  nombre y la dirección que escribas en el formulario. Permanece hasta que lo
+                  elimines con «Reiniciar». Es una tecnología funcional, necesaria para conservar el
+                  progreso de una herramienta que tú decides usar; no se transmite a terceros.
+                </li>
+              </ul>
+              <p className="mt-3 text-slate-600">
+                Puedes volver a abrir el panel en «Preferencias de privacidad», al pie de cualquier
+                página, para cambiar o revocar tu elección. Al hacerlo se sobrescribe el registro
+                local.
+              </p>
             </Section>
 
             <Section id="vigencia" number="09" title="Vigencia y Cambios" active={active === 'vigencia'}>
