@@ -9,12 +9,12 @@ import {
 import { baseOpenGraph, baseTwitter } from '@/lib/metadata';
 
 export const metadata: Metadata = {
-  title: 'Herramientas para Arrendadores en Colombia | ArrendadorCO',
-  description: 'Próximas calculadoras y utilidades para pequeños arrendadores en Colombia: reajuste del canon, rentabilidad y gestión de inmuebles.',
+  title: 'Herramientas para Arrendadores en Colombia',
+  description: 'Calculadoras y utilidades gratuitas para pequeños arrendadores en Colombia: reajuste del canon, rentabilidad y checklist de entrega.',
   openGraph: {
     ...baseOpenGraph(),
     title: 'Herramientas para Arrendadores en Colombia | ArrendadorCO',
-    description: 'Próximas calculadoras y utilidades para pequeños arrendadores en Colombia: reajuste del canon, rentabilidad y gestión de inmuebles.',
+    description: 'Calculadoras y utilidades gratuitas para pequeños arrendadores en Colombia: reajuste del canon, rentabilidad y checklist de entrega.',
     type: 'website',
     locale: 'es_CO',
     url: 'https://arrendador.co/herramientas',
@@ -23,11 +23,11 @@ export const metadata: Metadata = {
   twitter: {
     ...baseTwitter(),
     title: 'Herramientas para Arrendadores en Colombia | ArrendadorCO',
-    description: 'Próximas calculadoras y utilidades para pequeños arrendadores en Colombia: reajuste del canon, rentabilidad y gestión de inmuebles.',
+    description: 'Calculadoras y utilidades gratuitas para pequeños arrendadores en Colombia: reajuste del canon, rentabilidad y checklist de entrega.',
   },
 };
 
-const upcomingTools = [
+const availableTools = [
   {
     icon: Calculator,
     title: 'Calculadora de reajuste del canon',
@@ -63,8 +63,8 @@ export default function Herramientas() {
           Herramientas para gestionar tus arriendos
         </h1>
         <p className="mb-8 max-w-2xl text-lg text-gray-600">
-          Estamos construyendo calculadoras y utilidades gratuitas para pequeños
-          arrendadores en Colombia. Mientras tanto, explora las guías disponibles.
+          Usa nuestras calculadoras y utilidades gratuitas para pequeños
+          arrendadores en Colombia: reajuste del canon, rentabilidad y checklist de entrega.
         </p>
         <Link
           href="/guias"
@@ -78,10 +78,10 @@ export default function Herramientas() {
       {/* En camino section */}
       <section className="mb-16 md:mb-20">
         <h2 className="mb-8 text-2xl md:text-3xl font-bold text-navy-900">
-          Próximamente
+          Herramientas disponibles
         </h2>
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {upcomingTools.map((tool) => (
+          {availableTools.map((tool) => (
             <article
               key={tool.title}
               className="rounded-xl border border-navy-100 bg-white p-6 shadow-sm hover:shadow-md transition-shadow"
@@ -95,23 +95,15 @@ export default function Herramientas() {
               <p className="mb-4 text-sm text-gray-600">
                 {tool.description}
               </p>
-              {tool.available ? (
-                <>
-                  <span className="mb-4 inline-block rounded-full bg-green-50 px-3 py-1 text-xs font-medium text-green-700 border border-green-200">
-                    Disponible
-                  </span>
-                  <Link
-                    href={tool.href}
-                    className="inline-flex items-center gap-1 text-sm font-semibold text-navy-600 hover:underline"
-                  >
-                    {tool.cta}
-                  </Link>
-                </>
-              ) : (
-                <span className="inline-block rounded-full bg-navy-50 px-3 py-1 text-xs font-medium text-navy-700">
-                  Próximamente
-                </span>
-              )}
+              <span className="mb-4 inline-block rounded-full bg-green-50 px-3 py-1 text-xs font-medium text-green-700 border border-green-200">
+                Disponible
+              </span>
+              <Link
+                href={tool.href}
+                className="inline-flex items-center gap-1 text-sm font-semibold text-navy-600 hover:underline"
+              >
+                {tool.cta}
+              </Link>
             </article>
           ))}
         </div>

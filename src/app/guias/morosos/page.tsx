@@ -4,7 +4,7 @@ import NewsletterCTA from '@/components/NewsletterCTA';
 import { baseOpenGraph, baseTwitter } from '@/lib/metadata';
 
 export const metadata: Metadata = {
-  title: '¿Qué hacer con un inquilino moroso en Colombia? | ArrendadorCO',
+  title: '¿Qué hacer con un inquilino moroso en Colombia?',
   description: 'Guía para arrendadores ante el incumplimiento del canon de vivienda urbana en Colombia: documentación, comunicación, conciliación y restitución.',
   openGraph: {
     ...baseOpenGraph(),

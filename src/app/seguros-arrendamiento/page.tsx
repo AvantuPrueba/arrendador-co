@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { ArrowRight, AlertCircle, Check } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Seguros de Arrendamiento en Colombia | ArrendadorCO',
+  title: 'Seguros de Arrendamiento en Colombia',
   description: 'Compara opciones de seguros de arrendamiento para proteger tus ingresos por alquiler en Colombia.',
 };
 

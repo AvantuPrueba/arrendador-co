@@ -28,9 +28,9 @@ export default function Footer() {
 
           {/* Navegación */}
           <nav aria-label="Navegación del sitio">
-            <h4 className="font-mono text-xs uppercase tracking-wider text-bright-bronze mb-4 font-medium">
+            <h3 className="font-mono text-xs uppercase tracking-wider text-bright-bronze mb-4 font-medium">
               Navegación
-            </h4>
+            </h3>
             <ul className="space-y-2.5 text-sm">
               <li>
                 <Link href="/guias" className="text-white/70 hover:text-white transition-colors">
@@ -52,14 +52,19 @@ export default function Footer() {
                   Blog inmobiliario
                 </Link>
               </li>
+              <li>
+                <Link href="/sobre-nosotros" className="text-white/70 hover:text-white transition-colors">
+                  Sobre nosotros
+                </Link>
+              </li>
             </ul>
           </nav>
 
           {/* Legal */}
           <nav aria-label="Información legal">
-            <h4 className="font-mono text-xs uppercase tracking-wider text-bright-bronze mb-4 font-medium">
+            <h3 className="font-mono text-xs uppercase tracking-wider text-bright-bronze mb-4 font-medium">
               Legal
-            </h4>
+            </h3>
             <ul className="space-y-2.5 text-sm">
               <li>
                 <Link href="/terminos-y-condiciones" className="text-white/70 hover:text-white transition-colors">
@@ -86,9 +91,9 @@ export default function Footer() {
 
           {/* Contacto & Autoridad */}
           <div>
-            <h4 className="font-mono text-xs uppercase tracking-wider text-bright-bronze mb-4 font-medium">
+            <h3 className="font-mono text-xs uppercase tracking-wider text-bright-bronze mb-4 font-medium">
               Contacto y Vigilancia
-            </h4>
+            </h3>
             <ul className="space-y-3 text-sm text-white/70">
               <li className="flex flex-col">
                 <span className="text-xs text-white/50">Correo de atención:</span>

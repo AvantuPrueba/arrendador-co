@@ -10,7 +10,7 @@ import {
 import { baseOpenGraph, baseTwitter } from '@/lib/metadata';
 
 export const metadata: Metadata = {
-  title: 'Guías para Arrendadores en Colombia | ArrendadorCO',
+  title: 'Guías para Arrendadores en Colombia',
   description: 'Guías prácticas para pequeños arrendadores en Colombia sobre contratos, entrega de inmuebles, morosidad y fiscalidad.',
   openGraph: {
     ...baseOpenGraph(),
