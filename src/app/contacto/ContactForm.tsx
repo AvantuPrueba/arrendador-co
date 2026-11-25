@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, FormEvent } from 'react';
+import Link from 'next/link';
 import { isValidEmail } from '@/lib/email';
 
 /** Endpoint de FormSubmit para formulario de contacto. */
@@ -171,6 +172,18 @@ export default function ContactForm() {
             <label htmlFor="website">Website</label>
             <input type="text" id="website" name="website" tabIndex={-1} autoComplete="off" />
           </div>
+
+          {/* Aviso de privacidad en el punto de recolección — Decreto 1074 de 2015, Art. 2.2.2.25.3.2 */}
+          <p className="text-xs leading-relaxed text-muted">
+            Al enviar este formulario autorizas el uso de tu nombre y correo electrónico para responder tu consulta, conforme a nuestra{' '}
+            <Link
+              href="/politica-de-datos"
+              className="text-charcoal underline underline-offset-2 hover:text-green-deep"
+            >
+              Política de tratamiento de datos
+            </Link>
+            .
+          </p>
 
           <button
             type="submit"
