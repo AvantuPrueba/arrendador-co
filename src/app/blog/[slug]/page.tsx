@@ -8,6 +8,7 @@ import NewsletterCTA from '@/components/NewsletterCTA';
 import AffiliateBox from '@/components/AffiliateBox';
 import JsonLd from '@/components/JsonLd';
 import { absoluteUrl, ORGANIZATION_ID, WEBSITE_ID } from '@/lib/seo';
+import { baseOpenGraph, baseTwitter, OG_IMAGE_DEFAULT, OG_IMAGE_ALT } from '@/lib/metadata';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -21,14 +22,32 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   try {
     const post = await getPostBySlug(slug);
+    const postUrl = absoluteUrl(`/blog/${post.slug}`);
     return {
       title: post.title,
       description: post.description || post.excerpt,
       openGraph: {
+        ...baseOpenGraph(),
         title: post.title,
         description: post.description || post.excerpt,
         type: 'article',
+        locale: 'es_CO',
+        url: postUrl,
+        siteName: 'ArrendadorCO',
         publishedTime: post.date,
+        images: [
+          {
+            url: OG_IMAGE_DEFAULT,
+            width: 1200,
+            height: 630,
+            alt: OG_IMAGE_ALT,
+          },
+        ],
+      },
+      twitter: {
+        ...baseTwitter(),
+        title: post.title,
+        description: post.description || post.excerpt,
       },
       alternates: { canonical: post.canonical || `/blog/${post.slug}` },
     };

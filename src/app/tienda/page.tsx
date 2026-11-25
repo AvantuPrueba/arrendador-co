@@ -14,14 +14,28 @@ import { MobileBuyBar } from './mobile-buy-bar';
 import { PRODUCT_CONFIG, formatPrice } from '@/lib/product';
 import JsonLd from '@/components/JsonLd';
 import { absoluteUrl, ORGANIZATION_ID } from '@/lib/seo';
+import { baseOpenGraph, baseTwitter } from '@/lib/metadata';
 
 const paymentLink = 'https://mpago.li/2kC2Gbt';
 
 export const metadata: Metadata = {
-  title: 'Plantilla de Contrato de Arrendamiento | ArrendadorCO',
+  title: 'Plantilla de Contrato de Arrendamiento',
   description: PRODUCT_CONFIG.description,
   alternates: { canonical: '/tienda' },
-  openGraph: { url: '/tienda' },
+  openGraph: {
+    ...baseOpenGraph(),
+    title: 'Plantilla de Contrato de Arrendamiento',
+    description: PRODUCT_CONFIG.description,
+    type: 'website',
+    locale: 'es_CO',
+    url: 'https://arrendador.co/tienda',
+    siteName: 'ArrendadorCO',
+  },
+  twitter: {
+    ...baseTwitter(),
+    title: 'Plantilla de Contrato de Arrendamiento',
+    description: PRODUCT_CONFIG.description,
+  },
 };
 
 export default function Tienda() {

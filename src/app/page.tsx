@@ -1,6 +1,6 @@
-import Link from 'next/link';
-import Image from 'next/image';
 import type { Metadata } from 'next';
+import Image from 'next/image';
+import Link from 'next/link';
 import {
   FileText,
   ClipboardCheck,
@@ -22,10 +22,29 @@ import { PRODUCT_CONFIG, formatPrice } from '@/lib/product';
 import { getAllPosts, isValidSlug, blogPostHref } from '@/lib/blog';
 import { Reveal, ScrollProgress, StickyProductCta } from '@/components/home/Motion';
 import { homeJsonLd } from '@/lib/seo';
+import { baseOpenGraph, baseTwitter } from '@/lib/metadata';
 
 export const metadata: Metadata = {
   alternates: { canonical: '/' },
-  openGraph: { url: '/' },
+  title: 'ArrendadorCO - Guía para Arrendadores en Colombia',
+  description:
+    'Información práctica sobre contratos de arriendo, actas de entrega y manejo de inquilinos morosos en Colombia.',
+  openGraph: {
+    ...baseOpenGraph(),
+    title: 'ArrendadorCO - Guía para Arrendadores en Colombia',
+    description:
+      'Información práctica sobre contratos de arriendo, actas de entrega y manejo de inquilinos morosos en Colombia.',
+    type: 'website',
+    locale: 'es_CO',
+    url: 'https://arrendador.co',
+    siteName: 'ArrendadorCO',
+  },
+  twitter: {
+    ...baseTwitter(),
+    title: 'ArrendadorCO - Guía para Arrendadores en Colombia',
+    description:
+      'Información práctica sobre contratos de arriendo, actas de entrega y manejo de inquilinos morosos en Colombia.',
+  },
 };
 
 export default function Home() {
