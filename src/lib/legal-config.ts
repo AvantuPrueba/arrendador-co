@@ -6,6 +6,8 @@
  * Ver PENDIENTE_LEGAL.md (documento interno, no público) para la lista
  * detallada y la norma que exige cada dato. No se inventan ni infieren datos.
  */
+import { SITE_URL } from '@/lib/site-url';
+
 export const LEGAL_CONFIG = {
   brandName: 'ArrendadorCO',
   // PENDIENTE: El responsable debe completar este campo
@@ -24,7 +26,7 @@ export const LEGAL_CONFIG = {
   // PENDIENTE: El responsable debe completar este campo
   // Requerido por: Ley 1581 Art. 12, Decreto 1074 Art. 2.2.2.25.3.1
   phone: '[PENDIENTE: TELÉFONO]',
-  website: 'https://arrendador.co',
+  website: SITE_URL,
   jurisdiction: 'Colombia',
   lastUpdated: 'Octubre 2026',
 } as const;

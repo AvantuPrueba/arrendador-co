@@ -21,7 +21,7 @@ import JsonLd from '@/components/JsonLd';
 import { PRODUCT_CONFIG, formatPrice } from '@/lib/product';
 import { getAllPosts, isValidSlug, blogPostHref } from '@/lib/blog';
 import { Reveal, ScrollProgress, StickyProductCta } from '@/components/home/Motion';
-import { homeJsonLd } from '@/lib/seo';
+import { absoluteUrl, homeJsonLd } from '@/lib/seo';
 import { baseOpenGraph, baseTwitter } from '@/lib/metadata';
 
 export const metadata: Metadata = {
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
       'Información práctica sobre contratos de arriendo, actas de entrega y manejo de inquilinos morosos en Colombia.',
     type: 'website',
     locale: 'es_CO',
-    url: 'https://arrendador.co',
+    url: absoluteUrl('/'),
     siteName: 'ArrendadorCO',
   },
   twitter: {

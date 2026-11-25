@@ -7,9 +7,11 @@ import {
   ArrowRight,
 } from 'lucide-react';
 import { baseOpenGraph, baseTwitter } from '@/lib/metadata';
+import { absoluteUrl } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'Herramientas para Arrendadores en Colombia',
+  alternates: { canonical: '/herramientas' },
   description: 'Calculadoras y utilidades gratuitas para pequeños arrendadores en Colombia: reajuste del canon, rentabilidad y checklist de entrega.',
   openGraph: {
     ...baseOpenGraph(),
@@ -17,7 +19,7 @@ export const metadata: Metadata = {
     description: 'Calculadoras y utilidades gratuitas para pequeños arrendadores en Colombia: reajuste del canon, rentabilidad y checklist de entrega.',
     type: 'website',
     locale: 'es_CO',
-    url: 'https://arrendador.co/herramientas',
+    url: absoluteUrl('/herramientas'),
     siteName: 'ArrendadorCO',
   },
   twitter: {

@@ -3,6 +3,7 @@ import RetractoClient from './retracto-client';
 
 export const metadata: Metadata = {
   title: 'Política de Retracto y Devoluciones',
+  alternates: { canonical: '/retracto-y-devoluciones' },
   description:
     'Condiciones sobre derecho de retracto, devoluciones y reversiones en la compra de productos digitales de ArrendadorCO.',
 };

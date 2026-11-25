@@ -2,9 +2,11 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import NewsletterCTA from '@/components/NewsletterCTA';
 import { baseOpenGraph, baseTwitter } from '@/lib/metadata';
+import { absoluteUrl } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: '¿Qué hacer con un inquilino moroso en Colombia?',
+  alternates: { canonical: '/guias/morosos' },
   description: 'Guía para arrendadores ante el incumplimiento del canon de vivienda urbana en Colombia: documentación, comunicación, conciliación y restitución.',
   openGraph: {
     ...baseOpenGraph(),
@@ -12,7 +14,7 @@ export const metadata: Metadata = {
     description: 'Guía para arrendadores ante el incumplimiento del canon de vivienda urbana en Colombia: documentación, comunicación, conciliación y restitución.',
     type: 'website',
     locale: 'es_CO',
-    url: 'https://arrendador.co/guias/morosos',
+    url: absoluteUrl('/guias/morosos'),
     siteName: 'ArrendadorCO',
   },
   twitter: {

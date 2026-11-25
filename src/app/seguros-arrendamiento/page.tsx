@@ -4,6 +4,7 @@ import { ArrowRight, AlertCircle, Check } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Seguros de Arrendamiento en Colombia',
+  alternates: { canonical: '/seguros-arrendamiento' },
   description: 'Compara opciones de seguros de arrendamiento para proteger tus ingresos por alquiler en Colombia.',
 };
 

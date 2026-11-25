@@ -23,9 +23,11 @@ import NewsletterCTA from '@/components/NewsletterCTA';
 import { GuideToc, GuideProgress } from './guia-interactivo';
 import { GUIDE_TOC } from './guia-toc-data';
 import { baseOpenGraph, baseTwitter } from '@/lib/metadata';
+import { absoluteUrl } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'Contrato de Arrendamiento de Vivienda Urbana en Colombia',
+  alternates: { canonical: '/guias/contratos' },
   description: 'Guía práctica sobre contratos de arrendamiento de vivienda urbana en Colombia: requisitos, cláusulas, garantías, prórroga, terminación y errores frecuentes.',
   openGraph: {
     ...baseOpenGraph(),
@@ -33,7 +35,7 @@ export const metadata: Metadata = {
     description: 'Guía práctica sobre contratos de arrendamiento de vivienda urbana en Colombia: requisitos, cláusulas, garantías, prórroga, terminación y errores frecuentes.',
     type: 'website',
     locale: 'es_CO',
-    url: 'https://arrendador.co/guias/contratos',
+    url: absoluteUrl('/guias/contratos'),
     siteName: 'ArrendadorCO',
   },
   twitter: {
