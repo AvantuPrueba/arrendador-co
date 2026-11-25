@@ -4,7 +4,7 @@ import NewsletterCTA from '@/components/NewsletterCTA';
 import { baseOpenGraph, baseTwitter } from '@/lib/metadata';
 
 export const metadata: Metadata = {
-  title: 'Acta de Entrega de Inmueble en Arriendo Colombia | ArrendadorCO',
+  title: 'Acta de Entrega de Inmueble en Arriendo Colombia',
   description: 'Aprende qué revisar y documentar al entregar o recibir un inmueble en arriendo en Colombia. Incluye checklist práctico y recomendaciones de documentación.',
   openGraph: {
     ...baseOpenGraph(),

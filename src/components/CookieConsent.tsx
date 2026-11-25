@@ -115,7 +115,7 @@ export default function CookieConsent() {
             Configurar preferencias
           </button>
         </div>
-        <p className="mt-3 text-xs leading-relaxed text-[#787774]">
+        <p className="mt-3 text-xs leading-relaxed text-[#6E6E6B]">
           No hay categorías opcionales activas: aceptar y rechazar producen el mismo efecto sobre la
           carga del sitio. Puedes cambiar tu elección cuando quieras desde el footer.
         </p>

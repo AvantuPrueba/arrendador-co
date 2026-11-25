@@ -7,7 +7,7 @@ import { ArrowRight } from 'lucide-react';
 import { baseOpenGraph, baseTwitter } from '@/lib/metadata';
 
 export const metadata: Metadata = {
-  title: 'Blog para Arrendadores en Colombia | ArrendadorCO',
+  title: 'Blog para Arrendadores en Colombia',
   description: 'Guías y artículos prácticos para pequeños arrendadores en Colombia sobre contratos, entrega de inmuebles, morosidad y gestión del arriendo.',
   alternates: { canonical: '/blog' },
   openGraph: {

@@ -15,15 +15,20 @@ export default function SobreNosotros() {
         sobre cómo gestionar sus inmuebles en alquiler.
       </p>
       <p className="mb-4">
-        Nuestro equipo combina experiencia en gestión inmobiliaria y derecho
-        civil colombiano para crear guías prácticas, plantillas editables y
-        herramientas que simplifican tu día a día como arrendador.
+        ArrendadorCO es una plataforma digital de contenido informativo. Reunimos
+        guías prácticas, plantillas editables y herramientas gratuitas basadas en
+        normativa pública de vivienda urbana en Colombia, dirigidas a pequeños
+        propietarios y arrendadores que gestionan sus inmuebles por su cuenta.
       </p>
       <h2 className="mb-4 mt-8">Nuestra misión</h2>
       <p>
         Democratizar el conocimiento para que cualquier propietario, sin
         importar cuántos inmuebles tenga, pueda arrendar con confianza y
         cumplir con la normativa colombiana.
+      </p>
+      <p className="mt-8 text-sm text-gray-600">
+        Nuestros documentos y guías son informativos y no constituyen asesoría
+        jurídica personalizada. Para casos concretos, consulta con un profesional.
       </p>
     </div>
   );

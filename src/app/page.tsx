@@ -700,7 +700,7 @@ export default function Home() {
                     
                     {/* Top Green Band */}
                     <div className="bg-green-deep p-4 text-center text-white">
-                      <p className="font-display text-sm tracking-wider font-normal">
+                      <p className="font-display text-sm tracking-wider font-normal text-white">
                         CONTRATO DE ARRENDAMIENTO
                       </p>
                       <p className="font-mono text-[9px] text-white/70 mt-0.5">
