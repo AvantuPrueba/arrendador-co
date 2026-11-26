@@ -21,6 +21,7 @@ import JsonLd from '@/components/JsonLd';
 import { PRODUCT_CONFIG, formatPrice } from '@/lib/product';
 import { getAllPosts, isValidSlug, blogPostHref } from '@/lib/blog';
 import { Reveal, ScrollProgress, StickyProductCta } from '@/components/home/Motion';
+import FloorPlan from '@/components/home/FloorPlan';
 import { absoluteUrl, homeJsonLd } from '@/lib/seo';
 import { baseOpenGraph, baseTwitter } from '@/lib/metadata';
 
@@ -128,121 +129,119 @@ export default function Home() {
       <section className="bg-ivory py-16 md:py-24 border-b border-charcoal/5">
         <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">
           
-          <div className="mb-12">
-            <span className="font-mono text-xs uppercase tracking-widest text-bronze font-medium">
-              CUATRO PROBLEMAS REALES
-            </span>
-            <h2 className="mt-2 font-display text-3xl sm:text-4xl text-charcoal font-normal">
-              ¿Qué necesitas resolver hoy?
-            </h2>
-          </div>
+          <Reveal threshold={0.3}>
+            <div className="mb-12 max-w-2xl">
+              <p className="flex items-center gap-3 font-mono text-xs text-muted">
+                Cuatro problemas reales
+                <span className="h-px w-12 bg-bronze" aria-hidden="true" />
+              </p>
+              <h2 className="mt-3 font-display text-3xl sm:text-4xl text-charcoal font-normal">
+                ¿Qué necesitas resolver hoy?
+              </h2>
+              <p className="mt-3 text-base text-muted">
+                Cuatro frentes esenciales para administrar una propiedad urbana.
+              </p>
+            </div>
+          </Reveal>
 
           <div className="grid gap-6 lg:grid-cols-12 items-stretch">
-            {/* Left featured large card: 60% -> col-span-7 */}
+            {/* Left featured block 01 with architectural piece */}
             <div className="lg:col-span-7">
-              <Reveal>
+              <Reveal delay={100} threshold={0.3}>
                 <Link
                   href="/guias/contratos"
-                  className="group flex h-full flex-col justify-between rounded-2xl bg-green-deep p-8 text-white transition-all duration-300 hover:scale-[1.01] hover:shadow-2xl"
+                  className="group flex h-full flex-col justify-between rounded-2xl bg-green-deep p-8 text-white transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bright-bronze"
                 >
                   <div>
-                    <div className="flex items-center justify-between">
-                      <span className="font-mono text-sm uppercase tracking-wider text-bright-bronze font-medium">
-                        01 · RECOMENDADO
+                    <div className="flex items-center justify-between gap-4">
+                      <span className="inline-flex items-center border border-bright-bronze/40 px-2.5 py-1 font-mono text-[11px] font-medium text-bright-bronze">
+                        01 · Recomendado
                       </span>
-                      <ScrollText className="h-8 w-8 text-white/90 transition-transform group-hover:scale-110" />
+                      <ScrollText className="h-8 w-8 text-white/90" aria-hidden="true" />
                     </div>
-                    <h3 className="mt-6 font-display text-3xl font-normal text-white leading-tight">
-                      Crear un contrato sólido y seguro
-                    </h3>
-                    <p className="mt-4 max-w-md text-base leading-relaxed text-white/80">
-                      Aprende qué cláusulas son obligatorias por la Ley 820 de 2003, cómo pactar
-                      garantías exigibles y qué errores anulan tu contrato en un proceso judicial.
-                    </p>
+                    <div className="mt-6 grid items-center gap-6 sm:grid-cols-[1fr_minmax(0,14rem)]">
+                      <div>
+                        <h3 className="font-display text-3xl font-normal text-white leading-tight">
+                          Crear un contrato sólido y seguro
+                        </h3>
+                        <p className="mt-4 max-w-md text-base leading-relaxed text-white/80">
+                          Aprende qué cláusulas son obligatorias por la Ley 820 de 2003, los elementos
+                          mínimos del art. 3, cómo pactar garantías exigibles y qué errores anulan tu
+                          contrato en un proceso judicial.
+                        </p>
+                      </div>
+                      <FloorPlan className="mx-auto w-full max-w-[14rem] text-white/60" />
+                    </div>
                   </div>
                   <div className="mt-8 flex items-center gap-2 font-mono text-sm text-bright-bronze font-medium">
                     Explorar guías de contratos
-                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1.5" />
+                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1 motion-reduce:transition-none" aria-hidden="true" />
                   </div>
                 </Link>
               </Reveal>
             </div>
 
-            {/* Right stacked compact cards: 40% -> col-span-5 */}
-            <div className="lg:col-span-5 flex flex-col gap-4 justify-between">
-              
-              {/* Card 02 */}
-              <Reveal delay={80}>
+            {/* Right: editorial list (no card containers) */}
+            <div className="lg:col-span-5">
+              {/* 02 */}
+              <Reveal delay={200} threshold={0.3}>
                 <Link
                   href="/herramientas/checklist-entrega"
-                  className="group block rounded-2xl border-l-[3px] border-l-transparent bg-surface p-5 transition-all duration-200 hover:border-l-bronze hover:bg-white hover:shadow-md"
+                  className="group block border-t border-charcoal/20 py-5 transition-colors duration-200 hover:border-bronze focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-deep"
                 >
-                  <div className="flex items-start justify-between">
-                    <div className="flex items-center gap-3">
-                      <ClipboardCheck className="h-6 w-6 text-green-deep" />
-                      <h4 className="text-base font-semibold text-charcoal">
-                        Entregar o recibir un inmueble
-                      </h4>
-                    </div>
-                    <span className="font-mono text-xs text-bronze font-medium">02</span>
-                  </div>
-                  <p className="mt-2 text-sm text-muted">
+                  <span className="font-mono text-xs text-bronze font-medium">02</span>
+                  <h4 className="mt-1 font-display text-xl text-charcoal transition-colors duration-200 group-hover:text-bronze">
+                    Entregar o recibir un inmueble
+                  </h4>
+                  <p className="mt-1.5 text-sm text-muted line-clamp-2">
                     Actas de entrega, inventario fotográfico detallado y medidores de servicios.
                   </p>
-                  <span className="mt-3 inline-flex items-center gap-1 font-mono text-xs text-green-deep font-medium">
-                    Explorar herramienta →
+                  <span className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-green-deep transition-colors duration-200 group-hover:text-bronze">
+                    Explorar herramienta
+                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1 motion-reduce:transition-none" aria-hidden="true" />
                   </span>
                 </Link>
               </Reveal>
 
-              {/* Card 03 */}
-              <Reveal delay={140}>
+              {/* 03 */}
+              <Reveal delay={300} threshold={0.3}>
                 <Link
                   href="/guias/morosos"
-                  className="group block rounded-2xl border-l-[3px] border-l-transparent bg-white p-5 transition-all duration-200 hover:border-l-bronze hover:bg-surface hover:shadow-md"
+                  className="group block border-t border-charcoal/20 py-6 transition-colors duration-200 hover:border-bronze focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-deep"
                 >
-                  <div className="flex items-start justify-between">
-                    <div className="flex items-center gap-3">
-                      <ShieldAlert className="h-6 w-6 text-green-deep" />
-                      <h4 className="text-base font-semibold text-charcoal">
-                        Gestionar morosidad a tiempo
-                      </h4>
-                    </div>
-                    <span className="font-mono text-xs text-bronze font-medium">03</span>
-                  </div>
-                  <p className="mt-2 text-sm text-muted">
+                  <span className="font-mono text-xs text-bronze font-medium">03</span>
+                  <h4 className="mt-1 font-display text-xl text-charcoal transition-colors duration-200 group-hover:text-bronze">
+                    Gestionar morosidad a tiempo
+                  </h4>
+                  <p className="mt-1.5 text-sm text-muted line-clamp-2">
                     Rutas de conciliación, cartas de cobro preventivo y causales de terminación.
                   </p>
-                  <span className="mt-3 inline-flex items-center gap-1 font-mono text-xs text-green-deep font-medium">
-                    Leer procedimiento →
+                  <span className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-green-deep transition-colors duration-200 group-hover:text-bronze">
+                    Leer procedimiento
+                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1 motion-reduce:transition-none" aria-hidden="true" />
                   </span>
                 </Link>
               </Reveal>
 
-              {/* Card 04 */}
-              <Reveal delay={200}>
+              {/* 04 */}
+              <Reveal delay={400} threshold={0.3}>
                 <Link
                   href="/herramientas/rentabilidad"
-                  className="group block rounded-2xl border-l-[3px] border-l-transparent bg-surface p-5 transition-all duration-200 hover:border-l-bronze hover:bg-white hover:shadow-md"
+                  className="group block border-t border-charcoal/20 py-5 transition-colors duration-200 hover:border-bronze focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-deep"
                 >
-                  <div className="flex items-start justify-between">
-                    <div className="flex items-center gap-3">
-                      <Calculator className="h-6 w-6 text-green-deep" />
-                      <h4 className="text-base font-semibold text-charcoal">
-                        Calcular finanzas y reajuste
-                      </h4>
-                    </div>
-                    <span className="font-mono text-xs text-bronze font-medium">04</span>
-                  </div>
-                  <p className="mt-2 text-sm text-muted">
+                  <span className="font-mono text-xs text-bronze font-medium">04</span>
+                  <h4 className="mt-1 font-display text-xl text-charcoal transition-colors duration-200 group-hover:text-bronze">
+                    Calcular finanzas y reajuste
+                  </h4>
+                  <p className="mt-1.5 text-sm text-muted line-clamp-2">
                     Rentabilidad real neta vs CDT, vacancia, impuestos y reajuste de canon IPC.
                   </p>
-                  <span className="mt-3 inline-flex items-center gap-1 font-mono text-xs text-green-deep font-medium">
-                    Usar calculadora →
+                  <span className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-green-deep transition-colors duration-200 group-hover:text-bronze">
+                    Usar calculadora
+                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1 motion-reduce:transition-none" aria-hidden="true" />
                   </span>
                 </Link>
               </Reveal>
-
             </div>
           </div>
 

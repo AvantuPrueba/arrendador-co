@@ -9,19 +9,32 @@ function prefersReducedMotion(): boolean {
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 }
 
-export function Reveal({ children, delay = 0 }: { children: ReactNode; delay?: number }) {
+export function Reveal({
+  children,
+  delay = 0,
+  threshold = 0.08,
+}: {
+  children: ReactNode;
+  delay?: number;
+  threshold?: number;
+}) {
   const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
+  // Visible by default so server-rendered and no-JS content stays readable.
+  const [visible, setVisible] = useState(true);
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
 
-    if (prefersReducedMotion() || typeof IntersectionObserver === 'undefined') {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setVisible(true);
-      return;
-    }
+    // Progressive enhancement: no motion / no IntersectionObserver => stay visible.
+    if (prefersReducedMotion() || typeof IntersectionObserver === 'undefined') return;
+
+    // Only animate in when the element starts offscreen (avoids a flash).
+    const rect = el.getBoundingClientRect();
+    const inView = rect.top < window.innerHeight && rect.bottom > 0;
+    if (inView) return;
+
+    setVisible(false);
 
     const obs = new IntersectionObserver(
       (entries) => {
@@ -32,19 +45,19 @@ export function Reveal({ children, delay = 0 }: { children: ReactNode; delay?: n
           }
         });
       },
-      { threshold: 0.08, rootMargin: '0px 0px -40px 0px' },
+      { threshold, rootMargin: '0px 0px -40px 0px' },
     );
 
     obs.observe(el);
     return () => obs.disconnect();
-  }, []);
+  }, [threshold]);
 
   return (
     <div
       ref={ref}
       style={{ transitionDelay: `${delay}ms` }}
-      className={`transition-all duration-500 ease-out motion-reduce:opacity-100 motion-reduce:translate-y-0 motion-reduce:transition-none ${
-        visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+      className={`reveal transition-all duration-500 ease-out motion-reduce:opacity-100 motion-reduce:translate-y-0 motion-reduce:transition-none ${
+        visible ? 'is-visible opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
       }`}
     >
       {children}
