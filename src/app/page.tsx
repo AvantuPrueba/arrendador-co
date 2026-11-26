@@ -22,6 +22,7 @@ import { PRODUCT_CONFIG, formatPrice } from '@/lib/product';
 import { getAllPosts, isValidSlug, blogPostHref } from '@/lib/blog';
 import { Reveal, ScrollProgress, StickyProductCta } from '@/components/home/Motion';
 import FloorPlan from '@/components/home/FloorPlan';
+import IsoBuilding from '@/components/home/IsoBuilding';
 import { absoluteUrl, homeJsonLd } from '@/lib/seo';
 import { baseOpenGraph, baseTwitter } from '@/lib/metadata';
 
@@ -252,11 +253,13 @@ export default function Home() {
       <section className="bg-white py-16 md:py-24 border-b border-charcoal/5">
         <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">
           
-          <div className="mb-14 text-center md:text-left">
-            <span className="font-mono text-xs uppercase tracking-widest text-bronze font-medium">
-              MÉTODO DE GESTIÓN
-            </span>
-            <h2 className="mt-2 font-display text-3xl sm:text-4xl text-charcoal font-normal">
+          <div className="mb-12 max-w-2xl">
+            <p className="flex items-center gap-3 font-mono text-xs text-muted">
+              <span className="font-medium">§ 03</span>
+              Método de gestión
+              <span className="h-px w-12 bg-bronze" aria-hidden="true" />
+            </p>
+            <h2 className="mt-3 font-display text-3xl sm:text-4xl text-charcoal font-normal">
               La forma ArrendadorCO
             </h2>
             <p className="mt-2 text-base text-muted max-w-xl">
@@ -264,106 +267,79 @@ export default function Home() {
             </p>
           </div>
 
-          {/* Desktop horizontal timeline */}
-          <div className="hidden md:block">
-            <div className="relative grid grid-cols-4 gap-8">
-              {/* Connecting line */}
-              <div className="absolute top-[39px] left-8 right-8 h-[2px] bg-charcoal/15 z-0" aria-hidden="true" />
+          {/* Single responsive timeline + isométrico arquitectónico (Opción A) */}
+          <div className="relative mx-auto max-w-5xl">
+            {/* Edificio isométrico: eje visual del ciclo */}
+            <Reveal threshold={0.3}>
+              <IsoBuilding className="mx-auto mb-10 w-full max-w-[13rem] text-green-deep sm:max-w-[15rem] md:max-w-[17rem]" />
+            </Reveal>
 
-              {/* Step 1 */}
-              <div className="relative z-10 flex flex-col">
-                <div className="mb-3 flex items-center justify-between">
-                  <FileText className="h-7 w-7 text-green-deep" />
-                  <span className="h-3 w-3 rounded-full bg-bronze border-2 border-white shadow-xs" />
+            {/* Línea de progreso + cuatro estaciones (una sola marca, responsive) */}
+            <Reveal threshold={0.3}>
+              <div className="relative">
+                {/* Connecting line -> narrativa de progreso */}
+                <span className="method-line absolute left-[19px] right-4 top-[15px] h-px bg-charcoal/15 md:left-[15px] md:right-[15px] md:top-[19px] md:h-[2px]" aria-hidden="true" />
+
+                <div className="grid gap-8 md:grid-cols-4 md:gap-8">
+                  {/* 01 Preparar */}
+                  <Reveal delay={0} threshold={0.3}>
+                    <div className="group relative pl-12 md:pl-0">
+                      <span className="absolute left-0 top-[5px] h-[30px] w-[30px] md:static md:mb-3 md:flex md:h-10 md:w-10 md:items-center md:justify-center">
+                        <span className="absolute inset-0 rounded-full border border-bronze/40 bg-white" aria-hidden="true" />
+                        <FileText className="relative h-4 w-4 text-green-deep transition-transform duration-200 group-hover:-translate-y-0.5 motion-reduce:transition-none md:h-5 md:w-5" aria-hidden="true" />
+                      </span>
+                      <svg className="mb-2 hidden h-7 w-10 text-bronze transition-transform duration-200 group-hover:-translate-y-0.5 motion-reduce:transition-none md:block" viewBox="0 0 24 18" fill="none" stroke="currentColor" strokeWidth="0.75" aria-hidden="true"><rect x="2" y="2" width="14" height="14" rx="1" /><path d="M5 6h8M5 9h8M5 12h5" /><path d="M18 6h4v10" /></svg>
+                      <span className="font-mono text-xs text-bronze font-medium">01</span>
+                      <h3 className="mt-1 font-display text-xl text-charcoal font-normal transition-colors duration-200 group-hover:text-green-deep md:text-2xl">Preparar</h3>
+                      <p className="mt-2 text-sm text-muted leading-relaxed">Contrato firmado, documentos verificados y condiciones claras desde el inicio.</p>
+                    </div>
+                  </Reveal>
+
+                  {/* 02 Entregar */}
+                  <Reveal delay={150} threshold={0.3}>
+                    <div className="group relative pl-12 md:pl-0">
+                      <span className="absolute left-0 top-[5px] h-[30px] w-[30px] md:static md:mb-3 md:flex md:h-10 md:w-10 md:items-center md:justify-center">
+                        <span className="absolute inset-0 rounded-full border border-bronze/40 bg-white" aria-hidden="true" />
+                        <ClipboardCheck className="relative h-4 w-4 text-green-deep transition-transform duration-200 group-hover:-translate-y-0.5 motion-reduce:transition-none md:h-5 md:w-5" aria-hidden="true" />
+                      </span>
+                      <svg className="mb-2 hidden h-7 w-10 text-bronze transition-transform duration-200 group-hover:-translate-y-0.5 motion-reduce:transition-none md:block" viewBox="0 0 24 18" fill="none" stroke="currentColor" strokeWidth="0.75" aria-hidden="true"><rect x="3" y="1" width="15" height="16" rx="1" /><path d="M6 5h9M6 8h9M6 11h6" /><path d="M14 13l2 2 3-4" /></svg>
+                      <span className="font-mono text-xs text-bronze font-medium">02</span>
+                      <h3 className="mt-1 font-display text-xl text-charcoal font-normal transition-colors duration-200 group-hover:text-green-deep md:text-2xl">Entregar</h3>
+                      <p className="mt-2 text-sm text-muted leading-relaxed">Acta de entrega, inventario fotográfico y registro objetivo del estado del inmueble.</p>
+                    </div>
+                  </Reveal>
+
+                  {/* 03 Gestionar */}
+                  <Reveal delay={300} threshold={0.3}>
+                    <div className="group relative pl-12 md:pl-0">
+                      <span className="absolute left-0 top-[5px] h-[30px] w-[30px] md:static md:mb-3 md:flex md:h-10 md:w-10 md:items-center md:justify-center">
+                        <span className="absolute inset-0 rounded-full border border-bronze/40 bg-white" aria-hidden="true" />
+                        <Calculator className="relative h-4 w-4 text-green-deep transition-transform duration-200 group-hover:-translate-y-0.5 motion-reduce:transition-none md:h-5 md:w-5" aria-hidden="true" />
+                      </span>
+                      <svg className="mb-2 hidden h-7 w-10 text-bronze transition-transform duration-200 group-hover:-translate-y-0.5 motion-reduce:transition-none md:block" viewBox="0 0 24 18" fill="none" stroke="currentColor" strokeWidth="0.75" aria-hidden="true"><path d="M2 15h20" /><path d="M4 12l4-4 4 3 6-7" /><circle cx="18" cy="4" r="1.4" fill="currentColor" stroke="none" /></svg>
+                      <span className="font-mono text-xs text-bronze font-medium">03</span>
+                      <h3 className="mt-1 font-display text-xl text-charcoal font-normal transition-colors duration-200 group-hover:text-green-deep md:text-2xl">Gestionar</h3>
+                      <p className="mt-2 text-sm text-muted leading-relaxed">Control de pagos, obligaciones del inquilino y comunicación documentada por escrito.</p>
+                    </div>
+                  </Reveal>
+
+                  {/* 04 Proteger — cierre visual */}
+                  <Reveal delay={450} threshold={0.3}>
+                    <div className="group relative pl-12 md:pl-0">
+                      <span className="absolute left-0 top-[5px] h-[30px] w-[30px] md:static md:mb-3 md:flex md:h-10 md:w-10 md:items-center md:justify-center">
+                        <span className="absolute inset-0 rounded-full border border-bronze bg-bronze/10" aria-hidden="true" />
+                        <ShieldAlert className="relative h-4 w-4 text-green-deep transition-transform duration-200 group-hover:-translate-y-0.5 motion-reduce:transition-none md:h-5 md:w-5" aria-hidden="true" />
+                      </span>
+                      <svg className="mb-2 hidden h-7 w-10 text-bronze transition-transform duration-200 group-hover:-translate-y-0.5 motion-reduce:transition-none md:block" viewBox="0 0 24 18" fill="none" stroke="currentColor" strokeWidth="0.75" aria-hidden="true"><path d="M3 5V3h3M21 5V3h-3M3 13v2h3M21 13v2h-3" /><path d="M9 9l2 2 4-4" /></svg>
+                      <span className="font-mono text-xs text-bronze font-medium">04</span>
+                      <h3 className="mt-1 font-display text-xl text-charcoal font-normal transition-colors duration-200 group-hover:text-green-deep md:text-2xl">Proteger</h3>
+                      <p className="mt-2 text-sm text-muted leading-relaxed">Seguros de arrendamiento, procedimientos legales y rutas de acción ante incumplimientos.</p>
+                      <span className="mt-3 inline-flex items-center gap-2 border-t border-bronze/30 pt-3 font-mono text-[11px] uppercase tracking-wider text-bronze">Ciclo completo · Patrimonio protegido</span>
+                    </div>
+                  </Reveal>
                 </div>
-                <span className="font-mono text-xs text-bronze font-semibold mt-2">01</span>
-                <h3 className="mt-1 font-display text-2xl text-charcoal font-normal">Preparar</h3>
-                <p className="mt-2 text-sm text-muted leading-relaxed">
-                  Contrato firmado, documentos verificados y condiciones claras desde el inicio.
-                </p>
               </div>
-
-              {/* Step 2 */}
-              <div className="relative z-10 flex flex-col">
-                <div className="mb-3 flex items-center justify-between">
-                  <ClipboardCheck className="h-7 w-7 text-green-deep" />
-                  <span className="h-3 w-3 rounded-full bg-bronze border-2 border-white shadow-xs" />
-                </div>
-                <span className="font-mono text-xs text-bronze font-semibold mt-2">02</span>
-                <h3 className="mt-1 font-display text-2xl text-charcoal font-normal">Entregar</h3>
-                <p className="mt-2 text-sm text-muted leading-relaxed">
-                  Acta de entrega, inventario fotográfico y registro objetivo del estado del inmueble.
-                </p>
-              </div>
-
-              {/* Step 3 */}
-              <div className="relative z-10 flex flex-col">
-                <div className="mb-3 flex items-center justify-between">
-                  <Calculator className="h-7 w-7 text-green-deep" />
-                  <span className="h-3 w-3 rounded-full bg-bronze border-2 border-white shadow-xs" />
-                </div>
-                <span className="font-mono text-xs text-bronze font-semibold mt-2">03</span>
-                <h3 className="mt-1 font-display text-2xl text-charcoal font-normal">Gestionar</h3>
-                <p className="mt-2 text-sm text-muted leading-relaxed">
-                  Control de pagos, obligaciones del inquilino y comunicación documentada por escrito.
-                </p>
-              </div>
-
-              {/* Step 4 */}
-              <div className="relative z-10 flex flex-col">
-                <div className="mb-3 flex items-center justify-between">
-                  <ShieldAlert className="h-7 w-7 text-green-deep" />
-                  <span className="h-3 w-3 rounded-full bg-bronze border-2 border-white shadow-xs" />
-                </div>
-                <span className="font-mono text-xs text-bronze font-semibold mt-2">04</span>
-                <h3 className="mt-1 font-display text-2xl text-charcoal font-normal">Proteger</h3>
-                <p className="mt-2 text-sm text-muted leading-relaxed">
-                  Seguros de arrendamiento, procedimientos legales y rutas de acción ante incumplimientos.
-                </p>
-              </div>
-
-            </div>
-          </div>
-
-          {/* Mobile vertical timeline */}
-          <div className="md:hidden space-y-8 border-l-2 border-green-deep pl-6 ml-2">
-            
-            <div className="relative">
-              <span className="absolute -left-[31px] top-1.5 h-3.5 w-3.5 rounded-full bg-bronze border-2 border-white" />
-              <span className="font-mono text-xs text-bronze font-semibold">01</span>
-              <h3 className="font-display text-xl text-charcoal font-normal">Preparar</h3>
-              <p className="mt-1 text-sm text-muted">
-                Contrato firmado, documentos verificados y condiciones claras desde el inicio.
-              </p>
-            </div>
-
-            <div className="relative">
-              <span className="absolute -left-[31px] top-1.5 h-3.5 w-3.5 rounded-full bg-bronze border-2 border-white" />
-              <span className="font-mono text-xs text-bronze font-semibold">02</span>
-              <h3 className="font-display text-xl text-charcoal font-normal">Entregar</h3>
-              <p className="mt-1 text-sm text-muted">
-                Acta de entrega, inventario fotográfico y registro del estado del inmueble.
-              </p>
-            </div>
-
-            <div className="relative">
-              <span className="absolute -left-[31px] top-1.5 h-3.5 w-3.5 rounded-full bg-bronze border-2 border-white" />
-              <span className="font-mono text-xs text-bronze font-semibold">03</span>
-              <h3 className="font-display text-xl text-charcoal font-normal">Gestionar</h3>
-              <p className="mt-1 text-sm text-muted">
-                Control de pagos, obligaciones del inquilino y comunicación documentada.
-              </p>
-            </div>
-
-            <div className="relative">
-              <span className="absolute -left-[31px] top-1.5 h-3.5 w-3.5 rounded-full bg-bronze border-2 border-white" />
-              <span className="font-mono text-xs text-bronze font-semibold">04</span>
-              <h3 className="font-display text-xl text-charcoal font-normal">Proteger</h3>
-              <p className="mt-1 text-sm text-muted">
-                Seguros, procedimientos legales y rutas de acción ante incumplimiento.
-              </p>
-            </div>
-
+            </Reveal>
           </div>
 
         </div>
