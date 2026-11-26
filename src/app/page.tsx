@@ -25,10 +25,13 @@ import { getAllPosts, isValidSlug, blogPostHref } from '@/lib/blog';
 import { Reveal, ScrollProgress, StickyProductCta } from '@/components/home/Motion';
 import FloorPlan from '@/components/home/FloorPlan';
 import IsoBuilding from '@/components/home/IsoBuilding';
+import { ContractMockup } from '@/components/home/ContractMockup';
 import { IPC_CONFIG } from '@/lib/ipc-config';
 import { RENTABILIDAD_DEFAULTS, calcularRentabilidad } from '@/lib/rentabilidad-config';
 import { absoluteUrl, homeJsonLd } from '@/lib/seo';
 import { baseOpenGraph, baseTwitter } from '@/lib/metadata';
+
+
 
 export const metadata: Metadata = {
   alternates: { canonical: '/' },
@@ -96,68 +99,133 @@ export default function Home() {
       <ScrollProgress />
       <StickyProductCta />
 
-      {/* ── 1. HERO — Colombian Property Editorial / Quiet Luxury ── */}
-      <section className="relative overflow-hidden bg-ivory pt-24 pb-12 sm:pt-28 md:pb-16 lg:pt-32 lg:pb-20">
+      /* ── 1. THE LEGAL ARTIFACT — EDITORIAL CONTRACT EDITION ── */
+      <section className="relative overflow-hidden bg-ivory">
         <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">
-          {/* Editorial masthead — replaces generic eyebrow */}
-          <div className="mb-10 flex items-center gap-4 border-b border-charcoal/15 pb-4 md:mb-14">
-            <span className="h-2 w-2 bg-bronze" aria-hidden="true" />
-            <span className="font-mono text-xs font-medium uppercase tracking-[0.22em] text-charcoal">
-              Gestión inmobiliaria · Colombia · 2026
-            </span>
-            <span className="ml-auto hidden h-px w-24 bg-charcoal/20 sm:block" aria-hidden="true" />
-          </div>
-
-          <div className="grid gap-10 lg:grid-cols-12 lg:items-end lg:gap-10">
-            {/* Editorial copy */}
-            <div className="lg:col-span-5 lg:pb-6">
-              <h1 className="max-w-3xl font-display font-normal leading-[0.95] tracking-[-0.01em] text-charcoal">
-                <span className="block text-[clamp(2rem,3vw,3rem)]">Arrendar con confianza.</span>{' '}
-                <span className="block text-[clamp(1.375rem,2.4vw,2.25rem)]">Administrar con claridad.</span>
-              </h1>
-
-              <p className="mt-7 max-w-xl text-base leading-relaxed text-muted sm:text-lg">
-                Guías, herramientas y plantillas para propietarios de vivienda urbana en Colombia.
-              </p>
-
-              <div className="mt-9 flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:gap-6">
-                <Link
-                  href="/herramientas"
-                  className="group inline-flex min-h-[52px] items-center gap-3 bg-green-deep px-7 py-3.5 text-sm font-medium text-white transition-colors hover:bg-green-mid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-deep"
-                >
-                  Explorar herramientas
-                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1 motion-reduce:transition-none" aria-hidden="true" />
-                </Link>
-                <Link
-                  href="/tienda"
-                  className="group inline-flex min-h-[48px] items-center gap-2 border-b border-charcoal/30 pb-1 text-sm font-medium text-charcoal transition-colors hover:border-bronze hover:text-bronze focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-deep"
-                >
-                  Ver plantilla de contrato
-                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1 motion-reduce:transition-none" aria-hidden="true" />
-                </Link>
-              </div>
-
-              <div className="mt-10 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-charcoal/15 pt-4 font-mono text-[10px] uppercase tracking-wider text-muted sm:text-xs">
-                <span>Ley 820 de 2003</span>
-                <span className="h-1 w-1 bg-bronze" aria-hidden="true" />
-                <span>Vivienda urbana</span>
-                <span className="h-1 w-1 bg-bronze" aria-hidden="true" />
-                <span>Actualizado 2026</span>
-              </div>
+          <div className="grid gap-6 lg:grid-cols-12 lg:gap-10">
+            {/* Columna izquierda: Maqueta contrato 3D */}
+            <div className="lg:col-span-7 order-2 lg:order-1">
+              <Reveal delay={100} threshold={0.1}>
+                <ContractMockup />
+              </Reveal>
             </div>
 
-            {/* Editorial photograph — protagonist image */}
-            <div className="lg:col-span-7">
-              <figure className="relative aspect-[4/3] overflow-hidden bg-green-deep sm:aspect-[16/10] lg:aspect-auto lg:h-[clamp(24rem,42vw,34rem)]">
-                <Image
-                  src="/hero/arrendadorco-hero-colombia.webp"
-                  alt="Una casa con porche y columpio en Antioquia, Colombia"
-                  fill
-                  preload
-                  sizes="(max-width: 1023px) 100vw, 58vw"
-                  className="object-cover object-center"
-                />
-              </figure>
+            {/* Columna derecha: Presentación editorial */}
+            <div className="lg:col-span-5 order-1 lg:order-2">
+              <Reveal delay={0} threshold={0.1}>
+                {/* Eyebrow: PRODUCTO DESTACADO */}
+                <div className="mb-6">
+                  <span className="inline-block text-xs font-mono font-medium uppercase tracking-[0.15em] text-bronze">
+                    PRODUCTO DESTACADO
+                  </span>
+                </div>
+
+                {/* Título editorial */}
+                <h1 className="mt-4 max-w-xl font-display font-normal leading-[0.95] tracking-[-0.01em] text-charcoal">
+                  <span className="block text-[clamp(2rem,3vw,3rem)]">
+                    Contrato de Arrendamiento
+                  </span>
+                  <span className="block text-sm text-terracotta uppercase tracking-wider mb-4">
+                    Vivienda Urbana · República de Colombia
+                  </span>
+                </h1>
+              </Reveal>
+
+              <Reveal delay={150} threshold={0.1}>
+                {/* Descripción comercial basada en configuración */}
+                <p className="mb-8 max-w-xl text-base leading-relaxed text-muted">
+                  {PRODUCT_CONFIG.description}
+                </p>
+              </Reveal>
+
+              <Reveal delay={300} threshold={0.1}>
+                {/* Precio destacado */}
+                <div className="mb-8">
+                  <span className="font-mono text-3xl font-semibold text-green-deep tabular-nums">
+                    {formatPrice().split(' ')[0]}
+                  </span>
+                  <span className="text-terracotta font-mono text-sm font-medium uppercase tracking-wider">
+                    {formatPrice().split(' ')[1]}
+                  </span>
+                </div>
+
+                {/* Badge PAGO ÚNICO */}
+                <div className="mb-8 flex items-center gap-2">
+                  <span className="font-mono text-xs font-medium text-bronze uppercase tracking-wider">
+                    PAGO ÚNICO
+                  </span>
+                </div>
+              </Reveal>
+
+              <Reveal delay={450} threshold={0.1}>
+                {/* Beneficios indexados editorialmente */}
+                <div className="mb-8 space-y-1">
+                  {PRODUCT_CONFIG.includes.map((benefit, i) => (
+                    <div
+                      key={i}
+                      className="contract-benefit-item flex items-start gap-3 py-4 border-y border-charcoal/20 last:border-0 first:border-t-0"
+                    >
+                      <span className="font-mono text-xs font-medium text-bronze shrink-0">
+                        {i + 1}.
+                      </span>
+                      <div>
+                        <span className="font-display font-medium text-charcoal block">
+                          {benefit}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </Reveal>
+
+              <Reveal delay={600} threshold={0.1}>
+                {/* CTA principal */}
+                <div className="mb-8">
+                  <Link
+                    href="/tienda"
+                    className="group contract-cta inline-flex min-h-[52px] items-center gap-3 rounded-xl bg-green-deep px-8 py-3.5 text-sm font-medium text-white transition-all hover:bg-green-mid hover:scale-[1.01] active:scale-[0.99] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-deep"
+                  >
+                    Comprar plantilla — {formatPrice()}
+                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1 motion-reduce:transition-none" aria-hidden="true" />
+                  </Link>
+                </div>
+              </Reveal>
+
+              <Reveal delay={750} threshold={0.1}>
+                {/* Información de confianza */}
+                <div className="flex items-center justify-between pt-6 border-t border-charcoal/15">
+                  <div className="flex items-center gap-3 text-sm text-muted">
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="h-4 w-4"
+                      aria-hidden="true"
+                    >
+                      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                      <polyline points="15 3 21 3 21 9" />
+                      <polyline points="10 14 16 14" />
+                      <line points="21 13 21 19" />
+                    </svg>
+                    Pago seguro vía Mercado Pago ·
+                  </div>
+                  <div className="text-right">
+                    <span className="text-xs font-mono text-terracotta">
+                      Entrega por correo electrónico
+                    </span>
+                  </div>
+                </div>
+
+                {/* Descargo legal */}
+                <p className="mt-8 pt-6 border-t border-charcoal/10 text-[11px] text-muted/80 leading-relaxed max-w-xl">
+                  {PRODUCT_CONFIG.disclaimer}
+                </p>
+              </Reveal>
             </div>
           </div>
         </div>
