@@ -8,12 +8,15 @@ export function ContractMockup() {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
-    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
-    setReducedMotion(mq.matches);
-    const onChange = () => setReducedMotion(mq.matches);
-    mq.addEventListener('change', onChange);
-    return () => mq.removeEventListener('change', onChange);
+    const timer = setTimeout(() => {
+      setMounted(true);
+      const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+      setReducedMotion(mq.matches);
+      const onChange = () => setReducedMotion(mq.matches);
+      mq.addEventListener('change', onChange);
+      return () => mq.removeEventListener('change', onChange);
+    }, 0);
+    return () => clearTimeout(timer);
   }, []);
 
   if (!mounted) {

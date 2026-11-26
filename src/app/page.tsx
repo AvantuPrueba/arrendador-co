@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import Image from 'next/image';
 import Link from 'next/link';
 import {
   FileText,
@@ -18,6 +17,7 @@ import {
   Lock,
   ScrollText,
 } from 'lucide-react';
+
 import NewsletterCTA from '@/components/NewsletterCTA';
 import JsonLd from '@/components/JsonLd';
 import { PRODUCT_CONFIG, formatPrice } from '@/lib/product';
@@ -99,7 +99,7 @@ export default function Home() {
       <ScrollProgress />
       <StickyProductCta />
 
-      /* ── 1. THE LEGAL ARTIFACT — EDITORIAL CONTRACT EDITION ── */
+      {/* ── 1. THE LEGAL ARTIFACT — EDITORIAL CONTRACT EDITION ── */}
       <section className="relative overflow-hidden bg-ivory">
         <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">
           <div className="grid gap-6 lg:grid-cols-12 lg:gap-10">
