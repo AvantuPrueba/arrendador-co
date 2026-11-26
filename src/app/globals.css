@@ -191,3 +191,10 @@ html {
 @media (min-width:768px){.reveal.is-visible .iso-float{animation:isoFloat 5s ease-in-out infinite;}}
 @keyframes isoFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-3px);}}
 @media (prefers-reduced-motion: reduce){.method-line,.reveal.is-visible .method-line{transform:scaleX(1) scaleY(1) !important;animation:none !important;}.iso-float,.reveal.is-visible .iso-float{animation:none !important;}}
+
+/* Bar/indicator reveal (CSS, reduced-motion safe) */
+.bar-fill { transform-origin: left center; }
+.reveal.is-visible .bar-fill { animation: barGrow .9s ease-out both; }
+svg .bar-fill { transform-box: fill-box; transform-origin: left center; }
+@keyframes barGrow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@media (prefers-reduced-motion: reduce) { .reveal.is-visible .bar-fill { animation: none !important; } }
