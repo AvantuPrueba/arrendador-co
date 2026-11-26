@@ -23,6 +23,8 @@ import { getAllPosts, isValidSlug, blogPostHref } from '@/lib/blog';
 import { Reveal, ScrollProgress, StickyProductCta } from '@/components/home/Motion';
 import FloorPlan from '@/components/home/FloorPlan';
 import IsoBuilding from '@/components/home/IsoBuilding';
+import { IPC_CONFIG } from '@/lib/ipc-config';
+import { RENTABILIDAD_DEFAULTS, calcularRentabilidad } from '@/lib/rentabilidad-config';
 import { absoluteUrl, homeJsonLd } from '@/lib/seo';
 import { baseOpenGraph, baseTwitter } from '@/lib/metadata';
 
@@ -49,10 +51,41 @@ export const metadata: Metadata = {
   },
 };
 
+// Formateo COP es-CO para previsualizaciones ilustrativas (no cálculo).
+function formatCOP(valor: number): string {
+  return `$${Math.round(valor).toLocaleString('es-CO')}`;
+}
+
 export default function Home() {
   const posts = getAllPosts().filter((p) => isValidSlug(p.slug)).slice(0, 4);
   const featuredPost = posts.find((post) => post.featured === true) ?? posts[0];
   const secondaryPosts = posts.filter((post) => post.slug !== featuredPost?.slug).slice(0, 3);
+
+  // Previsualización ilustrativa de reajuste con IPC real (IPC_CONFIG).
+  const reajusteEjemploCanon = 1_200_000;
+  const reajustePorcentaje = IPC_CONFIG.ipc;
+  const reajusteAumento = Math.round(reajusteEjemploCanon * (reajustePorcentaje / 100));
+  const reajusteNuevoCanon = reajusteEjemploCanon + reajusteAumento;
+
+  // Previsualización ilustrativa DEMO con cálculo real + defaults reales.
+  const rentabilidadEjemplo = calcularRentabilidad(
+    120_000_000,
+    1_200_000,
+    0,
+    {
+      administracionMensual: 0,
+      comisionInmobiliaria: 0,
+      predialAnual: 120_000_000 * (RENTABILIDAD_DEFAULTS.predial / 100),
+      seguroAnual: 0,
+      mantenimientoAnual: RENTABILIDAD_DEFAULTS.mantenimiento,
+    },
+    RENTABILIDAD_DEFAULTS.mesesVacancia,
+  );
+  const rentabilidadEscalaMax = Math.max(
+    rentabilidadEjemplo.rentabilidadNeta,
+    RENTABILIDAD_DEFAULTS.tasaCDT,
+    1,
+  );
 
   return (
     <>
@@ -60,10 +93,10 @@ export default function Home() {
       <ScrollProgress />
       <StickyProductCta />
 
-      {/* ── 1. HERO — Colombian Property Editorial / Quiet Luxury ── */}
+      {/* ���� 1. HERO � Colombian Property Editorial / Quiet Luxury ���� */}
       <section className="relative overflow-hidden bg-ivory pt-24 pb-12 sm:pt-28 md:pb-16 lg:pt-32 lg:pb-20">
         <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">
-          {/* Editorial masthead — replaces generic eyebrow */}
+          {/* Editorial masthead � replaces generic eyebrow */}
           <div className="mb-10 flex items-center gap-4 border-b border-charcoal/15 pb-4 md:mb-14">
             <span className="h-2 w-2 bg-bronze" aria-hidden="true" />
             <span className="font-mono text-xs font-medium uppercase tracking-[0.22em] text-charcoal">
@@ -110,7 +143,7 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Editorial photograph — protagonist image */}
+            {/* Editorial photograph � protagonist image */}
             <div className="lg:col-span-7">
               <figure className="relative aspect-[4/3] overflow-hidden bg-green-deep sm:aspect-[16/10] lg:aspect-auto lg:h-[clamp(24rem,42vw,34rem)]">
                 <Image
@@ -126,7 +159,7 @@ export default function Home() {
           </div>
         </div>
       </section>
-      {/* ── 2. PROBLEM-SOLVING SECTION (Warm Ivory Background) ── */}
+      {/* ���� 2. PROBLEM-SOLVING SECTION (Warm Ivory Background) ���� */}
       <section className="bg-ivory py-16 md:py-24 border-b border-charcoal/5">
         <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">
           
@@ -249,7 +282,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── 3. METHODOLOGY SECTION: LA FORMA ARRENDADORCO (White Background) ── */}
+      {/* ���� 3. METHODOLOGY SECTION: LA FORMA ARRENDADORCO (White Background) ���� */}
       <section className="bg-white py-16 md:py-24 border-b border-charcoal/5">
         <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">
           
@@ -323,7 +356,7 @@ export default function Home() {
                     </div>
                   </Reveal>
 
-                  {/* 04 Proteger — cierre visual */}
+                  {/* 04 Proteger � cierre visual */}
                   <Reveal delay={450} threshold={0.3}>
                     <div className="group relative pl-12 md:pl-0">
                       <span className="absolute left-0 top-[5px] h-[30px] w-[30px] md:static md:mb-3 md:flex md:h-10 md:w-10 md:items-center md:justify-center">
@@ -345,7 +378,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── 4. FREE TOOLS SECTION (Deep Forest Green Background) ── */}
+      {/* ���� 4. FREE TOOLS SECTION (Deep Forest Green Background) ���� */}
       <section className="bg-green-deep py-16 md:py-24 text-white">
         <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">
           
@@ -367,150 +400,157 @@ export default function Home() {
             </Link>
           </div>
 
-          <div className="grid gap-6 md:grid-cols-3">
-            
-            {/* Tool Card 1: Reajuste */}
-            <Reveal delay={0}>
-              <div className="flex h-full flex-col justify-between rounded-2xl bg-white p-6 text-charcoal shadow-xl">
+          {/* Property Financial Lab - asimetría 60/40, sin tres tarjetas idénticas */}
+          <div className="grid gap-6 lg:grid-cols-12 lg:items-stretch">
+            {/* Herramienta principal ~60% - Reajuste de canon */}
+            <div className="lg:col-span-7">
+              <Reveal delay={0} threshold={0.3}>
+              <article className="group relative flex h-full flex-col justify-between rounded-xl border border-charcoal/10 bg-surface p-6 text-charcoal transition-transform duration-200 hover:-translate-y-0.5 motion-reduce:transition-none sm:p-8">
+                <span className="absolute inset-x-0 top-0 h-px bg-bronze/50" aria-hidden="true" />
                 <div>
-                  <div className="mb-4 flex items-center justify-between">
-                    <TrendingUp className="h-7 w-7 text-green-deep" />
-                    <span className="rounded-md bg-ivory px-2 py-0.5 font-mono text-[10px] text-bronze font-medium">
-                      IPC DANE 2025
-                    </span>
+                  <div className="mb-4 flex items-center justify-between gap-4">
+                    <span className="font-mono text-[11px] uppercase tracking-wider text-bronze">Herramienta principal</span>
+                    <span className="rounded border border-bronze/30 px-2 py-0.5 font-mono text-[10px] text-bronze font-medium">IPC DANE {IPC_CONFIG.year}</span>
                   </div>
-                  <h3 className="font-display text-xl text-charcoal font-normal">
-                    Reajuste de canon
-                  </h3>
-                  <p className="mt-1 text-xs text-muted">
+                  <div className="flex items-start justify-between gap-4">
+                    <h3 className="font-display text-2xl text-charcoal font-normal sm:text-3xl">Reajuste de canon</h3>
+                    <TrendingUp className="h-6 w-6 shrink-0 text-green-deep" aria-hidden="true" />
+                  </div>
+                  <p className="mt-2 max-w-md text-sm text-muted">
                     Calcula el nuevo valor legal de tu arriendo según la inflación acumulada.
                   </p>
 
-                  {/* Mini UI Preview (Illustrative) */}
-                  <div className="my-5 rounded-xl border border-charcoal/10 bg-surface p-3.5 space-y-2">
-                    <div className="flex items-center justify-between text-xs">
-                      <span className="text-muted">Canon actual:</span>
-                      <span className="font-mono font-medium text-charcoal">$1.200.000</span>
+                  <div className="my-5 rounded-lg border border-charcoal/10 bg-ivory p-4">
+                    <p className="font-mono text-[10px] uppercase tracking-wider text-muted">Ejemplo ilustrativo</p>
+                    <div className="mt-3 space-y-2 text-sm">
+                      <div className="flex items-center justify-between">
+                        <span className="text-muted">Canon actual</span>
+                        <span className="font-mono font-medium tabular-nums text-charcoal">{formatCOP(reajusteEjemploCanon)}</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-muted">Reajuste aplicable</span>
+                        <span className="font-mono font-medium tabular-nums text-bronze">+{reajustePorcentaje.toFixed(2).replace('.', ',')}%</span>
+                      </div>
+                      <div className="flex items-center justify-between border-t border-charcoal/10 pt-2">
+                        <span className="font-medium text-green-deep">Nuevo canon</span>
+                        <span className="font-mono font-bold tabular-nums text-green-deep">{formatCOP(reajusteNuevoCanon)}</span>
+                      </div>
                     </div>
-                    <div className="flex items-center justify-between border-t border-charcoal/10 pt-2 text-xs">
-                      <span className="font-medium text-green-deep">+ Reajuste legal:</span>
-                      <span className="font-mono font-bold text-green-deep">$1.311.360</span>
+
+                    <div className="mt-4 space-y-2" aria-hidden="true">
+                      <div>
+                        <div className="mb-1 flex justify-between font-mono text-[10px] text-muted"><span>Actual</span><span>{formatCOP(reajusteEjemploCanon)}</span></div>
+                        <div className="h-1.5 w-full overflow-hidden rounded-full bg-charcoal/10"><div className="bar-fill h-full bg-charcoal/40" style={{ width: (reajusteEjemploCanon / reajusteNuevoCanon) * 100 + '%' }} /></div>
+                      </div>
+                      <div>
+                        <div className="mb-1 flex justify-between font-mono text-[10px] text-muted"><span>Nuevo</span><span>{formatCOP(reajusteNuevoCanon)}</span></div>
+                        <div className="h-1.5 w-full overflow-hidden rounded-full bg-charcoal/10"><div className="bar-fill h-full bg-green-deep" style={{ width: '100%' }} /></div>
+                      </div>
                     </div>
                   </div>
                 </div>
 
                 <Link
                   href="/herramientas/reajuste-canon"
-                  className="inline-flex items-center gap-1 font-mono text-xs font-semibold text-green-deep hover:text-green-mid"
+                  className="mt-4 inline-flex items-center gap-1 font-mono text-sm font-semibold text-green-deep transition-colors hover:text-bronze focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-deep"
                 >
-                  Calcular ahora →
+                  Calcular ahora � 
                 </Link>
-              </div>
-            </Reveal>
+              </article>
+              </Reveal>
+            </div>
 
-            {/* Tool Card 2: Rentabilidad */}
-            <Reveal delay={80}>
-              <div className="flex h-full flex-col justify-between rounded-2xl bg-white p-6 text-charcoal shadow-xl">
-                <div>
-                  <div className="mb-4 flex items-center justify-between">
-                    <PieChart className="h-7 w-7 text-green-deep" />
-                    <div className="flex items-center gap-2">
-                      <span className="rounded-md bg-ivory px-2 py-0.5 font-mono text-[10px] text-muted font-medium">
-                        Comparativa anual
-                      </span>
-                      <span className="rounded bg-ivory px-1 py-0.5 font-mono text-[8px] font-semibold text-bronze uppercase">
-                        Demo
-                      </span>
+            <div className="flex flex-col gap-6 lg:col-span-5">
+              {/* Herramienta secundaria - Rentabilidad real */}
+              <Reveal delay={100} threshold={0.3}>
+                <article className="group flex h-full flex-col justify-between rounded-xl border border-charcoal/10 bg-ivory p-6 text-charcoal transition-transform duration-200 hover:-translate-y-0.5 motion-reduce:transition-none">
+                  <div>
+                    <div className="mb-4 flex items-center justify-between gap-3">
+                      <div className="flex items-center gap-2">
+                        <span className="rounded border border-charcoal/15 px-2 py-0.5 font-mono text-[10px] text-muted font-medium">Comparativa anual</span>
+                        <span className="rounded border border-bronze/30 px-1.5 py-0.5 font-mono text-[8px] font-semibold text-bronze uppercase">Demo</span>
+                      </div>
+                      <PieChart className="h-5 w-5 text-green-deep" aria-hidden="true" />
+                    </div>
+                    <h3 className="font-display text-xl text-charcoal font-normal">Rentabilidad real</h3>
+                    <p className="mt-1 text-xs text-muted">
+                      Conoce tu retorno neto después de vacancia, predial, administración e impuestos.
+                    </p>
+
+                    <div className="my-5 rounded-lg border border-charcoal/10 bg-surface p-3.5">
+                      <svg className="w-full" viewBox="0 0 240 92" role="img" aria-label="Comparación con escala común: rentabilidad neta vs CDT de referencia, ejemplo DEMO" preserveAspectRatio="xMidYMid meet">
+                        <line x1="0" y1="78" x2="240" y2="78" stroke="var(--color-charcoal)" strokeOpacity="0.15" strokeWidth="1" />
+                        <rect className="bar-fill" x="0" y={78 - (RENTABILIDAD_DEFAULTS.tasaCDT / rentabilidadEscalaMax) * 66} width="86" height={(RENTABILIDAD_DEFAULTS.tasaCDT / rentabilidadEscalaMax) * 66} fill="var(--color-muted)" fillOpacity="0.55" />
+                        <text x="43" y="90" textAnchor="middle" fontFamily="IBM Plex Mono, monospace" fontSize="9" fill="var(--color-muted)">CDT {RENTABILIDAD_DEFAULTS.tasaCDT}%</text>
+                        <rect className="bar-fill" x="116" y={78 - (rentabilidadEjemplo.rentabilidadNeta / rentabilidadEscalaMax) * 66} width="86" height={Math.max(1, (rentabilidadEjemplo.rentabilidadNeta / rentabilidadEscalaMax) * 66)} fill="var(--color-green-deep)" />
+                        <text x="159" y="90" textAnchor="middle" fontFamily="IBM Plex Mono, monospace" fontSize="9" fill="var(--color-muted)">Neta {rentabilidadEjemplo.rentabilidadNeta.toFixed(1).replace('.', ',')}%</text>
+                        <text x="43" y={78 - (RENTABILIDAD_DEFAULTS.tasaCDT / rentabilidadEscalaMax) * 66 - 4} textAnchor="middle" fontFamily="IBM Plex Mono, monospace" fontSize="9" fill="var(--color-muted)">{RENTABILIDAD_DEFAULTS.tasaCDT.toFixed(1).replace('.', ',')}%</text>
+                        <text x="159" y={78 - (rentabilidadEjemplo.rentabilidadNeta / rentabilidadEscalaMax) * 66 - 4} textAnchor="middle" fontFamily="IBM Plex Mono, monospace" fontSize="9" fill="var(--color-green-deep)">{rentabilidadEjemplo.rentabilidadNeta.toFixed(1).replace('.', ',')}%</text>
+                      </svg>
+                      <p className="mt-1 font-mono text-[9px] text-muted">Ejemplo ilustrativo · no es resultado personalizado</p>
                     </div>
                   </div>
-                  <h3 className="font-display text-xl text-charcoal font-normal">
-                    Rentabilidad real
-                  </h3>
-                  <p className="mt-1 text-xs text-muted">
-                    Conoce tu retorno neto después de vacancia, predial, administración e impuestos.
-                  </p>
 
-                  {/* Mini UI Preview (Illustrative) */}
-                  <div className="my-5 rounded-xl border border-charcoal/10 bg-surface p-3.5 space-y-2">
-                    <div>
-                      <div className="flex justify-between text-[11px] mb-1">
-                        <span className="text-muted">Rentabilidad neta</span>
-                        <span className="font-mono font-semibold text-green-deep">6.8%</span>
-                      </div>
-                      <div className="h-1.5 w-full rounded-full bg-charcoal/10 overflow-hidden">
-                        <div className="h-full w-[68%] bg-green-deep" />
-                      </div>
+                  <Link
+                    href="/herramientas/rentabilidad"
+                    className="inline-flex items-center gap-1 font-mono text-xs font-semibold text-green-deep transition-colors hover:text-bronze focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-deep"
+                  >
+                    Calcular rentabilidad � 
+                  </Link>
+                </article>
+              </Reveal>
+
+              {/* Herramienta secundaria - Checklist de entrega */}
+              <Reveal delay={200} threshold={0.3}>
+                <article className="group flex h-full flex-col justify-between rounded-xl border border-charcoal/10 bg-surface p-6 text-charcoal transition-transform duration-200 hover:-translate-y-0.5 motion-reduce:transition-none">
+                  <div>
+                    <div className="mb-4 flex items-center justify-between">
+                      <h3 className="font-display text-xl text-charcoal font-normal">Checklist de entrega</h3>
+                      <ClipboardCheck className="h-5 w-5 text-green-deep" aria-hidden="true" />
                     </div>
-                    <div>
-                      <div className="flex justify-between text-[11px] mb-1">
-                        <span className="text-muted">CDT referencia</span>
-                        <span className="font-mono font-semibold text-muted">9.5%</span>
+                    <div className="mb-4 flex items-center justify-between gap-3">
+                      <span className="rounded border border-green-deep/20 bg-green-deep/5 px-2 py-0.5 font-mono text-[10px] text-green-deep font-medium">Genera PDF</span>
+                      <span className="font-mono text-[9px] uppercase tracking-wider text-muted">Acta de inventario</span>
+                    </div>
+                    <p className="text-xs text-muted">
+                      Genera el acta de inventario con estado de paredes, llaves y lectura de medidores.
+                    </p>
+
+                    <div className="my-5 rounded-lg border border-charcoal/10 bg-ivory p-3.5">
+                      <div className="mb-3 flex items-center justify-between border-b border-charcoal/10 pb-2">
+                        <span className="font-mono text-[9px] uppercase tracking-wider text-muted">Inventario</span>
+                        <span className="font-mono text-[9px] text-green-deep">2/3</span>
                       </div>
-                      <div className="h-1.5 w-full rounded-full bg-charcoal/10 overflow-hidden">
-                        <div className="h-full w-[42%] bg-muted/60" />
+                      <div className="mb-3 h-1 w-full overflow-hidden rounded-full bg-charcoal/10" aria-hidden="true"><div className="bar-fill h-full bg-green-deep" style={{ width: '66%' }} /></div>
+                      <div className="space-y-1.5 text-xs">
+                        <div className="flex items-center gap-2 text-charcoal"><span className="text-green-deep font-bold" aria-hidden="true">�S</span><span>Llaves entregadas</span></div>
+                        <div className="flex items-center gap-2 text-charcoal"><span className="text-green-deep font-bold" aria-hidden="true">�S</span><span>Medidores registrados</span></div>
+                        <div className="flex items-center gap-2 text-muted"><span className="text-charcoal/30" aria-hidden="true">�9</span><span>Fotos del estado</span></div>
                       </div>
                     </div>
                   </div>
-                </div>
 
-                <Link
-                  href="/herramientas/rentabilidad"
-                  className="inline-flex items-center gap-1 font-mono text-xs font-semibold text-green-deep hover:text-green-mid"
-                >
-                  Calcular rentabilidad →
-                </Link>
-              </div>
-            </Reveal>
+                  <Link
+                    href="/herramientas/checklist-entrega"
+                    className="inline-flex items-center gap-1 font-mono text-xs font-semibold text-green-deep transition-colors hover:text-bronze focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-deep"
+                  >
+                    Abrir checklist � 
+                  </Link>
+                </article>
+              </Reveal>
+            </div>
+          </div>
 
-            {/* Tool Card 3: Checklist */}
-            <Reveal delay={160}>
-              <div className="flex h-full flex-col justify-between rounded-2xl bg-white p-6 text-charcoal shadow-xl">
-                <div>
-                  <div className="mb-4 flex items-center justify-between">
-                    <ClipboardCheck className="h-7 w-7 text-green-deep" />
-                    <span className="rounded-md bg-green-deep/10 px-2 py-0.5 font-mono text-[10px] text-green-deep font-medium">
-                      Genera PDF
-                    </span>
-                  </div>
-                  <h3 className="font-display text-xl text-charcoal font-normal">
-                    Checklist de entrega
-                  </h3>
-                  <p className="mt-1 text-xs text-muted">
-                    Genera el acta de inventario con estado de paredes, llaves y lectura de medidores.
-                  </p>
-
-                  {/* Mini UI Preview (Illustrative) */}
-                  <div className="my-5 rounded-xl border border-charcoal/10 bg-surface p-3.5 space-y-1.5">
-                    <div className="flex items-center gap-2 text-xs text-charcoal">
-                      <span className="text-green-deep font-bold">✓</span>
-                      <span>Llaves entregadas</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-xs text-charcoal">
-                      <span className="text-green-deep font-bold">✓</span>
-                      <span>Medidores registrados</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-xs text-muted">
-                      <span className="text-charcoal/30">○</span>
-                      <span>Fotos del estado</span>
-                    </div>
-                  </div>
-                </div>
-
-                <Link
-                  href="/herramientas/checklist-entrega"
-                  className="inline-flex items-center gap-1 font-mono text-xs font-semibold text-green-deep hover:text-green-mid"
-                >
-                  Abrir checklist →
-                </Link>
-              </div>
-            </Reveal>
-
+          {/* Pieza arquitectonica 2.5D secundaria - no compite con las herramientas */}
+          <div className="mt-8 flex items-center gap-4 border-t border-white/10 pt-6" aria-hidden="true">
+            <IsoBuilding className="h-12 w-9 shrink-0 text-bright-bronze/70" />
+            <p className="font-mono text-[11px] uppercase tracking-wider text-white/60">Un inmueble · un ciclo · herramientas reales</p>
           </div>
 
         </div>
       </section>
 
-      {/* ── 5. FEATURED PRODUCT: CONTRATO DE ARRENDAMIENTO (Warm Ivory Background) ── */}
+            {/* ���� 5. FEATURED PRODUCT: CONTRATO DE ARRENDAMIENTO (Warm Ivory Background) ���� */}
       <section className="bg-ivory py-16 md:py-24 border-b border-charcoal/5">
         <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">
           <div className="rounded-3xl border border-charcoal/10 bg-surface p-8 sm:p-12 lg:p-14 shadow-xl">
@@ -551,7 +591,7 @@ export default function Home() {
                   ].map((benefit) => (
                     <li key={benefit} className="flex items-start gap-3 text-sm text-charcoal">
                       <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-bronze/15 text-bronze font-bold text-xs">
-                        ✓
+                        �S
                       </span>
                       <span>{benefit}</span>
                     </li>
@@ -565,7 +605,7 @@ export default function Home() {
                     className="flex w-full items-center justify-center gap-2 rounded-lg bg-green-deep px-8 py-3.5 text-base font-medium text-white transition-all hover:bg-green-mid hover:scale-[1.01] active:scale-[0.99] shadow-md"
                   >
                     <Lock className="h-4 w-4 text-bright-bronze" />
-                    Comprar plantilla — {formatPrice()}
+                    Comprar plantilla � {formatPrice()}
                   </Link>
 
                   <p className="font-mono text-[11px] text-center text-muted">
@@ -678,7 +718,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── 6. EDITORIAL GUIDES SECTION (White Background) ── */}
+      {/* ���� 6. EDITORIAL GUIDES SECTION (White Background) ���� */}
       <section className="bg-white py-16 md:py-24 border-b border-charcoal/5">
         <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">
           
@@ -765,7 +805,7 @@ export default function Home() {
                       </h4>
 
                       <span className="mt-3 inline-flex items-center gap-1 font-mono text-xs text-green-deep font-medium">
-                        Leer artículo →
+                        Leer artículo � 
                       </span>
                     </Link>
                   </Reveal>
@@ -778,7 +818,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── 7. TRUST SECTION (Deep Forest Green Background) ── */}
+      {/* ���� 7. TRUST SECTION (Deep Forest Green Background) ���� */}
       <section className="bg-green-deep py-16 md:py-24 text-white">
         <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">
           
@@ -845,7 +885,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── 8. NEWSLETTER SECTION (Warm Ivory / Surface Background) ── */}
+      {/* ���� 8. NEWSLETTER SECTION (Warm Ivory / Surface Background) ���� */}
       <section className="bg-surface py-16 md:py-24 border-b border-charcoal/5">
         <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">
           <div className="grid gap-10 lg:grid-cols-12 lg:items-center">
@@ -891,7 +931,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── 9. FINAL CTA SECTION (Deep Forest Green Background) ── */}
+      {/* ���� 9. FINAL CTA SECTION (Deep Forest Green Background) ���� */}
       <section className="bg-green-deep py-16 md:py-24 text-white">
         <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12 text-center">
           
