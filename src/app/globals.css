@@ -178,3 +178,16 @@ html {
     animation: none !important;
   }
 }
+
+
+/* Method timeline progressive reveal */
+.method-line{transform-origin:left;transform:scaleX(0);}
+.reveal.is-visible .method-line{animation:progressX 1.6s ease-in-out both;}
+@keyframes progressX{to{transform:scaleX(1);}}
+@keyframes progressY{to{transform:scaleY(1);}}
+@media (max-width:767px){.method-line{transform-origin:top;transform:scaleY(0);}.reveal.is-visible .method-line{animation-name:progressY;}}
+/* isométrico: flotación sutil, solo escritorio */
+.iso-float{transform-origin:center;}
+@media (min-width:768px){.reveal.is-visible .iso-float{animation:isoFloat 5s ease-in-out infinite;}}
+@keyframes isoFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-3px);}}
+@media (prefers-reduced-motion: reduce){.method-line,.reveal.is-visible .method-line{transform:scaleX(1) scaleY(1) !important;animation:none !important;}.iso-float,.reveal.is-visible .iso-float{animation:none !important;}}
