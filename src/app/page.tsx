@@ -4,6 +4,8 @@ import Link from 'next/link';
 import {
   FileText,
   ClipboardCheck,
+  Check,
+  Circle,
   ShieldAlert,
   Calculator,
   ArrowRight,
@@ -53,7 +55,7 @@ export const metadata: Metadata = {
 
 // Formateo COP es-CO para previsualizaciones ilustrativas (no cálculo).
 function formatCOP(valor: number): string {
-  return `${Math.round(valor).toLocaleString("es-CO")}`;
+  return `$${Math.round(valor).toLocaleString("es-CO")}`;
 }
 
 export default function Home() {
@@ -419,18 +421,18 @@ export default function Home() {
 
                   <div className="my-5 rounded-lg border border-charcoal/10 bg-ivory p-4">
                     <p className="font-mono text-[10px] uppercase tracking-wider text-muted">Ejemplo ilustrativo</p>
-                    <div className="mt-3 space-y-2 text-sm">
-                      <div className="flex items-center justify-between">
-                        <span className="text-muted">Canon actual</span>
-                        <span className="font-mono font-medium tabular-nums text-charcoal">{formatCOP(reajusteEjemploCanon)}</span>
+                    <div className="mt-3 divide-y divide-charcoal/10">
+                      <div className="flex items-baseline justify-between py-2">
+                        <span className="text-xs text-muted">Canon actual</span>
+                        <span className="font-mono text-sm tabular-nums text-muted">{formatCOP(reajusteEjemploCanon)}</span>
                       </div>
-                      <div className="flex items-center justify-between">
-                        <span className="text-muted">Reajuste aplicable</span>
-                        <span className="font-mono font-medium tabular-nums text-bronze">+{reajustePorcentaje.toFixed(2).replace('.', ',')}%</span>
+                      <div className="flex items-baseline justify-between py-2">
+                        <span className="text-xs text-muted">IPC</span>
+                        <span className="font-mono text-sm font-medium tabular-nums text-bronze">+{reajustePorcentaje.toFixed(2).replace('.', ',')}%</span>
                       </div>
-                      <div className="flex items-center justify-between border-t border-charcoal/10 pt-2">
-                        <span className="font-medium text-green-deep">Nuevo canon</span>
-                        <span className="font-mono font-bold tabular-nums text-green-deep">{formatCOP(reajusteNuevoCanon)}</span>
+                      <div className="flex items-baseline justify-between border-t border-charcoal/15 pt-3">
+                        <span className="text-xs font-medium text-green-deep">Nuevo canon</span>
+                        <span className="font-mono text-2xl font-bold tabular-nums text-green-deep">{formatCOP(reajusteNuevoCanon)}</span>
                       </div>
                     </div>
 
@@ -480,9 +482,8 @@ export default function Home() {
                         <rect className="bar-fill" x="0" y={78 - (RENTABILIDAD_DEFAULTS.tasaCDT / rentabilidadEscalaMax) * 66} width="86" height={(RENTABILIDAD_DEFAULTS.tasaCDT / rentabilidadEscalaMax) * 66} fill="var(--color-muted)" fillOpacity="0.55" />
                         <text x="43" y="90" textAnchor="middle" fontFamily="IBM Plex Mono, monospace" fontSize="9" fill="var(--color-muted)">CDT {RENTABILIDAD_DEFAULTS.tasaCDT}%</text>
                         <rect className="bar-fill" x="116" y={78 - (rentabilidadEjemplo.rentabilidadNeta / rentabilidadEscalaMax) * 66} width="86" height={Math.max(1, (rentabilidadEjemplo.rentabilidadNeta / rentabilidadEscalaMax) * 66)} fill="var(--color-green-deep)" />
-                        <text x="159" y="90" textAnchor="middle" fontFamily="IBM Plex Mono, monospace" fontSize="9" fill="var(--color-muted)">Neta {rentabilidadEjemplo.rentabilidadNeta.toFixed(1).replace('.', ',')}%</text>
-                        <text x="43" y={78 - (RENTABILIDAD_DEFAULTS.tasaCDT / rentabilidadEscalaMax) * 66 - 4} textAnchor="middle" fontFamily="IBM Plex Mono, monospace" fontSize="9" fill="var(--color-muted)">{RENTABILIDAD_DEFAULTS.tasaCDT.toFixed(1).replace('.', ',')}%</text>
-                        <text x="159" y={78 - (rentabilidadEjemplo.rentabilidadNeta / rentabilidadEscalaMax) * 66 - 4} textAnchor="middle" fontFamily="IBM Plex Mono, monospace" fontSize="9" fill="var(--color-green-deep)">{rentabilidadEjemplo.rentabilidadNeta.toFixed(1).replace('.', ',')}%</text>
+                        <text x="159" y="90" textAnchor="middle" fontFamily="IBM Plex Mono, monospace" fontSize="9" fill="var(--color-muted)">Neta</text>
+                        <text x="159" y={78 - (rentabilidadEjemplo.rentabilidadNeta / rentabilidadEscalaMax) * 66 - 4} textAnchor="middle" fontFamily="IBM Plex Mono, monospace" fontSize="11" fontWeight="bold" fill="var(--color-green-deep)">{rentabilidadEjemplo.rentabilidadNeta.toFixed(1).replace('.', ',')}%</text>
                       </svg>
                       <p className="mt-1 font-mono text-[9px] text-muted">Ejemplo ilustrativo · no es resultado personalizado</p>
                     </div>
@@ -519,10 +520,10 @@ export default function Home() {
                         <span className="font-mono text-[9px] text-green-deep">2/3</span>
                       </div>
                       <div className="mb-3 h-1 w-full overflow-hidden rounded-full bg-charcoal/10" aria-hidden="true"><div className="bar-fill h-full bg-green-deep" style={{ width: '66%' }} /></div>
-                      <div className="space-y-1.5 text-xs">
-                        <div className="flex items-center gap-2 text-charcoal"><span className="text-green-deep font-bold" aria-hidden="true">✓</span><span>Llaves entregadas</span></div>
-                        <div className="flex items-center gap-2 text-charcoal"><span className="text-green-deep font-bold" aria-hidden="true">✓</span><span>Medidores registrados</span></div>
-                        <div className="flex items-center gap-2 text-muted"><span className="text-charcoal/30" aria-hidden="true">○</span><span>Fotos del estado</span></div>
+                      <div className="space-y-2 text-xs">
+                        <div className="flex items-center gap-2 text-charcoal"><Check className="h-3.5 w-3.5 shrink-0 text-green-deep" aria-hidden="true" /><span>Llaves entregadas</span></div>
+                        <div className="flex items-center gap-2 text-charcoal"><Check className="h-3.5 w-3.5 shrink-0 text-green-deep" aria-hidden="true" /><span>Medidores registrados</span></div>
+                        <div className="flex items-center gap-2 text-muted"><Circle className="h-3.5 w-3.5 shrink-0 text-charcoal/30" aria-hidden="true" /><span>Fotos del estado</span></div>
                       </div>
                     </div>
                   </div>
