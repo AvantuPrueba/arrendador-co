@@ -61,34 +61,28 @@ export default function Home() {
       {/* ── 1. HERO — Colombian Property Editorial / Quiet Luxury ── */}
       <section className="relative overflow-hidden bg-ivory pt-24 pb-12 sm:pt-28 md:pb-16 lg:pt-32 lg:pb-20">
         <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">
-          {/* Editorial masthead */}
+          {/* Editorial masthead — replaces generic eyebrow */}
           <div className="mb-10 flex items-center gap-4 border-b border-charcoal/15 pb-4 md:mb-14">
             <span className="h-2 w-2 bg-bronze" aria-hidden="true" />
-            <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-muted sm:text-xs">
-              Dossier 01 · Gestión inmobiliaria · Colombia · 2026
+            <span className="font-mono text-xs font-medium uppercase tracking-[0.22em] text-charcoal">
+              Gestión inmobiliaria · Colombia · 2026
             </span>
             <span className="ml-auto hidden h-px w-24 bg-charcoal/20 sm:block" aria-hidden="true" />
           </div>
 
           <div className="grid gap-10 lg:grid-cols-12 lg:items-end lg:gap-10">
             {/* Editorial copy */}
-            <div className="lg:col-span-7 lg:pb-6">
-              <h1 className="max-w-3xl font-display text-[clamp(2.9rem,7.2vw,6.2rem)] leading-[0.94] tracking-[-0.02em] text-charcoal">
-                Arrendar con <em className="italic text-green-deep">confianza</em>.
-                <br className="hidden sm:block" />
-                Administrar con{' '}
-                <span className="relative inline-block whitespace-nowrap text-green-deep">
-                  claridad.
-                  <span className="absolute -bottom-1 left-0 h-px w-full bg-bronze/60" aria-hidden="true" />
-                </span>
+            <div className="lg:col-span-5 lg:pb-6">
+              <h1 className="max-w-3xl font-display font-normal leading-[0.95] tracking-[-0.01em] text-charcoal">
+                <span className="block text-[clamp(2rem,3vw,3rem)]">Arrendar con confianza.</span>{' '}
+                <span className="block text-[clamp(1.375rem,2.4vw,2.25rem)]">Administrar con claridad.</span>
               </h1>
 
               <p className="mt-7 max-w-xl text-base leading-relaxed text-muted sm:text-lg">
-                Guías prácticas, herramientas financieras y plantillas jurídicas diseñadas
-                específicamente para propietarios de vivienda urbana en Colombia.
+                Guías, herramientas y plantillas para propietarios de vivienda urbana en Colombia.
               </p>
 
-              <div className="mt-9 flex flex-col items-start gap-5 sm:flex-row sm:items-center sm:gap-8">
+              <div className="mt-9 flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:gap-6">
                 <Link
                   href="/herramientas"
                   className="group inline-flex min-h-[52px] items-center gap-3 bg-green-deep px-7 py-3.5 text-sm font-medium text-white transition-colors hover:bg-green-mid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-deep"
@@ -98,7 +92,7 @@ export default function Home() {
                 </Link>
                 <Link
                   href="/tienda"
-                  className="group inline-flex items-center gap-2 border-b border-charcoal/30 pb-1 text-sm font-medium text-charcoal transition-colors hover:border-bronze hover:text-bronze focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-deep"
+                  className="group inline-flex min-h-[48px] items-center gap-2 border-b border-charcoal/30 pb-1 text-sm font-medium text-charcoal transition-colors hover:border-bronze hover:text-bronze focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-deep"
                 >
                   Ver plantilla de contrato
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1 motion-reduce:transition-none" aria-hidden="true" />
@@ -114,36 +108,17 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Editorial photograph with architectural notation */}
-            <div className="lg:col-span-5">
-              <figure className="relative aspect-[4/3] overflow-hidden bg-green-deep sm:aspect-[5/4] lg:aspect-[3/4]">
+            {/* Editorial photograph — protagonist image */}
+            <div className="lg:col-span-7">
+              <figure className="relative aspect-[4/3] overflow-hidden bg-green-deep sm:aspect-[16/10] lg:aspect-auto lg:h-[clamp(24rem,42vw,34rem)]">
                 <Image
-                  src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1400&q=85"
-                  alt="Fachada residencial contemporánea en Colombia con luz natural cálida"
+                  src="/hero/arrendadorco-hero-colombia.webp"
+                  alt="Una casa con porche y columpio en Antioquia, Colombia"
                   fill
-                  priority
-                  sizes="(max-width: 1024px) 100vw, 40vw"
-                  className="object-cover saturate-[0.7] sepia-[0.1] contrast-[1.06]"
+                  preload
+                  sizes="(max-width: 1023px) 100vw, 58vw"
+                  className="object-cover object-center"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-green-deep/55 via-transparent to-transparent" aria-hidden="true" />
-                <svg
-                  className="absolute inset-0 h-full w-full"
-                  viewBox="0 0 400 500"
-                  preserveAspectRatio="none"
-                  fill="none"
-                  aria-hidden="true"
-                >
-                  <path d="M40 0V500 M360 0V500 M0 120H400 M0 360H400" stroke="white" strokeOpacity="0.16" strokeWidth="1" />
-                  <rect x="72" y="150" width="256" height="170" stroke="white" strokeOpacity="0.32" strokeWidth="1" />
-                  <path d="M72 150L328 320 M328 150L72 320" stroke="white" strokeOpacity="0.18" strokeWidth="1" />
-                  <circle cx="328" cy="150" r="4" fill="#C4A978" />
-                </svg>
-                <figcaption className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 bg-gradient-to-t from-green-deep/85 to-transparent px-5 pb-5 pt-16 text-white">
-                  <span className="font-display text-3xl leading-none">01</span>
-                  <span className="max-w-[12rem] text-right font-mono text-[10px] uppercase leading-relaxed tracking-wider text-white/85">
-                    Guías · herramientas · plantillas
-                  </span>
-                </figcaption>
               </figure>
             </div>
           </div>
