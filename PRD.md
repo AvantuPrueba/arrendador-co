@@ -197,8 +197,10 @@ legalReviewDate: ""             # string ISO 8601 — fecha en que un profesiona
 | Pagos | Mercado Pago (Link de Pago) | Checkout alojado, sin API ni webhook |
 | Newsletter | Brevo | API para suscripción |
 | Almacenamiento digital | Envío por correo | El .docx se envía a mano; sin Vercel Blob en el MVP |
-| Analítica | GA4 | Eventos: suscripción, compra, clic afiliado |
+| Analítica | Pendiente de decisión | GA4 no instalado. Requiere autorización del propietario e ID de medición de producción; no hay eventos ni medición activa. |
 | Tipografía | Inter (Google Fonts) | |
+
+> **Estado de analítica verificado (2026-11-25):** no existe integración de GA4, Google Tag Manager ni otro proveedor de analítica web en el código, y las pruebas en el Worker desplegado no registraron solicitudes a Google, eventos `page_view` ni parámetros `tid`. No hay ID de medición configurado, por lo que **no hay recepción de eventos ni seguimiento de conversiones que validar**. Cualquier futura integración requiere autorización explícita del propietario y un ID de medición de producción proporcionado por él, además de una nueva auditoría previa a la implementación.
 
 ---
 
@@ -215,7 +217,7 @@ legalReviewDate: ""             # string ISO 8601 — fecha en que un profesiona
 | Newsletter con Brevo | ✔ | Automatizaciones post-MVP |
 | 2 afiliados integrados (seguro + facturación) | ✔ | |
 | Páginas legales (términos, privacidad, cookies) | ✔ | |
-| GA4 configurado | ✔ | |
+| Analítica web (GA4) | | No instalado. Pendiente de autorización del propietario, ID de medición de producción y nueva auditoría antes de implementar. |
 | SEO (meta, OG, schema.org) | ✔ | |
 | Validación de frontmatter en build | ✔ | |
 | Calculadora de rentabilidad | | ✔ |

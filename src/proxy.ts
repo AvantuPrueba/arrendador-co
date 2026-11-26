@@ -5,7 +5,7 @@
  * cabeceras de seguridad a todas las respuestas dinámicas generadas por
  * Next.js a través del adaptador OpenNext + Cloudflare Workers.
  *
- * Stack: Next.js 16.3.8 + @opennextjs/cloudflare 1.20.8 + Wrangler 4.x
+ * Stack verificado: Next.js 16.4.6 + @opennextjs/cloudflare 1.20.18 + Wrangler 4.168.0
  *
  * LIMITACIÓN CONFIRMADA DE OPENNEXT:
  *   OpenNext no reescribe el HTML para inyectar nonces.
