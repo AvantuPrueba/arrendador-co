@@ -198,3 +198,126 @@ html {
 svg .bar-fill { transform-box: fill-box; transform-origin: left center; }
 @keyframes barGrow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 @media (prefers-reduced-motion: reduce) { .reveal.is-visible .bar-fill { animation: none !important; } }
+
+/* ── THE LEGAL ARTIFACT — CSS 3D Contract Mockup ── */
+
+.contract-stage {
+  perspective: 1200px;
+}
+
+/* Document wrap with elegant 3D rotation */
+.document-wrap {
+  transform-style: preserve-3d;
+  transform: rotateX(8deg) rotateY(-6deg) translateZ(20px);
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.3s ease;
+}
+
+.document-wrap:hover {
+  transform: rotateX(6deg) rotateY(-4deg) translateZ(25px);
+}
+
+/* Paper texture subtle overlay */
+.paper-texture {
+  background-image: radial-gradient(
+    circle at 25% 25%,
+    rgba(122, 90, 51, 0.03) 0%,
+    transparent 50%
+  ),
+  radial-gradient(
+    circle at 75% 75%,
+    rgba(24, 60, 50, 0.03) 0%,
+    transparent 50%
+  );
+  opacity: 0.6;
+}
+
+/* Ambient floating movement for the mockup container */
+.ambient-movement {
+  animation: ambientFloat 8s ease-in-out infinite;
+}
+
+@keyframes ambientFloat {
+  0%,
+  100% {
+    transform: translateY(0) rotateX(0deg) rotateY(0deg);
+  }
+  25% {
+    transform: translateY(-4px) rotateX(1deg) rotateY(-1deg);
+  }
+  50% {
+    transform: translateY(0) rotateX(0deg) rotateY(0deg);
+  }
+  75% {
+    transform: translateY(2px) rotateX(-1deg) rotateY(1deg);
+  }
+  100% {
+    transform: translateY(0) rotateX(0deg) rotateY(0deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ambient-movement {
+    animation: none !important;
+  }
+  .document-wrap {
+    transition: none !important;
+  }
+  .document-wrap:hover {
+    transform: none !important;
+  }
+}
+
+/* Sequential reveal for benefits: each item fades in */
+.reveal.is-visible .contract-benefit-item {
+  animation: benefitRise 0.5s ease-out both;
+}
+
+.contract-benefit-item {
+  opacity: 0;
+  transform: translateY(6px);
+}
+
+@keyframes benefitRise {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Hover state for CTA link: subtle lift */
+.contract-cta:hover {
+  transform: translateY(-1px);
+}
+
+/* Tablet: reduce 3D depth and dimensions */
+@media (max-width: 1023px) {
+  .document-wrap {
+    max-w: none;
+    transform: rotateX(4deg) rotateY(-3deg) translateZ(10px) !important;
+  }
+  .contract-stage {
+    perspective: 900px;
+  }
+}
+
+/* Mobile: single column, flatten 3D, ensure no overflow */
+@media (max-width: 767px) {
+  .document-wrap {
+    transform: none !important;
+    transform-style: flat !important;
+    max-w: none;
+    width: 100%;
+    aspect-ratio: 3/4;
+  }
+  .contract-stage {
+    perspective: none !important;
+  }
+  .ambient-movement {
+    animation: none !important;
+    display: none;
+  }
+  .paper-texture {
+    opacity: 0.4;
+  }
+}
