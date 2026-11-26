@@ -53,10 +53,11 @@ export const metadata: Metadata = {
 
 // Formateo COP es-CO para previsualizaciones ilustrativas (no cálculo).
 function formatCOP(valor: number): string {
-  return `$${Math.round(valor).toLocaleString('es-CO')}`;
+  return `${Math.round(valor).toLocaleString("es-CO")}`;
 }
 
 export default function Home() {
+
   const posts = getAllPosts().filter((p) => isValidSlug(p.slug)).slice(0, 4);
   const featuredPost = posts.find((post) => post.featured === true) ?? posts[0];
   const secondaryPosts = posts.filter((post) => post.slug !== featuredPost?.slug).slice(0, 3);
@@ -93,10 +94,10 @@ export default function Home() {
       <ScrollProgress />
       <StickyProductCta />
 
-      {/* ���� 1. HERO � Colombian Property Editorial / Quiet Luxury ���� */}
+      {/* ── 1. HERO — Colombian Property Editorial / Quiet Luxury ── */}
       <section className="relative overflow-hidden bg-ivory pt-24 pb-12 sm:pt-28 md:pb-16 lg:pt-32 lg:pb-20">
         <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">
-          {/* Editorial masthead � replaces generic eyebrow */}
+          {/* Editorial masthead — replaces generic eyebrow */}
           <div className="mb-10 flex items-center gap-4 border-b border-charcoal/15 pb-4 md:mb-14">
             <span className="h-2 w-2 bg-bronze" aria-hidden="true" />
             <span className="font-mono text-xs font-medium uppercase tracking-[0.22em] text-charcoal">
@@ -143,7 +144,7 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Editorial photograph � protagonist image */}
+            {/* Editorial photograph — protagonist image */}
             <div className="lg:col-span-7">
               <figure className="relative aspect-[4/3] overflow-hidden bg-green-deep sm:aspect-[16/10] lg:aspect-auto lg:h-[clamp(24rem,42vw,34rem)]">
                 <Image
@@ -159,7 +160,7 @@ export default function Home() {
           </div>
         </div>
       </section>
-      {/* ���� 2. PROBLEM-SOLVING SECTION (Warm Ivory Background) ���� */}
+      {/* ── 2. PROBLEM-SOLVING SECTION (Warm Ivory Background) ── */}
       <section className="bg-ivory py-16 md:py-24 border-b border-charcoal/5">
         <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">
           
@@ -282,14 +283,14 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ���� 3. METHODOLOGY SECTION: LA FORMA ARRENDADORCO (White Background) ���� */}
+      {/* ── 3. METHODOLOGY SECTION: LA FORMA ARRENDADORCO (White Background) ── */}
       <section className="bg-white py-16 md:py-24 border-b border-charcoal/5">
         <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">
           
           <div className="mb-12 max-w-2xl">
             <p className="flex items-center gap-3 font-mono text-xs text-muted">
               <span className="font-medium">§ 03</span>
-              Método de gestión
+              MÉTODO DE GESTIÓN
               <span className="h-px w-12 bg-bronze" aria-hidden="true" />
             </p>
             <h2 className="mt-3 font-display text-3xl sm:text-4xl text-charcoal font-normal">
@@ -308,18 +309,18 @@ export default function Home() {
             </Reveal>
 
             {/* Línea de progreso + cuatro estaciones (una sola marca, responsive) */}
-            <Reveal threshold={0.3}>
-              <div className="relative">
-                {/* Connecting line -> narrativa de progreso */}
+            <div className="relative">
+              {/* Connecting line -> narrativa de progreso */}
+              <Reveal threshold={0.3}>
                 <span className="method-line absolute left-[19px] right-4 top-[15px] h-px bg-charcoal/15 md:left-[15px] md:right-[15px] md:top-[19px] md:h-[2px]" aria-hidden="true" />
+              </Reveal>
 
-                <div className="grid gap-8 md:grid-cols-4 md:gap-8">
+              <div className="grid gap-8 md:grid-cols-4 md:gap-8">
                   {/* 01 Preparar */}
                   <Reveal delay={0} threshold={0.3}>
                     <div className="group relative pl-12 md:pl-0">
-                      <span className="absolute left-0 top-[5px] h-[30px] w-[30px] md:static md:mb-3 md:flex md:h-10 md:w-10 md:items-center md:justify-center">
-                        <span className="absolute inset-0 rounded-full border border-bronze/40 bg-white" aria-hidden="true" />
-                        <FileText className="relative h-4 w-4 text-green-deep transition-transform duration-200 group-hover:-translate-y-0.5 motion-reduce:transition-none md:h-5 md:w-5" aria-hidden="true" />
+                      <span className="relative flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-bronze/40 bg-white md:mb-3 md:h-10 md:w-10">
+                        <FileText className="h-4 w-4 text-green-deep transition-transform duration-200 group-hover:-translate-y-0.5 motion-reduce:transition-none md:h-5 md:w-5" aria-hidden="true" />
                       </span>
                       <svg className="mb-2 hidden h-7 w-10 text-bronze transition-transform duration-200 group-hover:-translate-y-0.5 motion-reduce:transition-none md:block" viewBox="0 0 24 18" fill="none" stroke="currentColor" strokeWidth="0.75" aria-hidden="true"><rect x="2" y="2" width="14" height="14" rx="1" /><path d="M5 6h8M5 9h8M5 12h5" /><path d="M18 6h4v10" /></svg>
                       <span className="font-mono text-xs text-bronze font-medium">01</span>
@@ -331,9 +332,8 @@ export default function Home() {
                   {/* 02 Entregar */}
                   <Reveal delay={150} threshold={0.3}>
                     <div className="group relative pl-12 md:pl-0">
-                      <span className="absolute left-0 top-[5px] h-[30px] w-[30px] md:static md:mb-3 md:flex md:h-10 md:w-10 md:items-center md:justify-center">
-                        <span className="absolute inset-0 rounded-full border border-bronze/40 bg-white" aria-hidden="true" />
-                        <ClipboardCheck className="relative h-4 w-4 text-green-deep transition-transform duration-200 group-hover:-translate-y-0.5 motion-reduce:transition-none md:h-5 md:w-5" aria-hidden="true" />
+                      <span className="relative flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-bronze/40 bg-white md:mb-3 md:h-10 md:w-10">
+                        <ClipboardCheck className="h-4 w-4 text-green-deep transition-transform duration-200 group-hover:-translate-y-0.5 motion-reduce:transition-none md:h-5 md:w-5" aria-hidden="true" />
                       </span>
                       <svg className="mb-2 hidden h-7 w-10 text-bronze transition-transform duration-200 group-hover:-translate-y-0.5 motion-reduce:transition-none md:block" viewBox="0 0 24 18" fill="none" stroke="currentColor" strokeWidth="0.75" aria-hidden="true"><rect x="3" y="1" width="15" height="16" rx="1" /><path d="M6 5h9M6 8h9M6 11h6" /><path d="M14 13l2 2 3-4" /></svg>
                       <span className="font-mono text-xs text-bronze font-medium">02</span>
@@ -345,9 +345,8 @@ export default function Home() {
                   {/* 03 Gestionar */}
                   <Reveal delay={300} threshold={0.3}>
                     <div className="group relative pl-12 md:pl-0">
-                      <span className="absolute left-0 top-[5px] h-[30px] w-[30px] md:static md:mb-3 md:flex md:h-10 md:w-10 md:items-center md:justify-center">
-                        <span className="absolute inset-0 rounded-full border border-bronze/40 bg-white" aria-hidden="true" />
-                        <Calculator className="relative h-4 w-4 text-green-deep transition-transform duration-200 group-hover:-translate-y-0.5 motion-reduce:transition-none md:h-5 md:w-5" aria-hidden="true" />
+                      <span className="relative flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-bronze/40 bg-white md:mb-3 md:h-10 md:w-10">
+                        <Calculator className="h-4 w-4 text-green-deep transition-transform duration-200 group-hover:-translate-y-0.5 motion-reduce:transition-none md:h-5 md:w-5" aria-hidden="true" />
                       </span>
                       <svg className="mb-2 hidden h-7 w-10 text-bronze transition-transform duration-200 group-hover:-translate-y-0.5 motion-reduce:transition-none md:block" viewBox="0 0 24 18" fill="none" stroke="currentColor" strokeWidth="0.75" aria-hidden="true"><path d="M2 15h20" /><path d="M4 12l4-4 4 3 6-7" /><circle cx="18" cy="4" r="1.4" fill="currentColor" stroke="none" /></svg>
                       <span className="font-mono text-xs text-bronze font-medium">03</span>
@@ -356,29 +355,27 @@ export default function Home() {
                     </div>
                   </Reveal>
 
-                  {/* 04 Proteger � cierre visual */}
+                  {/* 04 Proteger — cierre visual */}
                   <Reveal delay={450} threshold={0.3}>
                     <div className="group relative pl-12 md:pl-0">
-                      <span className="absolute left-0 top-[5px] h-[30px] w-[30px] md:static md:mb-3 md:flex md:h-10 md:w-10 md:items-center md:justify-center">
-                        <span className="absolute inset-0 rounded-full border border-bronze bg-bronze/10" aria-hidden="true" />
-                        <ShieldAlert className="relative h-4 w-4 text-green-deep transition-transform duration-200 group-hover:-translate-y-0.5 motion-reduce:transition-none md:h-5 md:w-5" aria-hidden="true" />
+                      <span className="relative flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-bronze bg-white md:mb-3 md:h-10 md:w-10">
+                        <ShieldAlert className="h-4 w-4 text-green-deep transition-transform duration-200 group-hover:-translate-y-0.5 motion-reduce:transition-none md:h-5 md:w-5" aria-hidden="true" />
                       </span>
                       <svg className="mb-2 hidden h-7 w-10 text-bronze transition-transform duration-200 group-hover:-translate-y-0.5 motion-reduce:transition-none md:block" viewBox="0 0 24 18" fill="none" stroke="currentColor" strokeWidth="0.75" aria-hidden="true"><path d="M3 5V3h3M21 5V3h-3M3 13v2h3M21 13v2h-3" /><path d="M9 9l2 2 4-4" /></svg>
                       <span className="font-mono text-xs text-bronze font-medium">04</span>
                       <h3 className="mt-1 font-display text-xl text-charcoal font-normal transition-colors duration-200 group-hover:text-green-deep md:text-2xl">Proteger</h3>
                       <p className="mt-2 text-sm text-muted leading-relaxed">Seguros de arrendamiento, procedimientos legales y rutas de acción ante incumplimientos.</p>
-                      <span className="mt-3 inline-flex items-center gap-2 border-t border-bronze/30 pt-3 font-mono text-[11px] uppercase tracking-wider text-bronze">Ciclo completo · Patrimonio protegido</span>
+                      <span className="mt-3 inline-flex items-center gap-2 border-t border-bronze/30 pt-3 font-mono text-[11px] uppercase tracking-wider text-bronze">CICLO COMPLETO · PATRIMONIO PROTEGIDO</span>
                     </div>
                   </Reveal>
-                </div>
               </div>
-            </Reveal>
+            </div>
           </div>
 
         </div>
       </section>
 
-      {/* ���� 4. FREE TOOLS SECTION (Deep Forest Green Background) ���� */}
+      {/* ── 4. FREE TOOLS SECTION (Deep Forest Green Background) ── */}
       <section className="bg-green-deep py-16 md:py-24 text-white">
         <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">
           
@@ -454,7 +451,7 @@ export default function Home() {
                   href="/herramientas/reajuste-canon"
                   className="mt-4 inline-flex items-center gap-1 font-mono text-sm font-semibold text-green-deep transition-colors hover:text-bronze focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-deep"
                 >
-                  Calcular ahora � 
+                  Calcular ahora →
                 </Link>
               </article>
               </Reveal>
@@ -495,7 +492,7 @@ export default function Home() {
                     href="/herramientas/rentabilidad"
                     className="inline-flex items-center gap-1 font-mono text-xs font-semibold text-green-deep transition-colors hover:text-bronze focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-deep"
                   >
-                    Calcular rentabilidad � 
+                    Calcular rentabilidad →
                   </Link>
                 </article>
               </Reveal>
@@ -523,9 +520,9 @@ export default function Home() {
                       </div>
                       <div className="mb-3 h-1 w-full overflow-hidden rounded-full bg-charcoal/10" aria-hidden="true"><div className="bar-fill h-full bg-green-deep" style={{ width: '66%' }} /></div>
                       <div className="space-y-1.5 text-xs">
-                        <div className="flex items-center gap-2 text-charcoal"><span className="text-green-deep font-bold" aria-hidden="true">�S</span><span>Llaves entregadas</span></div>
-                        <div className="flex items-center gap-2 text-charcoal"><span className="text-green-deep font-bold" aria-hidden="true">�S</span><span>Medidores registrados</span></div>
-                        <div className="flex items-center gap-2 text-muted"><span className="text-charcoal/30" aria-hidden="true">�9</span><span>Fotos del estado</span></div>
+                        <div className="flex items-center gap-2 text-charcoal"><span className="text-green-deep font-bold" aria-hidden="true">✓</span><span>Llaves entregadas</span></div>
+                        <div className="flex items-center gap-2 text-charcoal"><span className="text-green-deep font-bold" aria-hidden="true">✓</span><span>Medidores registrados</span></div>
+                        <div className="flex items-center gap-2 text-muted"><span className="text-charcoal/30" aria-hidden="true">○</span><span>Fotos del estado</span></div>
                       </div>
                     </div>
                   </div>
@@ -534,7 +531,7 @@ export default function Home() {
                     href="/herramientas/checklist-entrega"
                     className="inline-flex items-center gap-1 font-mono text-xs font-semibold text-green-deep transition-colors hover:text-bronze focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-deep"
                   >
-                    Abrir checklist � 
+                    Abrir checklist →
                   </Link>
                 </article>
               </Reveal>
@@ -550,7 +547,7 @@ export default function Home() {
         </div>
       </section>
 
-            {/* ���� 5. FEATURED PRODUCT: CONTRATO DE ARRENDAMIENTO (Warm Ivory Background) ���� */}
+            {/* ── 5. FEATURED PRODUCT: CONTRATO DE ARRENDAMIENTO (Warm Ivory Background) ── */}
       <section className="bg-ivory py-16 md:py-24 border-b border-charcoal/5">
         <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">
           <div className="rounded-3xl border border-charcoal/10 bg-surface p-8 sm:p-12 lg:p-14 shadow-xl">
@@ -591,7 +588,7 @@ export default function Home() {
                   ].map((benefit) => (
                     <li key={benefit} className="flex items-start gap-3 text-sm text-charcoal">
                       <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-bronze/15 text-bronze font-bold text-xs">
-                        �S
+                        ✓
                       </span>
                       <span>{benefit}</span>
                     </li>
@@ -605,7 +602,7 @@ export default function Home() {
                     className="flex w-full items-center justify-center gap-2 rounded-lg bg-green-deep px-8 py-3.5 text-base font-medium text-white transition-all hover:bg-green-mid hover:scale-[1.01] active:scale-[0.99] shadow-md"
                   >
                     <Lock className="h-4 w-4 text-bright-bronze" />
-                    Comprar plantilla � {formatPrice()}
+                    Comprar plantilla — {formatPrice()}
                   </Link>
 
                   <p className="font-mono text-[11px] text-center text-muted">
@@ -718,7 +715,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ���� 6. EDITORIAL GUIDES SECTION (White Background) ���� */}
+      {/* ── 6. EDITORIAL GUIDES SECTION (White Background) ── */}
       <section className="bg-white py-16 md:py-24 border-b border-charcoal/5">
         <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">
           
@@ -805,7 +802,7 @@ export default function Home() {
                       </h4>
 
                       <span className="mt-3 inline-flex items-center gap-1 font-mono text-xs text-green-deep font-medium">
-                        Leer artículo � 
+                        Leer artículo →
                       </span>
                     </Link>
                   </Reveal>
@@ -818,7 +815,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ���� 7. TRUST SECTION (Deep Forest Green Background) ���� */}
+      {/* ── 7. TRUST SECTION (Deep Forest Green Background) ── */}
       <section className="bg-green-deep py-16 md:py-24 text-white">
         <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">
           
@@ -885,7 +882,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ���� 8. NEWSLETTER SECTION (Warm Ivory / Surface Background) ���� */}
+      {/* ── 8. NEWSLETTER SECTION (Warm Ivory / Surface Background) ── */}
       <section className="bg-surface py-16 md:py-24 border-b border-charcoal/5">
         <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">
           <div className="grid gap-10 lg:grid-cols-12 lg:items-center">
@@ -931,7 +928,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ���� 9. FINAL CTA SECTION (Deep Forest Green Background) ���� */}
+      {/* ── 9. FINAL CTA SECTION (Deep Forest Green Background) ── */}
       <section className="bg-green-deep py-16 md:py-24 text-white">
         <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12 text-center">
           
