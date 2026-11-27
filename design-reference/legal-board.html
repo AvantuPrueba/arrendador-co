@@ -1,0 +1,28 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Rigor y transparencia — reference board</title>
+<style>
+:root{--canvas:#1A1A19;--paper:#FAF8F3;--back:#EDE9DF;--on:#FBFBFA;--muted:rgba(251,251,250,.55);--terra:#B7654A;--bronze:#7A5A33;--lb:#C4A978;--ink:#292D29;--line:rgba(255,255,255,.08)}
+*{box-sizing:border-box}body{margin:0;background:var(--canvas);color:var(--on);font-family:Arial,sans-serif}
+section{padding:96px 48px}.wrap{max-width:1200px;margin:auto;display:grid;grid-template-columns:42% 58%;gap:48px;align-items:center}
+.mono{font-family:'Courier New',monospace;text-transform:uppercase;letter-spacing:.07em;font-size:11px}.eyebrow{color:var(--terra)}h2{font-family:Georgia,serif;font-size:38px;letter-spacing:-.02em;margin:16px 0 12px}
+.stack{position:relative;width:100%;max-width:380px;height:440px;margin:auto;perspective:1300px;perspective-origin:50% 45%}
+.layer,.doc{position:absolute;inset:0;border-radius:2px}.layer{background:var(--back)}.l3{transform:translateX(-10px) translateY(-10px) rotateY(-9deg) rotateX(2deg);opacity:.5}.l2{transform:translateX(-5px) translateY(-5px) rotateY(-7deg) rotateX(1.5deg);opacity:.75}
+.doc{background:var(--paper);color:var(--ink);padding:28px;transform:rotateY(-5deg) rotateX(2deg);box-shadow:0 48px 96px rgba(0,0,0,.5),0 8px 24px rgba(0,0,0,.3)}
+.doc .mono{font-size:9px;letter-spacing:.1em;color:rgba(41,45,41,.5)}.rule{height:1px;background:rgba(0,0,0,.08);margin:16px 0}.blk{margin:22px 0}.blk span{font-family:'Courier New',monospace;font-size:10px}.ln{height:2px;background:rgba(0,0,0,.07);margin:8px 0}.folio{position:absolute;top:24px;right:24px;font-size:8px;color:rgba(41,45,41,.35)}.stamp{position:absolute;right:24px;bottom:24px;width:52px;height:52px;border:1.5px solid rgba(183,101,74,.4);border-radius:50%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:'Courier New',monospace;font-size:7px;color:var(--terra);padding:4px}
+.review{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:10px}.dot{width:6px;height:6px;border-radius:50%;background:var(--terra)}
+.head-sep{height:1px;background:var(--line);margin:28px 0}.list{list-style:none;padding:0;margin:0}.list li{display:flex;gap:16px;padding:18px 0;border-top:1px solid var(--line)}.num{width:3rem;color:var(--terra);font-family:'Courier New',monospace;font-size:11px;font-weight:600}.code{font-family:'Courier New',monospace;font-size:12px;text-transform:uppercase;letter-spacing:.07em}.name{font-size:14px;font-weight:500;margin-top:4px}.desc{font-size:12px;color:var(--muted);margin-top:4px;line-height:1.5}.src{margin-left:auto;font-family:'Courier New',monospace;font-size:10px;color:var(--lb);text-decoration:none;white-space:nowrap}
+@media(max-width:767px){section{padding:64px 24px}.wrap{grid-template-columns:1fr;gap:32px}.stack{height:340px}.l2,.l3{display:none}.doc{transform:none}.num{width:2rem}.list li{display:block}.src{display:inline-block;margin-top:8px}}
+</style></head><body><section><div class="wrap">
+<div><div class="stack"><div class="layer l3"></div><div class="layer l2"></div><div class="doc">
+<span class="folio mono">Folio 001 / 2026</span><p class="mono">República de Colombia · Régimen de arrendamiento</p><div class="rule"></div>
+<div class="blk"><span>LEY 820 DE 2003</span><div class="ln" style="width:85%"></div><div class="ln" style="width:70%"></div><div class="ln" style="width:80%"></div></div>
+<div class="blk"><span>ARTÍCULOS 18 · 20</span><div class="ln" style="width:75%"></div><div class="ln" style="width:60%"></div></div>
+<div class="blk"><span>REAJUSTE · IPC 2025</span><div class="ln" style="width:82%"></div><div class="ln" style="width:55%"></div></div>
+<span class="stamp">VIVIENDA URBANA · COL</span></div></div></div>
+<div><p class="mono eyebrow">Rigor y transparencia</p><h2>Hecho para arrendadores en Colombia.</h2><p style="color:var(--muted);max-width:60ch;font-size:14px">Información respaldada por normativa colombiana con fuentes primarias consultables.</p><p class="review mono"><span class="dot"></span>Revisión: Nov 2026</p><div class="head-sep"></div>
+<ol class="list">
+<li><span class="num">01</span><div><div class="code">Ley 820 · 2003</div><div class="name">Régimen de arrendamiento de vivienda urbana.</div><div class="desc">Marco legal vigente para contratos de vivienda urbana en Colombia.</div></div><a class="src" href="#">Ver fuente →</a></li>
+<li><span class="num">02</span><div><div class="code">Art. 18 · Límite del canon</div><div class="name">Canon máximo y valor comercial del inmueble.</div><div class="desc">El precio mensual no puede exceder el 1 % del valor comercial del inmueble arrendado.</div></div></li>
+<li><span class="num">03</span><div><div class="code">Art. 20 · Reajuste anual</div><div class="name">Condiciones del incremento del canon cada 12 meses.</div><div class="desc">El arrendador puede ajustar el canon hasta el 100 % del IPC del año calendario anterior.</div></div></li>
+<li><span class="num">04</span><div><div class="code">DANE · IPC 2025 · 5,10 %</div><div class="name">Base estadística oficial para reajustes de canon en 2026.</div><div class="desc">Publicado el 8 de enero de 2026. Fuente: DANE — Comunicado IPC diciembre 2025.</div></div><a class="src" href="#">Ver fuente →</a></li>
+<li><span class="num">05</span><div><div class="code">Alcance · Contenido informativo</div><div class="name">No somos abogados ni prestamos asesoría jurídica.</div><div class="desc">Consulta con un profesional del derecho en casos litigiosos o contratos complejos.</div></div></li>
+</ol></div></div></section></body></html>

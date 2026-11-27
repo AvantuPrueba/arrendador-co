@@ -28,7 +28,7 @@ export default function EditorialMotion() {
       { threshold: 0.12, rootMargin: '0px 0px -40px 0px' },
     );
 
-    root.querySelectorAll<HTMLElement>('[data-ed-reveal], [data-pd-reveal]').forEach((el) => {
+    root.querySelectorAll<HTMLElement>('[data-ed-reveal], [data-pd-reveal], [data-lt-reveal]').forEach((el) => {
       revealObserver.observe(el);
     });
 

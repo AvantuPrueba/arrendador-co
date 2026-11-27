@@ -9,9 +9,11 @@ import { absoluteUrl, homeJsonLd } from '@/lib/seo';
 import { baseOpenGraph, baseTwitter } from '@/lib/metadata';
 import EditorialMotion from '@/components/home/EditorialMotion';
 import ToolsLab from '@/components/home/ToolsLab';
+import LegalDossier from '@/components/home/LegalDossier';
 import './home-editorial.css';
 import './tools-lab.css';
 import './product-editorial.css';
+import './legal-trust.css';
 
 export const metadata: Metadata = {
   alternates: { canonical: '/' },
@@ -399,32 +401,175 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ── 06 · CREDENCIALES ── */}
-        <section aria-label="Rigor y transparencia" className="bg-ed-surface-ink py-20 text-ed-ink-on-dark md:py-28">
-          <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">
-            <div className="mb-14 max-w-2xl" data-ed-reveal>
-              <p className="ed-eyebrow ed-eyebrow--on-dark">Rigor y transparencia</p>
-              <h2 className="ed-h2 mt-5 text-ed-ink-on-dark">Hecho para arrendadores en Colombia</h2>
-            </div>
+        {/* ── 06 · RIGOR Y TRANSPARENCIA ── */}
+        <section aria-label="Rigor y transparencia" className="legal-trust">
+          <div className="lt-grid">
+            <LegalDossier>
+              <div className="lt-stack">
+                <div className="lt-layer lt-layer--3" />
+                <div className="lt-layer lt-layer--2" />
+                <div className="lt-doc">
+                  <svg className="lt-doc__grain" xmlns="http://www.w3.org/2000/svg">
+                    <filter id="lt-noise">
+                      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" stitchTiles="stitch" />
+                    </filter>
+                    <rect width="100%" height="100%" filter="url(#lt-noise)" />
+                  </svg>
 
-            <div className="grid gap-px border border-ed-line-dark bg-ed-line-dark sm:grid-cols-2">
-              {[
-                { mark: 'Ley 820', title: 'Normativa colombiana', copy: 'Ley 820 de 2003, Código Civil y legislación de vivienda vigente.' },
-                { mark: 'Art. 27', title: 'Fuentes verificables', copy: 'Citas normativas y artículos específicos en cada guía publicada.' },
-                { mark: '2003', title: 'Contenido informativo', copy: 'No somos abogados. Consulta con un profesional en casos litigiosos.' },
-                { mark: 'COL', title: 'Hecho para Colombia', copy: 'Vivienda urbana, arrendadores independientes y contexto local real.' },
-              ].map((item, i) => (
-                <div
-                  key={item.mark}
-                  className="bg-ed-surface-ink p-8 md:p-10"
-                  data-ed-reveal
-                  style={delay(i * 80)}
-                >
-                  <p className="ed-h3 text-3xl text-ed-accent-on-dark">{item.mark}</p>
-                  <h3 className="ed-h3 mt-5 text-xl text-ed-ink-on-dark">{item.title}</h3>
-                  <p className="ed-body mt-3 max-w-[42ch] text-sm text-ed-ink-on-dark/65">{item.copy}</p>
+                  <span className="lt-doc__folio">Folio 001 / 2026</span>
+                  <p className="lt-doc__head">República de Colombia · Régimen de arrendamiento</p>
+                  <div className="lt-doc__rule" />
+
+                  <div className="lt-doc__block">
+                    <h3>LEY 820 DE 2003</h3>
+                    <div className="lt-doc__line" style={{ width: '85%' }} />
+                    <div className="lt-doc__line" style={{ width: '70%' }} />
+                    <div className="lt-doc__line" style={{ width: '80%' }} />
+                  </div>
+                  <div className="lt-doc__block">
+                    <h3>ARTÍCULOS 18 · 20</h3>
+                    <div className="lt-doc__line" style={{ width: '75%' }} />
+                    <div className="lt-doc__line" style={{ width: '60%' }} />
+                  </div>
+                  <div className="lt-doc__block">
+                    <h3>REAJUSTE · IPC 2025</h3>
+                    <div className="lt-doc__line" style={{ width: '82%' }} />
+                    <div className="lt-doc__line" style={{ width: '55%' }} />
+                  </div>
+
+                  <span className="lt-doc__stamp">Vivienda urbana · COL</span>
                 </div>
-              ))}
+              </div>
+            </LegalDossier>
+
+            <div className="lt-right">
+              <div className="lt-head" data-lt-reveal style={{ '--lt-delay': '80ms' } as CSSProperties}>
+                <p className="lt-eyebrow lt-mono">Rigor y transparencia</p>
+                <h2 className="lt-title">Hecho para arrendadores en Colombia.</h2>
+                <p className="lt-lead">
+                  Información respaldada por normativa colombiana con fuentes primarias consultables.
+                </p>
+                <p className="lt-review lt-mono">
+                  <span className="lt-dot" aria-hidden="true" />
+                  Revisión: Nov 2026
+                </p>
+                <div className="lt-head-separator" aria-hidden="true" />
+              </div>
+
+              <ol className="lt-list">
+                <li
+                  data-lt-reveal
+                  style={
+                    {
+                      '--lt-delay': '260ms',
+                      '--lt-line-delay': '200ms',
+                    } as CSSProperties
+                  }
+                >
+                  <span className="lt-num">01</span>
+                  <div className="lt-entry">
+                    <p className="lt-code">Ley 820 · 2003</p>
+                    <p className="lt-name">Régimen de arrendamiento de vivienda urbana.</p>
+                    <p className="lt-desc">
+                      Marco legal vigente para contratos de vivienda urbana en Colombia.
+                    </p>
+                  </div>
+                  <a
+                    className="lt-source"
+                    href="https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=8738"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Ver fuente: Ley 820 de 2003 en Función Pública, se abre en nueva pestaña"
+                  >
+                    Ver fuente <span aria-hidden="true">→</span>
+                  </a>
+                </li>
+
+                <li
+                  data-lt-reveal
+                  style={
+                    {
+                      '--lt-delay': '320ms',
+                      '--lt-line-delay': '280ms',
+                    } as CSSProperties
+                  }
+                >
+                  <span className="lt-num">02</span>
+                  <div className="lt-entry">
+                    <p className="lt-code">Art. 18 · Límite del canon</p>
+                    <p className="lt-name">Canon máximo y valor comercial del inmueble.</p>
+                    <p className="lt-desc">
+                      El precio mensual no puede exceder el 1 % del valor comercial del inmueble arrendado.
+                    </p>
+                  </div>
+                </li>
+
+                <li
+                  data-lt-reveal
+                  style={
+                    {
+                      '--lt-delay': '380ms',
+                      '--lt-line-delay': '360ms',
+                    } as CSSProperties
+                  }
+                >
+                  <span className="lt-num">03</span>
+                  <div className="lt-entry">
+                    <p className="lt-code">Art. 20 · Reajuste anual</p>
+                    <p className="lt-name">Condiciones del incremento del canon cada 12 meses.</p>
+                    <p className="lt-desc">
+                      El arrendador puede ajustar el canon hasta el 100 % del IPC del año calendario anterior.
+                    </p>
+                  </div>
+                </li>
+
+                <li
+                  data-lt-reveal
+                  style={
+                    {
+                      '--lt-delay': '440ms',
+                      '--lt-line-delay': '440ms',
+                    } as CSSProperties
+                  }
+                >
+                  <span className="lt-num">04</span>
+                  <div className="lt-entry">
+                    <p className="lt-code">DANE · IPC 2025 · 5,10 %</p>
+                    <p className="lt-name">Base estadística oficial para reajustes de canon en 2026.</p>
+                    <p className="lt-desc">
+                      Publicado el 8 de enero de 2026. Fuente: DANE — Comunicado IPC diciembre 2025.
+                    </p>
+                  </div>
+                  <a
+                    className="lt-source"
+                    href="https://www.dane.gov.co/files/operaciones/IPC/dic2025/cp-IPC-dic2025.pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Ver fuente: boletín del IPC de diciembre de 2025 del DANE, se abre en nueva pestaña"
+                  >
+                    Ver fuente <span aria-hidden="true">→</span>
+                  </a>
+                </li>
+
+                <li
+                  data-lt-reveal
+                  style={
+                    {
+                      '--lt-delay': '500ms',
+                      '--lt-line-delay': '520ms',
+                    } as CSSProperties
+                  }
+                >
+                  <span className="lt-num">05</span>
+                  <div className="lt-entry">
+                    <p className="lt-code">Alcance · Contenido informativo</p>
+                    <p className="lt-name">No somos abogados ni prestamos asesoría jurídica.</p>
+                    <p className="lt-desc">
+                      Consulta con un profesional del derecho en casos litigiosos o contratos complejos.
+                    </p>
+                  </div>
+                </li>
+              </ol>
             </div>
           </div>
         </section>
