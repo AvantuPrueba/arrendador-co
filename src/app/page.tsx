@@ -3,13 +3,9 @@ import Link from 'next/link';
 import {
   FileText,
   ClipboardCheck,
-  Check,
-  Circle,
   ShieldAlert,
   Calculator,
   ArrowRight,
-  TrendingUp,
-  PieChart,
   BookOpen,
   Link2,
   Scale,
@@ -87,11 +83,17 @@ export default function Home() {
     },
     RENTABILIDAD_DEFAULTS.mesesVacancia,
   );
-  const rentabilidadEscalaMax = Math.max(
-    rentabilidadEjemplo.rentabilidadNeta,
-    RENTABILIDAD_DEFAULTS.tasaCDT,
-    1,
+  // Escala común derivada de los valores reales: la barra mayor siempre es la de mayor valor.
+  const rentabilidadEscalaMax = Math.ceil(
+    Math.max(rentabilidadEjemplo.rentabilidadNeta, RENTABILIDAD_DEFAULTS.tasaCDT, 1),
   );
+  const rentabilidadNetaAncho = (rentabilidadEjemplo.rentabilidadNeta / rentabilidadEscalaMax) * 100;
+  const rentabilidadCdtAncho = (RENTABILIDAD_DEFAULTS.tasaCDT / rentabilidadEscalaMax) * 100;
+  const reajusteCanonActualAncho = (reajusteEjemploCanon / reajusteNuevoCanon) * 100;
+
+  function formatPorcentaje(valor: number, decimales = 2): string {
+    return valor.toFixed(decimales).replace('.', ',');
+  }
 
   return (
     <>
@@ -448,7 +450,7 @@ export default function Home() {
       {/* ── 4. FREE TOOLS SECTION (Deep Forest Green Background) ── */}
       <section className="bg-green-deep py-16 md:py-24 text-white">
         <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">
-          
+          <Reveal threshold={0.15}>
           <div className="mb-12 flex flex-col md:flex-row md:items-end md:justify-between gap-4">
             <div>
               <span className="font-mono text-xs uppercase tracking-widest text-bright-bronze font-medium">
@@ -467,145 +469,274 @@ export default function Home() {
             </Link>
           </div>
 
-          {/* Property Financial Lab - asimetría 60/40, sin tres tarjetas idénticas */}
-          <div className="grid gap-6 lg:grid-cols-12 lg:items-stretch">
-            {/* Herramienta principal ~60% - Reajuste de canon */}
-            <div className="lg:col-span-7">
-              <Reveal delay={0} threshold={0.3}>
-              <article className="group relative flex h-full flex-col justify-between rounded-xl border border-charcoal/10 bg-surface p-6 text-charcoal transition-transform duration-200 hover:-translate-y-0.5 motion-reduce:transition-none sm:p-8">
-                <span className="absolute inset-x-0 top-0 h-px bg-bronze/50" aria-hidden="true" />
-                <div>
-                  <div className="mb-4 flex items-center justify-between gap-4">
-                    <span className="font-mono text-[11px] uppercase tracking-wider text-bronze">Herramienta principal</span>
-                    <span className="rounded border border-bronze/30 px-2 py-0.5 font-mono text-[10px] text-bronze font-medium">IPC DANE {IPC_CONFIG.year}</span>
+          {/* ── COMPOSICIÓN EDITORIAL 60/40: un instrumento principal, dos complementarios ── */}
+          <div className="tools-editorial grid min-w-0 gap-10 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] lg:gap-10">
+            {/* 01 · Reajuste de canon — superficie marfil, protagonista */}
+            <div className="min-w-0">
+              <Reveal delay={0} threshold={0.25}>
+                <article className="tools-editorial__paper group flex h-full flex-col p-6 transition-transform duration-200 hover:-translate-y-0.5 motion-reduce:transition-none sm:p-8 lg:p-10">
+                  <div className="flex flex-wrap items-center justify-between gap-3">
+                    <span className="font-mono text-[11px] font-medium uppercase tracking-[0.18em] text-bronze">
+                      01 · Reajuste de canon
+                    </span>
+                    <span className="border border-bronze/30 px-2 py-1 font-mono text-[10px] font-medium tabular-nums text-bronze">
+                      IPC DANE {IPC_CONFIG.year} · {formatPorcentaje(reajustePorcentaje)} %
+                    </span>
                   </div>
-                  <div className="flex items-start justify-between gap-4">
-                    <h3 className="font-display text-2xl text-charcoal font-normal sm:text-3xl">Reajuste de canon</h3>
-                    <TrendingUp className="h-6 w-6 shrink-0 text-green-deep" aria-hidden="true" />
-                  </div>
-                  <p className="mt-2 max-w-md text-sm text-muted">
-                    Calcula el nuevo valor legal de tu arriendo según la inflación acumulada.
+
+                  <h3 className="mt-7 font-display text-3xl font-normal leading-tight text-charcoal sm:text-4xl">
+                    Reajuste de canon
+                  </h3>
+                  <p className="mt-2 max-w-lg text-sm leading-relaxed text-muted">
+                    El nuevo valor legal de tu arriendo, calculado con el IPC del año anterior.
                   </p>
 
-                  <div className="my-5 rounded-lg border border-charcoal/10 bg-ivory p-4">
-                    <p className="font-mono text-[10px] uppercase tracking-wider text-muted">Ejemplo ilustrativo</p>
-                    <div className="mt-3 divide-y divide-charcoal/10">
-                      <div className="flex items-baseline justify-between py-2">
-                        <span className="text-xs text-muted">Canon actual</span>
-                        <span className="font-mono text-sm tabular-nums text-muted">{formatCOP(reajusteEjemploCanon)}</span>
+                  {/* Visualización del cálculo con jerarquía real */}
+                  <div className="mt-8 border-y border-bronze/25 py-6">
+                    <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-3">
+                      <div>
+                        <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-bronze">Canon actual</p>
+                        <p className="mt-2 font-body text-base font-medium tabular-nums text-charcoal sm:text-lg">
+                          {formatCOP(reajusteEjemploCanon)}
+                        </p>
                       </div>
-                      <div className="flex items-baseline justify-between py-2">
-                        <span className="text-xs text-muted">IPC</span>
-                        <span className="font-mono text-sm font-medium tabular-nums text-bronze">+{reajustePorcentaje.toFixed(2).replace('.', ',')}%</span>
-                      </div>
-                      <div className="flex items-baseline justify-between border-t border-charcoal/15 pt-3">
-                        <span className="text-xs font-medium text-green-deep">Nuevo canon</span>
-                        <span className="font-mono text-2xl font-bold tabular-nums text-green-deep">{formatCOP(reajusteNuevoCanon)}</span>
-                      </div>
+                      <p className="font-mono text-3xl font-medium leading-none tabular-nums text-bronze sm:text-4xl">
+                        +{formatPorcentaje(reajustePorcentaje)} %
+                      </p>
                     </div>
 
-                    <div className="mt-4 space-y-2" aria-hidden="true">
+                    <div className="my-5 flex items-center gap-3" aria-hidden="true">
+                      <span className="h-px flex-1 bg-bronze/25" />
+                      <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-bronze">Aplica IPC · Ley 820</span>
+                      <span className="h-px flex-1 bg-bronze/25" />
+                    </div>
+
+                    <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-3">
                       <div>
-                        <div className="mb-1 flex justify-between font-mono text-[10px] text-muted"><span>Actual</span><span>{formatCOP(reajusteEjemploCanon)}</span></div>
-                        <div className="h-1.5 w-full overflow-hidden rounded-full bg-charcoal/10"><div className="bar-fill h-full bg-charcoal/40" style={{ width: (reajusteEjemploCanon / reajusteNuevoCanon) * 100 + '%' }} /></div>
+                        <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-bronze">Nuevo canon</p>
+                        <p className="mt-2 font-body text-3xl font-bold leading-none tracking-tight tabular-nums text-green-deep sm:text-4xl">
+                          {formatCOP(reajusteNuevoCanon)}
+                        </p>
+                      </div>
+                      <p className="font-mono text-[11px] tabular-nums text-muted">
+                        Ejemplo de cálculo · +{formatCOP(reajusteAumento)} de incremento
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Escala común: la barra del nuevo canon es siempre la más larga */}
+                  <div
+                    className="mt-7"
+                    role="img"
+                    aria-label={`Escala de canon: actual ${formatCOP(reajusteEjemploCanon)}, nuevo ${formatCOP(reajusteNuevoCanon)}`}
+                  >
+                    <div className="mb-3 flex flex-wrap justify-between gap-2 font-mono text-[10px] uppercase tracking-[0.12em] text-muted">
+                      <span>Escala 0 → {formatCOP(reajusteNuevoCanon)}</span>
+                      <span>IPC {formatPorcentaje(reajustePorcentaje)} %</span>
+                    </div>
+                    <div className="space-y-3" aria-hidden="true">
+                      <div>
+                        <div className="mb-1 flex justify-between gap-3 font-mono text-[11px] tabular-nums text-muted">
+                          <span>Actual</span><span>{formatCOP(reajusteEjemploCanon)}</span>
+                        </div>
+                        <div className="tools-editorial__track">
+                          <div
+                            className="tools-editorial__fill tools-editorial__fill--base bar-fill"
+                            style={{ width: `${reajusteCanonActualAncho}%`, animationDelay: '160ms' }}
+                          />
+                        </div>
                       </div>
                       <div>
-                        <div className="mb-1 flex justify-between font-mono text-[10px] text-muted"><span>Nuevo</span><span>{formatCOP(reajusteNuevoCanon)}</span></div>
-                        <div className="h-1.5 w-full overflow-hidden rounded-full bg-charcoal/10"><div className="bar-fill h-full bg-green-deep" style={{ width: '100%' }} /></div>
+                        <div className="mb-1 flex justify-between gap-3 font-mono text-[11px] font-medium tabular-nums text-green-deep">
+                          <span>Nuevo</span><span>{formatCOP(reajusteNuevoCanon)}</span>
+                        </div>
+                        <div className="tools-editorial__track">
+                          <div
+                            className="tools-editorial__fill tools-editorial__fill--next bar-fill"
+                            style={{ width: '100%', animationDelay: '240ms' }}
+                          />
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
 
-                <Link
-                  href="/herramientas/reajuste-canon"
-                  className="mt-4 inline-flex items-center gap-1 font-mono text-sm font-semibold text-green-deep transition-colors hover:text-bronze focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-deep"
-                >
-                  Calcular ahora →
-                </Link>
-              </article>
+                  <Link
+                    href="/herramientas/reajuste-canon"
+                    className="group/cta mt-9 inline-flex min-h-11 w-full items-center justify-between gap-4 rounded-sm bg-green-deep px-5 py-3 text-sm font-medium text-white transition-colors hover:bg-green-mid focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-green-deep motion-reduce:transition-none sm:w-auto sm:min-w-[240px]"
+                  >
+                    <span>Calcular ahora</span>
+                    <span
+                      aria-hidden="true"
+                      className="inline-block transition-transform duration-200 group-hover/cta:translate-x-1 motion-reduce:transition-none motion-reduce:group-hover/cta:translate-x-0"
+                    >
+                      →
+                    </span>
+                  </Link>
+                </article>
               </Reveal>
             </div>
 
-            <div className="flex flex-col gap-6 lg:col-span-5">
-              {/* Herramienta secundaria - Rentabilidad real */}
-              <Reveal delay={100} threshold={0.3}>
-                <article className="group flex h-full flex-col justify-between rounded-xl border border-charcoal/10 bg-ivory p-6 text-charcoal transition-transform duration-200 hover:-translate-y-0.5 motion-reduce:transition-none">
-                  <div>
-                    <div className="mb-4 flex items-center justify-between gap-3">
-                      <div className="flex items-center gap-2">
-                        <span className="rounded border border-charcoal/15 px-2 py-0.5 font-mono text-[10px] text-muted font-medium">Comparativa anual</span>
-                        <span className="rounded border border-bronze/30 px-1.5 py-0.5 font-mono text-[8px] font-semibold text-bronze uppercase">Demo</span>
-                      </div>
-                      <PieChart className="h-5 w-5 text-green-deep" aria-hidden="true" />
+            {/* 02 y 03 · instrumentos complementarios sobre el verde */}
+            <div className="grid min-w-0 gap-10 md:grid-cols-2 lg:grid-cols-1">
+              {/* 02 · Rentabilidad real */}
+              <div className="min-w-0 border-t border-white/15 pt-6">
+                <Reveal delay={150} threshold={0.25}>
+                  <article className="tools-editorial__secondary group flex h-full flex-col transition-transform duration-200 hover:-translate-y-0.5 motion-reduce:transition-none">
+                    <div className="flex flex-wrap items-center justify-between gap-3">
+                      <span className="font-mono text-[11px] font-medium uppercase tracking-[0.18em] text-bright-bronze">
+                        02 · Rentabilidad
+                      </span>
+                      <span className="border border-bright-bronze/40 px-1.5 py-0.5 font-mono text-[9px] font-medium uppercase tracking-wider text-bright-bronze">
+                        Demo
+                      </span>
                     </div>
-                    <h3 className="font-display text-xl text-charcoal font-normal">Rentabilidad real</h3>
-                    <p className="mt-1 text-xs text-muted">
-                      Conoce tu retorno neto después de vacancia, predial, administración e impuestos.
+
+                    <h3 className="mt-5 font-display text-2xl font-normal leading-tight text-white sm:text-3xl">
+                      Rentabilidad real
+                    </h3>
+                    <p className="mt-2 max-w-sm text-xs leading-relaxed text-white/70">
+                      Retorno neto frente a un CDT, después de costos y vacancia.
                     </p>
 
-                    <div className="my-5 rounded-lg border border-charcoal/10 bg-surface p-3.5">
-                      <svg className="w-full" viewBox="0 0 240 92" role="img" aria-label="Comparación con escala común: rentabilidad neta vs CDT de referencia, ejemplo DEMO" preserveAspectRatio="xMidYMid meet">
-                        <line x1="0" y1="78" x2="240" y2="78" stroke="var(--color-charcoal)" strokeOpacity="0.15" strokeWidth="1" />
-                        <rect className="bar-fill" x="0" y={78 - (RENTABILIDAD_DEFAULTS.tasaCDT / rentabilidadEscalaMax) * 66} width="86" height={(RENTABILIDAD_DEFAULTS.tasaCDT / rentabilidadEscalaMax) * 66} fill="var(--color-muted)" fillOpacity="0.55" />
-                        <text x="43" y="90" textAnchor="middle" fontFamily="IBM Plex Mono, monospace" fontSize="9" fill="var(--color-muted)">CDT {RENTABILIDAD_DEFAULTS.tasaCDT}%</text>
-                        <rect className="bar-fill" x="116" y={78 - (rentabilidadEjemplo.rentabilidadNeta / rentabilidadEscalaMax) * 66} width="86" height={Math.max(1, (rentabilidadEjemplo.rentabilidadNeta / rentabilidadEscalaMax) * 66)} fill="var(--color-green-deep)" />
-                        <text x="159" y="90" textAnchor="middle" fontFamily="IBM Plex Mono, monospace" fontSize="9" fill="var(--color-muted)">Neta</text>
-                        <text x="159" y={78 - (rentabilidadEjemplo.rentabilidadNeta / rentabilidadEscalaMax) * 66 - 4} textAnchor="middle" fontFamily="IBM Plex Mono, monospace" fontSize="11" fontWeight="bold" fill="var(--color-green-deep)">{rentabilidadEjemplo.rentabilidadNeta.toFixed(1).replace('.', ',')}%</text>
-                      </svg>
-                      <p className="mt-1 font-mono text-[9px] text-muted">Ejemplo ilustrativo · no es resultado personalizado</p>
+                    <div
+                      className="mt-7"
+                      role="img"
+                      aria-label={`Comparación en escala común de 0 a ${rentabilidadEscalaMax} por ciento: rentabilidad neta ${formatPorcentaje(rentabilidadEjemplo.rentabilidadNeta, 1)} por ciento, CDT de referencia ${RENTABILIDAD_DEFAULTS.tasaCDT} por ciento`}
+                    >
+                      <p className="mb-4 font-mono text-[10px] uppercase tracking-[0.12em] text-white/60">
+                        Escala 0 – {rentabilidadEscalaMax} % E.A.
+                      </p>
+                      <div className="space-y-4" aria-hidden="true">
+                        <div>
+                          <div className="mb-1.5 flex items-baseline justify-between gap-3 font-mono text-[11px] text-white/80">
+                            <span>Rentabilidad neta</span>
+                            <span className="font-medium tabular-nums text-white">{formatPorcentaje(rentabilidadEjemplo.rentabilidadNeta, 1)} %</span>
+                          </div>
+                          <div className="tools-editorial__track tools-editorial__track--dark">
+                            <div
+                              className="tools-editorial__fill tools-editorial__fill--neta bar-fill"
+                              style={{ width: `${rentabilidadNetaAncho}%`, animationDelay: '180ms' }}
+                            />
+                          </div>
+                        </div>
+                        <div>
+                          <div className="mb-1.5 flex items-baseline justify-between gap-3 font-mono text-[11px] text-white/80">
+                            <span>CDT de referencia</span>
+                            <span className="tabular-nums">{RENTABILIDAD_DEFAULTS.tasaCDT} %</span>
+                          </div>
+                          <div className="tools-editorial__track tools-editorial__track--dark">
+                            <div
+                              className="tools-editorial__fill tools-editorial__fill--cdt bar-fill"
+                              style={{ width: `${rentabilidadCdtAncho}%`, animationDelay: '480ms' }}
+                            />
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-
-                  <Link
-                    href="/herramientas/rentabilidad"
-                    className="inline-flex items-center gap-1 font-mono text-xs font-semibold text-green-deep transition-colors hover:text-bronze focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-deep"
-                  >
-                    Calcular rentabilidad →
-                  </Link>
-                </article>
-              </Reveal>
-
-              {/* Herramienta secundaria - Checklist de entrega */}
-              <Reveal delay={200} threshold={0.3}>
-                <article className="group flex h-full flex-col justify-between rounded-xl border border-charcoal/10 bg-surface p-6 text-charcoal transition-transform duration-200 hover:-translate-y-0.5 motion-reduce:transition-none">
-                  <div>
-                    <div className="mb-4 flex items-center justify-between">
-                      <h3 className="font-display text-xl text-charcoal font-normal">Checklist de entrega</h3>
-                      <ClipboardCheck className="h-5 w-5 text-green-deep" aria-hidden="true" />
-                    </div>
-                    <div className="mb-4 flex items-center justify-between gap-3">
-                      <span className="rounded border border-green-deep/20 bg-green-deep/5 px-2 py-0.5 font-mono text-[10px] text-green-deep font-medium">Genera PDF</span>
-                      <span className="font-mono text-[9px] uppercase tracking-wider text-muted">Acta de inventario</span>
-                    </div>
-                    <p className="text-xs text-muted">
-                      Genera el acta de inventario con estado de paredes, llaves y lectura de medidores.
+                    <p className="mt-4 font-mono text-[10px] text-white/60">
+                      Ejemplo ilustrativo · no es un resultado personalizado.
                     </p>
 
-                    <div className="my-5 rounded-lg border border-charcoal/10 bg-ivory p-3.5">
-                      <div className="mb-3 flex items-center justify-between border-b border-charcoal/10 pb-2">
-                        <span className="font-mono text-[9px] uppercase tracking-wider text-muted">Inventario</span>
-                        <span className="font-mono text-[9px] text-green-deep">2/3</span>
+                    <Link
+                      href="/herramientas/rentabilidad"
+                      className="group/cta mt-6 inline-flex min-h-11 items-center gap-2 self-start font-mono text-xs font-medium text-bright-bronze transition-colors hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-bright-bronze motion-reduce:transition-none"
+                    >
+                      <span>Calcular rentabilidad</span>
+                      <span
+                        aria-hidden="true"
+                        className="inline-block transition-transform duration-200 group-hover/cta:translate-x-1 motion-reduce:transition-none motion-reduce:group-hover/cta:translate-x-0"
+                      >
+                        →
+                      </span>
+                    </Link>
+                  </article>
+                </Reveal>
+              </div>
+
+              {/* 03 · Checklist de entrega — fragmento de acta real */}
+              <div className="min-w-0 border-t border-white/15 pt-6">
+                <Reveal delay={300} threshold={0.25}>
+                  <article className="tools-editorial__secondary group flex h-full flex-col transition-transform duration-200 hover:-translate-y-0.5 motion-reduce:transition-none">
+                    <div className="flex flex-wrap items-center justify-between gap-3">
+                      <span className="font-mono text-[11px] font-medium uppercase tracking-[0.18em] text-bright-bronze">
+                        03 · Checklist
+                      </span>
+                      <span className="border border-bright-bronze/40 px-2 py-0.5 font-mono text-[9px] font-medium uppercase tracking-wider text-bright-bronze">
+                        Genera PDF
+                      </span>
+                    </div>
+
+                    <h3 className="mt-5 font-display text-2xl font-normal leading-tight text-white sm:text-3xl">
+                      Checklist de entrega
+                    </h3>
+                    <p className="mt-2 max-w-sm text-xs leading-relaxed text-white/70">
+                      Documenta el estado del inmueble y exporta el acta en PDF.
+                    </p>
+
+                    {/* Fragmento de acta de inspección */}
+                    <div className="tools-editorial__acta mt-7 p-4 sm:p-5">
+                      <div className="flex items-center justify-between gap-3 border-b border-bronze/25 pb-2.5">
+                        <span className="font-mono text-[10px] font-medium uppercase tracking-[0.16em] text-bronze">
+                          Acta de inventario
+                        </span>
+                        <span className="font-mono text-[10px] tabular-nums text-charcoal">Entrega · 2/4</span>
                       </div>
-                      <div className="mb-3 h-1 w-full overflow-hidden rounded-full bg-charcoal/10" aria-hidden="true"><div className="bar-fill h-full bg-green-deep" style={{ width: '66%' }} /></div>
-                      <div className="space-y-2 text-xs">
-                        <div className="flex items-center gap-2 text-charcoal"><Check className="h-3.5 w-3.5 shrink-0 text-green-deep" aria-hidden="true" /><span>Llaves entregadas</span></div>
-                        <div className="flex items-center gap-2 text-charcoal"><Check className="h-3.5 w-3.5 shrink-0 text-green-deep" aria-hidden="true" /><span>Medidores registrados</span></div>
-                        <div className="flex items-center gap-2 text-muted"><Circle className="h-3.5 w-3.5 shrink-0 text-charcoal/30" aria-hidden="true" /><span>Fotos del estado</span></div>
+                      <ul className="mt-3 space-y-2 font-mono text-[11px] leading-relaxed text-charcoal sm:text-xs">
+                        <li className="flex items-baseline gap-2">
+                          <span aria-hidden="true" className="text-green-deep">✓</span>
+                          <span className="sr-only">Completado: </span>Llaves entregadas
+                        </li>
+                        <li className="flex items-baseline gap-2">
+                          <span aria-hidden="true" className="text-green-deep">✓</span>
+                          <span className="sr-only">Completado: </span>Medidores registrados
+                        </li>
+                        <li className="flex items-baseline gap-2 text-muted">
+                          <span aria-hidden="true" className="text-charcoal/40">○</span>
+                          <span className="sr-only">Pendiente: </span>Fotos del estado
+                        </li>
+                        <li className="flex items-baseline gap-2 text-muted">
+                          <span aria-hidden="true" className="text-charcoal/40">○</span>
+                          <span className="sr-only">Pendiente: </span>Firma del inquilino
+                        </li>
+                      </ul>
+                      <div className="mt-4">
+                        <div className="mb-1.5 flex justify-between font-mono text-[10px] text-muted">
+                          <span>Registro</span><span className="tabular-nums">50 %</span>
+                        </div>
+                        <div
+                          className="tools-editorial__track"
+                          role="progressbar"
+                          aria-label="Ítems completados del acta de ejemplo"
+                          aria-valuenow={2}
+                          aria-valuemin={0}
+                          aria-valuemax={4}
+                        >
+                          <div
+                            className="tools-editorial__fill tools-editorial__fill--next bar-fill"
+                            style={{ width: '50%', animationDelay: '120ms' }}
+                          />
+                        </div>
                       </div>
                     </div>
-                  </div>
 
-                  <Link
-                    href="/herramientas/checklist-entrega"
-                    className="inline-flex items-center gap-1 font-mono text-xs font-semibold text-green-deep transition-colors hover:text-bronze focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-deep"
-                  >
-                    Abrir checklist →
-                  </Link>
-                </article>
-              </Reveal>
+                    <Link
+                      href="/herramientas/checklist-entrega"
+                      className="group/cta mt-6 inline-flex min-h-11 items-center gap-2 self-start font-mono text-xs font-medium text-bright-bronze transition-colors hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-bright-bronze motion-reduce:transition-none"
+                    >
+                      <span>Abrir checklist</span>
+                      <span
+                        aria-hidden="true"
+                        className="inline-block transition-transform duration-200 group-hover/cta:translate-x-1 motion-reduce:transition-none motion-reduce:group-hover/cta:translate-x-0"
+                      >
+                        →
+                      </span>
+                    </Link>
+                  </article>
+                </Reveal>
+              </div>
             </div>
           </div>
+          </Reveal>
 
           {/* Pieza arquitectonica 2.5D secundaria - no compite con las herramientas */}
           <div className="mt-8 flex items-center gap-4 border-t border-white/10 pt-6" aria-hidden="true">
