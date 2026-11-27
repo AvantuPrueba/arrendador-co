@@ -5,12 +5,12 @@ import Link from 'next/link';
 import NewsletterCTA from '@/components/NewsletterCTA';
 import JsonLd from '@/components/JsonLd';
 import { PRODUCT_CONFIG, formatPrice } from '@/lib/product';
-import { IPC_CONFIG } from '@/lib/ipc-config';
-import { RENTABILIDAD_DEFAULTS, calcularRentabilidad } from '@/lib/rentabilidad-config';
 import { absoluteUrl, homeJsonLd } from '@/lib/seo';
 import { baseOpenGraph, baseTwitter } from '@/lib/metadata';
 import EditorialMotion from '@/components/home/EditorialMotion';
+import ToolsLab from '@/components/home/ToolsLab';
 import './home-editorial.css';
+import './tools-lab.css';
 
 export const metadata: Metadata = {
   alternates: { canonical: '/' },
@@ -35,42 +35,9 @@ export const metadata: Metadata = {
   },
 };
 
-function formatCOP(valor: number): string {
-  return `$${Math.round(valor).toLocaleString('es-CO')}`;
-}
-
-function formatPorcentaje(valor: number, decimales = 2): string {
-  return valor.toFixed(decimales).replace('.', ',');
-}
-
 const delay = (ms: number): CSSProperties => ({ transitionDelay: `${ms}ms` });
-const barWidth = (valor: number): CSSProperties => ({ '--ed-bar-width': `${valor}%` } as CSSProperties);
 
 export default function Home() {
-  // Ejemplo ilustrativo calculado con los mismos datos que la herramienta real.
-  const canonEjemplo = 1_200_000;
-  const ipc = IPC_CONFIG.ipc;
-  const aumento = Math.round(canonEjemplo * (ipc / 100));
-
-  const rentabilidad = calcularRentabilidad(
-    120_000_000,
-    1_200_000,
-    0,
-    {
-      administracionMensual: 0,
-      comisionInmobiliaria: 0,
-      predialAnual: 120_000_000 * (RENTABILIDAD_DEFAULTS.predial / 100),
-      seguroAnual: 0,
-      mantenimientoAnual: RENTABILIDAD_DEFAULTS.mantenimiento,
-    },
-    RENTABILIDAD_DEFAULTS.mesesVacancia,
-  );
-  const escalaMax = Math.ceil(
-    Math.max(rentabilidad.rentabilidadNeta, RENTABILIDAD_DEFAULTS.tasaCDT, 1),
-  );
-  const anchoNeta = (rentabilidad.rentabilidadNeta / escalaMax) * 100;
-  const anchoCdt = (RENTABILIDAD_DEFAULTS.tasaCDT / escalaMax) * 100;
-
   return (
     <>
       <JsonLd data={homeJsonLd} />
@@ -311,65 +278,7 @@ export default function Home() {
         </section>
 
         {/* ── 04 · HERRAMIENTAS ── */}
-        <section aria-label="Herramientas gratuitas" className="bg-ed-surface-muted py-20 md:py-28">
-          <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">
-            <div className="mb-12 max-w-2xl" data-ed-reveal>
-              <p className="ed-eyebrow">Herramientas gratuitas</p>
-              <h2 className="ed-h2 mt-5">Todo lo que necesitas, sin costo</h2>
-            </div>
-
-            <div className="grid gap-px border border-ed-line bg-ed-line md:grid-cols-3">
-              <article className="ed-tool bg-ed-surface-muted p-8" data-ed-reveal>
-                <span className="ed-mono text-ed-ink-muted">01 · Reajuste de canon</span>
-                <p className="ed-tool__big mt-8">+{formatCOP(aumento)}</p>
-                <p className="ed-body mt-4 text-sm text-ed-ink-muted">
-                  Ejemplo de cálculo con IPC DANE {IPC_CONFIG.year} · {formatPorcentaje(ipc)} %.
-                </p>
-                <Link href="/herramientas/reajuste-canon" className="ed-tool__cta ed-mono mt-6 inline-flex min-h-6 items-center gap-2">
-                  Calcular ahora <span className="ed-arrow" aria-hidden="true">→</span>
-                </Link>
-              </article>
-
-              <article className="ed-tool bg-ed-surface-muted p-8" data-ed-reveal style={delay(80)}>
-                <span className="ed-mono text-ed-ink-muted">02 · Rentabilidad real</span>
-                <p className="ed-tool__big mt-8">{formatPorcentaje(rentabilidad.rentabilidadNeta, 1)} % neta</p>
-                <div className="mt-5 space-y-3">
-                  <div>
-                    <p className="ed-mono mb-1.5 text-ed-ink-muted">
-                      Neta {formatPorcentaje(rentabilidad.rentabilidadNeta, 1)} %
-                    </p>
-                    <div className="ed-bar" style={barWidth(anchoNeta)}>
-                      <span aria-hidden="true" />
-                    </div>
-                  </div>
-                  <div>
-                    <p className="ed-mono mb-1.5 text-ed-ink-muted">
-                      CDT {RENTABILIDAD_DEFAULTS.tasaCDT} %
-                    </p>
-                    <div className="ed-bar ed-bar--reference" style={barWidth(anchoCdt)}>
-                      <span aria-hidden="true" />
-                    </div>
-                  </div>
-                </div>
-                <p className="ed-mono mt-5 text-ed-ink-muted">Demo · escala 0 – {escalaMax} %</p>
-                <Link href="/herramientas/rentabilidad" className="ed-tool__cta ed-mono mt-4 inline-flex min-h-6 items-center gap-2">
-                  Calcular rentabilidad <span className="ed-arrow" aria-hidden="true">→</span>
-                </Link>
-              </article>
-
-              <article className="ed-tool bg-ed-surface-muted p-8" data-ed-reveal style={delay(160)}>
-                <span className="ed-mono text-ed-ink-muted">03 · Checklist de entrega</span>
-                <p className="ed-tool__big mt-8">2 / 4 pasos</p>
-                <p className="ed-body mt-4 text-sm text-ed-ink-muted">
-                  Acta de inventario de ejemplo con generación de PDF real.
-                </p>
-                <Link href="/herramientas/checklist-entrega" className="ed-tool__cta ed-mono mt-6 inline-flex min-h-6 items-center gap-2">
-                  Abrir checklist <span className="ed-arrow" aria-hidden="true">→</span>
-                </Link>
-              </article>
-            </div>
-          </div>
-        </section>
+        <ToolsLab />
 
         {/* ── 05 · PLANTILLA DE CONTRATO ── */}
         <section aria-label="Plantilla de contrato" className="bg-ed-canvas py-20 md:py-28">
