@@ -1,0 +1,290 @@
+/* ── Rigor y transparencia · índice normativo sobre expediente CSS 3D ── */
+
+.legal-trust {
+  background-color: var(--color-ed-surface-ink);
+  color: var(--color-ed-ink-on-dark);
+  padding: 96px 0;
+}
+
+.lt-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 42fr) minmax(0, 58fr);
+  gap: 48px;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 48px;
+}
+
+.lt-mono {
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+
+/* Expediente */
+.lt-left { min-width: 0; display: flex; flex-direction: column; align-items: center; }
+
+.lt-tilt {
+  width: 100%;
+  max-width: 380px;
+  transition: transform 500ms ease-out;
+  transform-origin: center center;
+}
+
+.lt-stack {
+  position: relative;
+  width: 100%;
+  height: 440px;
+  perspective: 1300px;
+  perspective-origin: 50% 45%;
+}
+
+.lt-layer,
+.lt-doc {
+  position: absolute;
+  inset: 0;
+  border-radius: 2px;
+}
+.lt-layer {
+  background-color: color-mix(in srgb, var(--color-charcoal) 4%, var(--color-ivory));
+  pointer-events: none;
+}
+.lt-layer--3 {
+  transform: translateX(-10px) translateY(-10px) rotateY(-9deg) rotateX(2deg);
+  opacity: 0.5;
+}
+.lt-layer--2 {
+  transform: translateX(-5px) translateY(-5px) rotateY(-7deg) rotateX(1.5deg);
+  opacity: 0.75;
+}
+
+.lt-doc {
+  overflow: hidden;
+  padding: 28px;
+  background-color: var(--color-surface);
+  color: var(--color-charcoal);
+  transform: rotateY(-5deg) rotateX(2deg);
+  box-shadow: 0 48px 96px rgba(0, 0, 0, 0.5), 0 8px 24px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  transition: transform 350ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.lt-stack:hover .lt-doc { transform: rotateY(-2deg) rotateX(1deg); }
+
+.lt-doc__grain {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.025;
+  pointer-events: none;
+}
+.lt-doc__head {
+  margin: 0;
+  max-width: calc(100% - 110px);
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(41, 45, 41, 0.5);
+}
+.lt-doc__folio {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  color: rgba(41, 45, 41, 0.35);
+}
+.lt-doc__rule { height: 1px; margin: 16px 0; background-color: rgba(0, 0, 0, 0.08); }
+.lt-doc__block { margin: 22px 0; }
+.lt-doc__block h3 {
+  margin: 0 0 10px;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--color-charcoal);
+}
+.lt-doc__line { height: 2px; margin: 8px 0; background-color: rgba(0, 0, 0, 0.07); }
+.lt-doc__stamp {
+  position: absolute;
+  right: 24px;
+  bottom: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  padding: 4px;
+  border: 1.5px solid rgba(183, 101, 74, 0.4);
+  border-radius: 50%;
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  line-height: 1.2;
+  text-align: center;
+  text-transform: uppercase;
+  color: var(--color-bright-bronze);
+}
+
+/* Índice normativo */
+.lt-right { min-width: 0; }
+.lt-eyebrow { margin: 0; font-size: 0.72rem; color: var(--color-bright-bronze); }
+.lt-title {
+  margin: 16px 0 12px;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(1.8rem, 3vw, 2.5rem);
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  color: var(--color-ed-ink-on-dark);
+  text-wrap: balance;
+}
+.lt-lead {
+  max-width: 60ch;
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: rgba(251, 251, 250, 0.55);
+}
+.lt-review {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+  font-size: 0.68rem;
+  color: rgba(251, 251, 250, 0.55);
+}
+.lt-dot {
+  width: 6px;
+  height: 6px;
+  flex: 0 0 6px;
+  border-radius: 50%;
+  background-color: var(--color-bright-bronze);
+  animation: ltPulse 2s ease-in-out infinite alternate;
+}
+@keyframes ltPulse { from { opacity: 0.6; } to { opacity: 1; } }
+
+.lt-head-separator { height: 1px; margin: 28px 0 0; background-color: rgba(255, 255, 255, 0.08); }
+
+.lt-list { list-style: none; margin: 0; padding: 0; }
+.lt-list li {
+  position: relative;
+  display: flex;
+  gap: 16px;
+  padding: 18px 0;
+}
+.lt-list li::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.08);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 300ms ease-out var(--lt-line-delay, 0ms);
+}
+.lt-list li.is-in::before { transform: scaleX(1); }
+.lt-list li:last-child { border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
+
+.lt-num {
+  flex: 0 0 3rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  color: var(--color-bright-bronze);
+}
+.lt-entry { flex: 1 1 auto; min-width: 0; }
+.lt-code {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--color-ed-ink-on-dark);
+}
+.lt-name {
+  margin-top: 4px;
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: var(--color-ed-ink-on-dark);
+}
+.lt-desc {
+  margin-top: 4px;
+  max-width: 60ch;
+  font-size: 0.83rem;
+  line-height: 1.5;
+  color: rgba(251, 251, 250, 0.55);
+}
+.lt-source {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  align-self: flex-start;
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  color: rgba(251, 251, 250, 0.55);
+  transition: color 180ms ease-out;
+}
+.lt-source:hover { color: var(--color-bright-bronze); }
+.lt-source:focus-visible { outline: 2px solid var(--color-bright-bronze); outline-offset: 3px; }
+.lt-list li:hover .lt-entry { transform: translateX(2px); }
+.lt-entry { transition: transform 180ms ease-out; }
+
+/* Reveal: estado oculto solo con JS y movimiento disponible */
+.legal-trust [data-lt-reveal] {
+  transition: opacity 500ms ease-out var(--lt-delay, 0ms), transform 500ms ease-out var(--lt-delay, 0ms);
+}
+.editorial-home[data-motion='ready'] [data-lt-reveal] { opacity: 0; }
+.editorial-home[data-motion='ready'] .lt-left[data-lt-reveal] { transform: translateX(-20px); }
+.editorial-home[data-motion='ready'] .lt-head[data-lt-reveal] { transform: translateX(16px); }
+.editorial-home[data-motion='ready'] .lt-list li[data-lt-reveal] { transform: translateY(6px); }
+.editorial-home[data-motion='ready'] [data-lt-reveal].is-in { opacity: 1; transform: none; }
+
+@media (max-width: 1023px) {
+  .lt-grid { grid-template-columns: 1fr; gap: 40px; padding: 0 24px; }
+  .lt-stack { height: 380px; max-width: 60%; margin: 0; }
+  .lt-layer--3 { display: none; }
+  .lt-doc { transform: rotateY(-3deg) rotateX(1deg); }
+  .lt-stack:hover .lt-doc { transform: rotateY(-3deg) rotateX(1deg); }
+  .lt-tilt { transform: none !important; }
+}
+
+@media (max-width: 767px) {
+  .legal-trust { padding: 64px 0; }
+  .lt-grid { display: flex; flex-direction: column; align-items: stretch; gap: 0; }
+  .lt-left, .lt-right { display: contents; }
+  .lt-left[data-lt-reveal], .lt-right[data-lt-reveal] { opacity: 1 !important; transform: none !important; }
+  .lt-eyebrow { order: 1; }
+  .lt-title { order: 2; }
+  .lt-lead { order: 3; margin-bottom: 16px; }
+  .lt-review { order: 4; margin-bottom: 24px; }
+  .lt-head-separator { order: 5; width: 100%; }
+  .lt-list { order: 6; }
+  .lt-left .lt-stack { order: 7; max-width: none; width: 100%; height: 340px; margin-top: 32px; }
+  .lt-doc { transform: none; padding: 24px; }
+  .lt-stack:hover .lt-doc { transform: none; }
+  .lt-layer { display: none; }
+  .lt-list li { display: block; }
+  .lt-num { display: inline-block; width: auto; margin-right: 12px; }
+  .lt-source { min-height: 44px; margin: 8px 0 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .legal-trust *, .legal-trust *::before, .legal-trust *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+  .editorial-home[data-motion='ready'] [data-lt-reveal] { opacity: 1 !important; transform: none !important; }
+  .lt-list li::before { transform: scaleX(1) !important; }
+  .lt-dot { opacity: 1; }
+  .lt-doc, .lt-stack:hover .lt-doc { transform: none !important; }
+  .lt-tilt { transform: none !important; }
+}
