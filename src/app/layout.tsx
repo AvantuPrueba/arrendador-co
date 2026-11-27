@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { DM_Serif_Display, Inter, IBM_Plex_Mono } from 'next/font/google';
+import { DM_Serif_Display, Fraunces, Inter, IBM_Plex_Mono } from 'next/font/google';
 import './globals.css';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -24,6 +24,12 @@ const ibmPlexMono = IBM_Plex_Mono({
   weight: ['400', '500'],
   subsets: ['latin'],
   variable: '--font-mono',
+  display: 'swap',
+});
+
+const fraunces = Fraunces({
+  subsets: ['latin'],
+  variable: '--font-editorial',
   display: 'swap',
 });
 
@@ -55,7 +61,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" className={`${dmSerif.variable} ${inter.variable} ${ibmPlexMono.variable}`}>
+    <html lang="es" className={`${dmSerif.variable} ${inter.variable} ${ibmPlexMono.variable} ${fraunces.variable}`}>
       <body className="bg-ivory text-charcoal antialiased">
         <Navbar />
         <main className="min-h-screen">{children}</main>

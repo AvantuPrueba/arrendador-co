@@ -25,7 +25,8 @@ type Status = 'idle' | 'submitting' | 'success' | 'error';
 export default function NewsletterCTA({
   source = 'newsletter-footer',
   hideHeader = false,
-}: { source?: string; hideHeader?: boolean } = {}) {
+  variant = 'default',
+}: { source?: string; hideHeader?: boolean; variant?: 'default' | 'editorial' } = {}) {
   const [email, setEmail] = useState('');
   const [consent, setConsent] = useState(false);
   const [status, setStatus] = useState<Status>('idle');
@@ -108,7 +109,18 @@ export default function NewsletterCTA({
   }
 
   if (status === 'success') {
-    return (
+    return variant === 'editorial' ? (
+      <div
+        className="border border-ed-line bg-ed-surface p-6 text-center rounded-[2px]"
+        role="status"
+        aria-live="polite"
+      >
+        <p className="ed-h3">¡Te has suscrito con éxito!</p>
+        <p className="mt-2 ed-body text-ed-ink-muted">
+          Recibirás nuestras guías y herramientas para arrendadores en tu correo.
+        </p>
+      </div>
+    ) : (
       <div
         className="rounded-xl border border-green-mid/20 bg-green-deep/5 p-6 text-center"
         role="status"
@@ -168,12 +180,20 @@ export default function NewsletterCTA({
             disabled={status === 'submitting'}
             aria-invalid={error ? true : undefined}
             aria-describedby={error ? errorId : undefined}
-            className="flex-1 rounded-lg border border-charcoal/25 bg-ivory px-4 py-3 text-sm text-charcoal placeholder:text-muted transition-colors focus:border-green-deep focus:outline-none focus:ring-1 focus:ring-green-deep disabled:bg-black/5"
+            className={
+              variant === 'editorial'
+                ? 'ed-field min-w-0 flex-1'
+                : 'flex-1 rounded-lg border border-charcoal/25 bg-ivory px-4 py-3 text-sm text-charcoal placeholder:text-muted transition-colors focus:border-green-deep focus:outline-none focus:ring-1 focus:ring-green-deep disabled:bg-black/5'
+            }
           />
           <button
             type="submit"
             disabled={status === 'submitting'}
-            className="min-h-[44px] rounded-lg bg-bronze px-6 py-3 text-sm font-medium text-white transition-all hover:bg-[#5E4525] hover:scale-[1.01] active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-50"
+            className={
+              variant === 'editorial'
+                ? 'ed-btn ed-btn--ink shrink-0 disabled:cursor-not-allowed disabled:opacity-50'
+                : 'min-h-[44px] rounded-lg bg-bronze px-6 py-3 text-sm font-medium text-white transition-all hover:bg-[#5E4525] hover:scale-[1.01] active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-50'
+            }
           >
             {status === 'submitting' ? 'Suscribiendo…' : 'Suscribirme'}
           </button>
@@ -191,13 +211,24 @@ export default function NewsletterCTA({
               if (error) setError(null);
             }}
             disabled={status === 'submitting'}
-            className="mt-0.5 h-4 w-4 rounded border-charcoal/30 text-green-deep focus:ring-green-deep"
+            className={
+              variant === 'editorial'
+                ? 'mt-0.5 h-4 w-4 shrink-0 accent-ed-accent'
+                : 'mt-0.5 h-4 w-4 rounded border-charcoal/30 text-green-deep focus:ring-green-deep'
+            }
           />
-          <label htmlFor={consentId} className="text-xs leading-relaxed text-muted">
+          <label
+            htmlFor={consentId}
+            className={variant === 'editorial' ? 'ed-mono text-ed-ink-muted' : 'text-xs leading-relaxed text-muted'}
+          >
             Acepto la{' '}
             <Link
               href={PRODUCT_CONFIG.privacyPolicyHref}
-              className="text-charcoal underline underline-offset-2 hover:text-green-deep"
+              className={
+                variant === 'editorial'
+                  ? 'underline underline-offset-2 text-ed-ink hover:text-ed-accent'
+                  : 'text-charcoal underline underline-offset-2 hover:text-green-deep'
+              }
             >
               política de tratamiento de datos
             </Link>
@@ -206,7 +237,11 @@ export default function NewsletterCTA({
         </div>
 
         {error && (
-          <p id={errorId} role="alert" className="text-xs text-terracotta">
+          <p
+            id={errorId}
+            role="alert"
+            className={variant === 'editorial' ? 'ed-mono text-ed-accent' : 'text-xs text-terracotta'}
+          >
             {error}
           </p>
         )}
