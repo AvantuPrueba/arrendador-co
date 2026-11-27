@@ -40,6 +40,23 @@
   --font-display: 'DM Serif Display', serif;
   --font-body: 'Inter', system-ui, sans-serif;
   --font-mono: 'IBM Plex Mono', monospace;
+
+  /* ── Editorial homepage system (scoped tokens; other routes unchanged) ── */
+  --color-ed-canvas: #FBFBFA;
+  --color-ed-surface: #FFFFFF;
+  --color-ed-surface-muted: #F2F2F0;
+  --color-ed-surface-ink: #1A1A19;
+  --color-ed-ink: #1A1A19;
+  --color-ed-ink-muted: #6F6E6B;
+  --color-ed-ink-on-dark: #FBFBFA;
+  --color-ed-line: rgba(0, 0, 0, 0.08);
+  --color-ed-line-dark: rgba(251, 251, 250, 0.1);
+  --color-ed-accent: #9F2F2D;
+  --color-ed-accent-on-dark: #D46A64;
+  --color-ed-accent-subtle: rgba(159, 47, 45, 0.08);
+  --font-ed-display: var(--font-editorial), Georgia, serif;
+  --font-ed-body: var(--font-body), system-ui, sans-serif;
+  --font-ed-mono: var(--font-mono), monospace;
 }
 
 /* ── Base layer (Preserves semantic hierarchy across internal pages) ── */
