@@ -11,6 +11,7 @@ import EditorialMotion from '@/components/home/EditorialMotion';
 import ToolsLab from '@/components/home/ToolsLab';
 import './home-editorial.css';
 import './tools-lab.css';
+import './product-editorial.css';
 
 export const metadata: Metadata = {
   alternates: { canonical: '/' },
@@ -281,72 +282,119 @@ export default function Home() {
         <ToolsLab />
 
         {/* ── 05 · PLANTILLA DE CONTRATO ── */}
-        <section aria-label="Plantilla de contrato" className="bg-ed-canvas py-20 md:py-28">
-          <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">
-            <div className="grid items-center gap-14 lg:grid-cols-2 lg:gap-16">
-              <div data-ed-reveal aria-hidden="true">
-                <div className="ed-paper rounded-[2px] bg-ed-surface p-8 md:p-10">
-                  <p className="ed-mono text-ed-ink-muted">Contrato de arrendamiento · Vivienda urbana</p>
-                  <div className="mt-10 space-y-6">
-                    {[
-                      { label: 'Partes contratantes', widths: ['85%', '70%', '90%'] },
-                      { label: 'Cláusulas esenciales', widths: ['75%', '88%', '65%'] },
-                      { label: 'Valor y vigencia', widths: ['70%', '55%'] },
-                    ].map((block) => (
-                      <div key={block.label}>
-                        <span className="ed-mono text-ed-ink">{block.label}</span>
-                        <div className="mt-3 space-y-2">
-                          {block.widths.map((w, i) => (
-                            <div key={i} className="ed-paper__line" style={{ width: w }} />
-                          ))}
-                        </div>
-                      </div>
-                    ))}
+        <section aria-label="Producto destacado" className="product-showcase">
+          <div className="pd-grid">
+            {/* Columna izquierda: objeto documental con tres capas */}
+            <div className="pd-left" data-pd-reveal aria-hidden="true">
+              <p className="pd-verified pd-mono">
+                <span className="pd-led" />
+                Documento verificado · Versión 1.0.0 · Colombia 2026
+              </p>
+
+              <div className="pd-stack">
+                <div className="pd-layer pd-layer--3" />
+                <div className="pd-layer pd-layer--2" />
+                <div className="pd-paper">
+                  <svg className="pd-grain" xmlns="http://www.w3.org/2000/svg">
+                    <filter id="pd-noise">
+                      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" stitchTiles="stitch" />
+                    </filter>
+                    <rect width="100%" height="100%" filter="url(#pd-noise)" />
+                  </svg>
+
+                  <p className="pd-doc-label">Contrato de arrendamiento · Vivienda urbana</p>
+                  <div className="pd-rule" />
+
+                  <div className="pd-block">
+                    <h4>PARTES CONTRATANTES</h4>
+                    <div className="pd-line" style={{ width: '85%' }} />
+                    <div className="pd-line" style={{ width: '70%' }} />
+                    <div className="pd-line" style={{ width: '90%' }} />
                   </div>
-                  <p className="ed-mono mt-12 text-right text-ed-accent">Ley 820 · 2003</p>
+                  <div className="pd-block">
+                    <h4>CLÁUSULAS ESENCIALES</h4>
+                    <div className="pd-line" style={{ width: '75%' }} />
+                    <div className="pd-line" style={{ width: '88%' }} />
+                    <div className="pd-line" style={{ width: '65%' }} />
+                  </div>
+                  <div className="pd-block">
+                    <h4>VALOR Y VIGENCIA</h4>
+                    <div className="pd-line" style={{ width: '70%' }} />
+                    <div className="pd-line" style={{ width: '55%' }} />
+                  </div>
+
+                  <span className="pd-stamp">Ley 820 · 2003</span>
+                  <div className="pd-doc-chips">
+                    <span className="pd-chip">.docx</span>
+                    <span className="pd-chip">Google Docs</span>
+                  </div>
                 </div>
               </div>
 
-              <div>
-                <p className="ed-eyebrow" data-ed-reveal>Producto destacado</p>
-                <h2 className="ed-h2 mt-5" data-ed-reveal style={delay(80)}>
-                  Plantilla de Contrato de Arrendamiento
-                </h2>
-                <p className="ed-body mt-5 max-w-[52ch] text-ed-ink-muted" data-ed-reveal style={delay(160)}>
-                  Un abogado cobra entre $300.000 y $800.000 por redactar este contrato. Aquí lo tienes
-                  listo, actualizado y editable.
-                </p>
-
-                <div className="mt-8" data-ed-reveal style={delay(240)}>
-                  <p className="ed-price">{formatPrice()}</p>
-                  <p className="ed-mono mt-2 text-ed-ink-muted">Pago único</p>
-                </div>
-
-                <ul className="mt-8 border-t border-ed-line" data-ed-reveal style={delay(320)}>
-                  {[
-                    'Campos dinámicos: fecha, valor, garantía e índice de reajuste',
-                    'Cláusulas de protección: daño, subarriendo y terminación anticipada',
-                    'Formato .docx editable y compatible con Google Docs',
-                    'Guía de personalización en PDF incluida',
-                  ].map((feature) => (
-                    <li key={feature} className="ed-body border-b border-ed-line py-3 text-sm text-ed-ink-muted">
-                      — {feature}
-                    </li>
-                  ))}
-                </ul>
-
-                <div className="mt-8" data-ed-reveal style={delay(400)}>
-                  <Link href="/tienda" className="ed-btn ed-btn--ink">
-                    Comprar plantilla — {formatPrice()}
-                    <span className="ed-arrow ml-3" aria-hidden="true">→</span>
-                  </Link>
-                  <p className="ed-mono mt-4 text-ed-ink-muted">Mercado Pago · Entrega inmediata</p>
-                </div>
-
-                <p className="ed-body mt-8 border-t border-ed-line pt-5 text-xs text-ed-ink-muted">
-                  {PRODUCT_CONFIG.disclaimer}
-                </p>
+              <div className="pd-format-chips">
+                <span className="pd-chip">.docx editable</span>
+                <span className="pd-chip">Google Docs compatible</span>
               </div>
+            </div>
+
+            {/* Columna derecha: presentación comercial */}
+            <div className="pd-right" data-pd-reveal style={{ '--pd-delay': '80ms' } as CSSProperties}>
+              <p className="pd-eyebrow pd-mono">Producto destacado</p>
+              <h2 className="pd-title">Plantilla de Contrato de Arrendamiento</h2>
+              <p className="pd-subtitle">
+                Un abogado cobra entre $300.000 y $800.000 por redactar este contrato. Aquí lo tienes
+                listo, actualizado y editable.
+              </p>
+
+              <span className="pd-update pd-mono">✓ Actualizaciones normativas · 12 meses</span>
+
+              <dl className="pd-price">
+                <div>
+                  <dt className="sr-only">Precio de la plantilla</dt>
+                  <dd className="pd-price__big">{formatPrice()}</dd>
+                  <dd className="pd-price__once">Pago único</dd>
+                </div>
+                <div className="pd-price__anchor">
+                  <dt>Con abogado $300.000–$800.000</dt>
+                  <dd>Aquí {formatPrice()}</dd>
+                </div>
+              </dl>
+
+              <ol className="pd-benefits">
+                {[
+                  { title: 'Cláusulas de protección', copy: 'Daño, subarriendo y terminación anticipada' },
+                  { title: 'Campos dinámicos', copy: 'Fecha, valor, garantía e índice de reajuste' },
+                  { title: 'Formato editable', copy: '.docx y Google Docs' },
+                  { title: 'Guía de personalización', copy: 'PDF incluida' },
+                ].map((item, i) => (
+                  <li
+                    key={item.title}
+                    data-pd-reveal
+                    style={{ '--pd-delay': `${160 + i * 60}ms` } as CSSProperties}
+                  >
+                    <span className="pd-num">{String(i + 1).padStart(2, '0')}</span>
+                    <div>
+                      <span className="pd-benefit-title">{item.title}</span>
+                      <span className="pd-benefit-copy">{item.copy}</span>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+
+              <Link href="/tienda" className="pd-cta">
+                Comprar plantilla — {formatPrice()}
+                <span className="pd-arrow" aria-hidden="true">→</span>
+              </Link>
+
+              <div className="pd-trust">
+                <span>🔒 Mercado Pago</span>
+                <span>✉ Entrega inmediata</span>
+              </div>
+
+              <p className="pd-legal">
+                <span className="pd-legal__prefix">Aviso legal — </span>
+                {PRODUCT_CONFIG.disclaimer}
+              </p>
             </div>
           </div>
         </section>
